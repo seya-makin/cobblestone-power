@@ -1,0 +1,21 @@
+{
+  "method": "QRA (Nowotarski & Weron, 2018)",
+  "q10": {
+    "before_single_balanced": 5.5791063926841025,
+    "after_qra": 5.653423106311593,
+    "improvement_pct": -1.3320540673851038
+  },
+  "q50": {
+    "before_single_balanced": 11.263529474787372,
+    "after_qra": 11.084289124470713,
+    "improvement_pct": 1.591333788559584
+  },
+  "q90": {
+    "before_single_balanced": 9.660967205641697,
+    "after_qra": 9.205934006343698,
+    "improvement_pct": 4.710017016021687
+  },
+  "winkler_80_before_qra": 152.40073598325802,
+  "winkler_80_after_qra": 148.59357112655294,
+  "winkler_80_improvement_pct": 2.4981276055801382
+}

@@ -1,0 +1,83 @@
+{
+  "steps": [
+    {
+      "step": "BASELINE_pre_improvements",
+      "MAE": 27.886959628443233,
+      "RMSE": 39.927469195976755,
+      "skill_vs_naive_pct": 15.002385578773037,
+      "conformal_coverage_90_empirical": 0.923155737704918,
+      "directional_accuracy_pct": 81.80783242258653,
+      "negative_price_recall": 0.8665207877461707
+    },
+    {
+      "step": "STEP1_optuna",
+      "MAE": 38.33521718418888,
+      "RMSE": 48.08518143954274,
+      "skill_vs_naive_pct": -16.843214620366197,
+      "conformal_coverage_90_empirical": 0.9094945355191257,
+      "directional_accuracy_pct": 81.5915300546448,
+      "negative_price_recall": 0.87527352297593,
+      "elapsed_s": 418.7
+    },
+    {
+      "step": "STEP2_lags",
+      "MAE": 38.352852737384424,
+      "RMSE": 48.21418084883175,
+      "skill_vs_naive_pct": -16.896966623832753,
+      "conformal_coverage_90_empirical": 0.9146174863387978,
+      "directional_accuracy_pct": 81.83060109289617,
+      "negative_price_recall": 0.87527352297593,
+      "elapsed_s": 435.1
+    },
+    {
+      "step": "STEP3_thermal",
+      "MAE": 37.63090366131411,
+      "RMSE": 47.751205113727394,
+      "skill_vs_naive_pct": -14.69651343649434,
+      "conformal_coverage_90_empirical": 0.9167805100182149,
+      "directional_accuracy_pct": 82.00136612021858,
+      "negative_price_recall": 0.87527352297593,
+      "elapsed_s": 396.3
+    },
+    {
+      "step": "STEP4_min_train_400d",
+      "MAE": 37.63090366131411,
+      "RMSE": 47.751205113727394,
+      "skill_vs_naive_pct": -14.69651343649434,
+      "conformal_coverage_90_empirical": 0.9167805100182149,
+      "directional_accuracy_pct": 82.00136612021858,
+      "negative_price_recall": 0.87527352297593,
+      "elapsed_s": 465.3
+    },
+    {
+      "step": "STEP5_log_transform",
+      "MAE": 30.9061867103261,
+      "RMSE": 41.8232268611531,
+      "skill_vs_naive_pct": 5.799980484233435,
+      "conformal_coverage_90_empirical": 0.9207650273224044,
+      "directional_accuracy_pct": 83.44717668488161,
+      "negative_price_recall": 0.87527352297593,
+      "elapsed_s": 437.5
+    },
+    {
+      "step": "STEP6_neg_classifier",
+      "MAE": 30.9061867103261,
+      "RMSE": 41.8232268611531,
+      "skill_vs_naive_pct": 5.799980484233435,
+      "conformal_coverage_90_empirical": 0.9207650273224044,
+      "directional_accuracy_pct": 83.44717668488161,
+      "negative_price_recall": 0.87527352297593,
+      "elapsed_s": 616.4
+    },
+    {
+      "step": "STEP7_final",
+      "MAE": 30.9061867103261,
+      "RMSE": 41.8232268611531,
+      "skill_vs_naive_pct": 5.799980484233435,
+      "conformal_coverage_90_empirical": 0.9207650273224044,
+      "directional_accuracy_pct": 83.44717668488161,
+      "negative_price_recall": 0.87527352297593,
+      "elapsed_s": 529.3
+    }
+  ]
+}

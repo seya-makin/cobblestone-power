@@ -1,0 +1,42 @@
+{
+  "generated_at": "2026-07-10T21:19:20.282021+00:00",
+  "tomorrow": {
+    "baseload": 52.54359734741843,
+    "peak": 62.8246303866033,
+    "offpeak": 42.262564308233536,
+    "peak_base_spread": 10.281033039184877,
+    "conformal_80_low": 32.84371298176786,
+    "conformal_80_high": 72.24348171306899,
+    "conformal_95_low": 16.845012549413795,
+    "conformal_95_high": 88.24218214542306
+  },
+  "next_week": {
+    "baseload": 51.49272540047006,
+    "peak": 61.56813777887123,
+    "offpeak": 41.41731302206887,
+    "peak_base_spread": 10.075412378401179,
+    "conformal_80_low": 32.1868387221325,
+    "conformal_80_high": 70.79861207880761,
+    "conformal_95_low": 16.50811229842552,
+    "conformal_95_high": 86.4773385025146
+  },
+  "next_month": {
+    "baseload": 50.44185345352169,
+    "peak": 60.31164517113917,
+    "offpeak": 40.57206173590419,
+    "peak_base_spread": 9.869791717617481,
+    "conformal_80_low": 31.529964462497144,
+    "conformal_80_high": 69.35374244454623,
+    "conformal_95_low": 16.171212047437244,
+    "conformal_95_high": 84.71249485960614
+  },
+  "forward_curve_decay_applied": true,
+  "forward_curve_decay_note": "Single forecast day available \u2014 applied decay Next Week=Tomorrow\u00d70.98, Next Month=Tomorrow\u00d70.96",
+  "baseload_tomorrow": 52.54359734741843,
+  "peak_tomorrow": 62.8246303866033,
+  "offpeak_tomorrow": 42.262564308233536,
+  "peak_base_spread_tomorrow": 10.281033039184877,
+  "next_week_baseload": 51.49272540047006,
+  "next_week_peak": 61.56813777887123,
+  "next_month_baseload": 50.44185345352169
+}

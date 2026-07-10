@@ -1,0 +1,30 @@
+{
+  "alpha": 0.1,
+  "nominal_coverage": 0.9,
+  "empirical_coverage": 0.902436247723133,
+  "n": 8784,
+  "mean_width": 105.48879034348904,
+  "coverage_scale": 1.05,
+  "by_regime": {
+    "0": {
+      "empirical_coverage": 0.9516994633273703,
+      "n": 559,
+      "mean_width": 126.23902487600103
+    },
+    "1": {
+      "empirical_coverage": 0.9198452183526811,
+      "n": 3618,
+      "mean_width": 68.83186454201599
+    },
+    "2": {
+      "empirical_coverage": 0.8915420665030127,
+      "n": 4481,
+      "mean_width": 128.43063238528117
+    },
+    "3": {
+      "empirical_coverage": 0.5714285714285714,
+      "n": 126,
+      "mean_width": 250.11563365130422
+    }
+  }
+}

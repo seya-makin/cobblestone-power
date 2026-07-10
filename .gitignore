@@ -1,0 +1,15 @@
+# Secrets
+.env
+
+# Data & model artefacts
+data/raw/
+data/processed/
+outputs/models/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# macOS
+.DS_Store

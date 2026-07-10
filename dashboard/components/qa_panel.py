@@ -1,0 +1,183 @@
+"""QA report panel — gauge, provenance, styled LLM rules."""
+
+from __future__ import annotations
+
+import json
+from pathlib import Path
+from typing import Any, Dict, List
+
+import numpy as np
+import plotly.graph_objects as go
+import streamlit as st
+
+from dashboard.utils.dashboard_helpers import (
+    render_placeholder,
+    safe_plotly,
+    safe_render,
+    tab_section_header,
+)
+
+
+@safe_render("QA panel unavailable — run pipeline --mode qa")
+def render_qa_panel(qa_summary: Dict[str, Any], qa_dir: Path) -> None:
+    """Quality gauge, provenance, coverage, LLM rules with CSV export."""
+    tab_section_header("DATA QUALITY — Automated QA with LLM-generated validation rules")
+    if not qa_summary:
+        render_placeholder("Run pipeline to generate this data")
+        return
+
+    st.divider()
+    # Data provenance
+    dr = qa_summary.get("date_range", {}) or {}
+    st.markdown(
+        f'<div class="metric-card">'
+        f'<div class="metric-label">Data Provenance</div>'
+        f'<div style="font-size:13px;color:#f9fafb;line-height:1.6;margin-top:6px;font-weight:300;">'
+        f"<b>Source:</b> ENTSO-E Transparency / SMARD (or synthetic offline panel)<br>"
+        f"<b>Date range:</b> {dr.get('start', '—')} → {dr.get('end', '—')}<br>"
+        f"<b>Total hours:</b> {qa_summary.get('total_hours', '—'):,}<br>"
+        f"<b>Pipeline version:</b> {qa_summary.get('pipeline_version', '—')}"
+        f"</div></div>",
+        unsafe_allow_html=True,
+    )
+
+    st.divider()
+    score = float(qa_summary.get("overall_quality_score", 0) or 0)
+    fig = go.Figure(
+        go.Indicator(
+            mode="gauge+number",
+            value=score,
+            number={"suffix": "/100", "font": {"size": 36, "color": "#f9fafb", "family": "JetBrains Mono"}},
+            title={"text": f"Quality Score — {qa_summary.get('quality_verdict', '')}", "font": {"size": 14, "color": "#f9fafb"}},
+            gauge={
+                "axis": {"range": [0, 100], "tickcolor": "#6b7280"},
+                "bar": {"color": "#3b82f6"},
+                "bgcolor": "#111827",
+                "borderwidth": 1,
+                "bordercolor": "#1f2937",
+                "steps": [
+                    {"range": [0, 70], "color": "rgba(239,68,68,0.25)"},
+                    {"range": [70, 90], "color": "rgba(245,158,11,0.25)"},
+                    {"range": [90, 100], "color": "rgba(16,185,129,0.25)"},
+                ],
+                "threshold": {
+                    "line": {"color": "#f9fafb", "width": 2},
+                    "thickness": 0.8,
+                    "value": score,
+                },
+            },
+        )
+    )
+    fig.update_layout(height=280)
+    safe_plotly(fig)
+
+    st.divider()
+    st.subheader("Data Coverage by Column")
+    cols = qa_summary.get("columns", {})
+    if cols:
+        names = []
+        values = []
+        colors = []
+        for k, v in cols.items():
+            cov = float(v.get("coverage_pct", 0) or 0)
+            names.append(k)
+            values.append(cov)
+            if cov >= 100:
+                colors.append("#10b981")
+            elif cov >= 90:
+                colors.append("#f59e0b")
+            else:
+                colors.append("#ef4444")
+        # Sort ascending so worst coverage is visible at top of horizontal bars
+        order = np.argsort(values)
+        names = [names[i] for i in order]
+        values = [values[i] for i in order]
+        colors = [colors[i] for i in order]
+        fig_cov = go.Figure(
+            go.Bar(
+                x=values,
+                y=names,
+                orientation="h",
+                marker_color=colors,
+                text=[f"{v:.1f}%" for v in values],
+                textposition="outside",
+            )
+        )
+        fig_cov.update_layout(
+            title="Data Coverage by Column",
+            height=max(280, 28 * len(names) + 80),
+            xaxis=dict(title="Coverage %", range=[0, 110]),
+            yaxis=dict(title=""),
+            margin=dict(l=140, r=40, t=50, b=40),
+        )
+        safe_plotly(fig_cov)
+    else:
+        render_placeholder("No column coverage stats in QA summary")
+
+    st.divider()
+    st.subheader("DST Transitions")
+    st.json(qa_summary.get("dst_transitions", {}))
+
+    st.divider()
+    rules_path = qa_dir / "llm_qa_rules.json"
+    results_path = qa_dir / "llm_qa_results.json"
+    rules: List[Dict[str, Any]] = []
+    if rules_path.exists():
+        try:
+            rules = json.loads(rules_path.read_text()).get("rules", [])
+        except Exception:
+            rules = []
+
+    viol_map: Dict[str, int] = {}
+    if results_path.exists():
+        try:
+            for r in json.loads(results_path.read_text()).get("results", []):
+                viol_map[r.get("rule_id", "")] = int(r.get("violations", 0))
+        except Exception:
+            pass
+
+    if rules:
+        st.subheader("LLM QA Rules")
+        rows = []
+        for rule in rules:
+            rid = rule.get("rule_id", "")
+            sev = str(rule.get("severity", "WARNING")).upper()
+            badge = f'<span class="sev-error">ERROR</span>' if sev == "ERROR" else f'<span class="sev-warning">WARNING</span>'
+            rows.append(
+                f"<tr>"
+                f"<td>{rid}</td>"
+                f"<td>{rule.get('description', '')}</td>"
+                f"<td>{badge}</td>"
+                f"<td>{viol_map.get(rid, 0)}</td>"
+                f"</tr>"
+            )
+        st.markdown(
+            '<table class="qa-table"><thead><tr>'
+            "<th>ID</th><th>Description</th><th>Severity</th><th>Violations</th>"
+            "</tr></thead><tbody>"
+            + "".join(rows)
+            + "</tbody></table>",
+            unsafe_allow_html=True,
+        )
+        import pandas as pd
+
+        csv_df = pd.DataFrame(rules)
+        if viol_map:
+            csv_df["violations"] = csv_df["rule_id"].map(lambda x: viol_map.get(x, 0))
+        st.download_button(
+            "⬇ Export rules CSV",
+            data=csv_df.to_csv(index=False),
+            file_name="llm_qa_rules.csv",
+            mime="text/csv",
+        )
+    else:
+        render_placeholder("LLM QA rules not generated yet")
+
+    cov_path = qa_dir / "conformal_coverage.json"
+    if cov_path.exists():
+        st.divider()
+        st.subheader("Conformal Coverage by Regime")
+        try:
+            st.json(json.loads(cov_path.read_text()))
+        except Exception:
+            render_placeholder("Conformal coverage JSON unreadable")

@@ -1,0 +1,113 @@
+{
+  "run_timestamp": "2026-07-10T18:50:10.460742+00:00",
+  "pipeline_version": "1.0.0",
+  "date_range": {
+    "start": "2022-01-01",
+    "end": "2024-12-31"
+  },
+  "total_hours": 26304,
+  "overall_quality_score": 97.1,
+  "quality_verdict": "PASS",
+  "columns": {
+    "da_price": {
+      "coverage_pct": 100.0,
+      "missing_raw": 0,
+      "min": -500.0,
+      "max": 936.28,
+      "mean": 136.3232580596107,
+      "std": 115.87249763580512,
+      "p5": 2.5590000000000055,
+      "p25": 73.275,
+      "p50": 102.83,
+      "p75": 164.555,
+      "p95": 392.7594999999999,
+      "outlier_z4": 62,
+      "seasonal_outliers": 2,
+      "hour_spikes": 0,
+      "negative_price_hours": 827,
+      "negative_price_pct": 3.1440085158150852
+    },
+    "da_load": {
+      "coverage_pct": 100.0,
+      "missing_raw": 0,
+      "min": 30902.75,
+      "max": 78680.5,
+      "mean": 53458.95548319647,
+      "std": 9353.461159424392,
+      "p5": 38936.6125,
+      "p25": 45769.75,
+      "p50": 53504.75,
+      "p75": 60635.75,
+      "p95": 68612.4625
+    },
+    "da_wind": {
+      "coverage_pct": 100.0,
+      "missing_raw": 0,
+      "min": 247.25,
+      "max": 50295.75,
+      "mean": 15366.85333979623,
+      "std": 11405.662040041236,
+      "p5": 2174.7875,
+      "p25": 5993.8125,
+      "p50": 12275.0,
+      "p75": 22697.75,
+      "p95": 38675.325
+    },
+    "da_solar": {
+      "coverage_pct": 100.0,
+      "missing_raw": 0,
+      "min": 0.0,
+      "max": 48155.5,
+      "mean": 6574.437081812652,
+      "std": 10188.074072918667,
+      "p5": 0.0,
+      "p25": 0.0,
+      "p50": 0.0,
+      "p75": 10701.0625,
+      "p95": 29535.78749999997
+    },
+    "net_exports": {
+      "coverage_pct": 100.0,
+      "missing_raw": 0,
+      "min": 0.0,
+      "max": 0.0,
+      "mean": 0.0,
+      "std": 0.0,
+      "p5": 0.0,
+      "p25": 0.0,
+      "p50": 0.0,
+      "p75": 0.0,
+      "p95": 0.0
+    },
+    "nuclear_avail_fr": {
+      "coverage_pct": 100.0,
+      "missing_raw": 0,
+      "min": 41049.79687362164,
+      "max": 48736.11725733564,
+      "mean": 45008.14765525203,
+      "std": 901.6535513384343,
+      "p5": 43523.25761312715,
+      "p25": 44403.28382440214,
+      "p50": 45003.965718533625,
+      "p75": 45606.6601576908,
+      "p95": 46506.97357845815
+    }
+  },
+  "dst_transitions": {
+    "handled": 6,
+    "spring_forward": 3,
+    "autumn_fallback": 3
+  },
+  "structural_breaks": [
+    "2022-02-24 ukraine_war",
+    "2023-04-15 nuclear_phaseout"
+  ],
+  "llm_rules_proposed": 20,
+  "llm_rules_executed": 20,
+  "llm_rule_violations": 2,
+  "recommended_actions": [
+    "Monitor negative-price hours during spring/summer weekends",
+    "Re-validate Dunkelflaute detection against Nov/Dec 2024 events",
+    "Refresh fuel price feeds before live trading use"
+  ]
+}

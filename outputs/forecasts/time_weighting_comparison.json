@@ -1,0 +1,10 @@
+{
+  "before_MAE": 26.1218506870604,
+  "after_MAE": 25.373288681666654,
+  "delta_MAE": -0.7485620053937474,
+  "skill_vs_naive_pct": 22.663888903719165,
+  "negative_price_recall": 0.8774617067833698,
+  "time_weight_decay": 0.001,
+  "weight_ratio_2024_vs_2022_start": 2.0750806076741224,
+  "elapsed_s": 553.6
+}

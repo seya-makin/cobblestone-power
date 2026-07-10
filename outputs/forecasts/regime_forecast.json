@@ -1,0 +1,12 @@
+{
+  "dominant_regime": 1,
+  "regime_probabilities": {
+    "1": 1.0,
+    "0": 0.0,
+    "2": 0.0,
+    "3": 0.0
+  },
+  "dunkelflaute_risk": 0.0,
+  "negative_price_risk": 0.6315000653266907,
+  "reference_baseload": 102.70875000000001
+}

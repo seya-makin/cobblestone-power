@@ -1,0 +1,92 @@
+{
+  "steps": [
+    {
+      "MAE": 26.02253378568516,
+      "RMSE": 39.87324273599847,
+      "skill_vs_naive_pct": 20.68503262998076,
+      "negative_price_recall": 0.87527352297593,
+      "n_hours": 8784,
+      "n_negative": 457,
+      "step": "STEP1_price_lag_8736h",
+      "elapsed_s": 468.9,
+      "test_start": "2024-01-01",
+      "test_end": "2024-12-31"
+    },
+    {
+      "MAE": 26.1218506870604,
+      "RMSE": 40.040619059242054,
+      "skill_vs_naive_pct": 20.382321262335157,
+      "negative_price_recall": 0.8796498905908097,
+      "n_hours": 8784,
+      "n_negative": 457,
+      "step": "STEP2_summer_solar_weekend",
+      "elapsed_s": 466.4,
+      "test_start": "2024-01-01",
+      "test_end": "2024-12-31"
+    },
+    {
+      "step": "YEAR_2022",
+      "MAE": 80.17829862208843,
+      "n_hours": 6576,
+      "skill_vs_naive_pct": 5.892184860100224,
+      "negative_price_recall": null,
+      "test_start": "2022-01-01",
+      "test_end": "2022-12-31"
+    },
+    {
+      "MAE": 52.53929955526921,
+      "RMSE": 68.30660873308842,
+      "skill_vs_naive_pct": -56.229982532967604,
+      "negative_price_recall": 0.76,
+      "n_hours": 8760,
+      "n_negative": 300,
+      "step": "YEAR_2023",
+      "elapsed_s": 411.4,
+      "test_start": "2023-01-01",
+      "test_end": "2023-12-31"
+    },
+    {
+      "MAE": 26.1218506870604,
+      "RMSE": 40.040619059242054,
+      "skill_vs_naive_pct": 20.382321262335157,
+      "negative_price_recall": 0.8796498905908097,
+      "n_hours": 8784,
+      "n_negative": 457,
+      "step": "YEAR_2024",
+      "elapsed_s": 560.2,
+      "test_start": "2024-01-01",
+      "test_end": "2024-12-31"
+    }
+  ],
+  "lag8736": {
+    "corr_true_shift": 0.3086413253106704,
+    "nan_after_warmup": 0.0
+  },
+  "mae_by_year": {
+    "2022": {
+      "MAE": 80.17829862208843,
+      "n_hours": 6576,
+      "skill_vs_naive_pct": 5.892184860100224,
+      "negative_price_recall": null
+    },
+    "2023": {
+      "MAE": 52.53929955526921,
+      "n_hours": 8760,
+      "skill_vs_naive_pct": -56.229982532967604,
+      "negative_price_recall": 0.76
+    },
+    "2024": {
+      "MAE": 26.1218506870604,
+      "n_hours": 8784,
+      "skill_vs_naive_pct": 20.382321262335157,
+      "negative_price_recall": 0.8796498905908097
+    }
+  },
+  "recall_split": {
+    "full_year": 0.8796498905908097,
+    "summer_apr_sep": 0.910761154855643,
+    "winter_oct_mar": 0.7236842105263158,
+    "n_neg_summer": 381,
+    "n_neg_winter": 76
+  }
+}

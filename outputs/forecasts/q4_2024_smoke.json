@@ -1,0 +1,12 @@
+{
+  "period": "Q4_2024",
+  "n_hours": 2064,
+  "MAE": 20.587724168661026,
+  "directional_accuracy_pct": 69.54191033138402,
+  "mae_oct": 13.669384089509647,
+  "mae_nov": 20.306493902047475,
+  "mae_dec": 26.439189006634937,
+  "pct_routed_extreme": 17.199612403100776,
+  "median_extreme_threshold_eur": 92.78699999999995,
+  "elapsed_s": 214.6
+}

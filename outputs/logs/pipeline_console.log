@@ -1,0 +1,1285 @@
+/Users/seyamakin/cobblestone-power/run_pipeline.py:432: UserWarning: ENTSOE_API_KEY is placeholder — skipping ingestion. Add your key to .env when received from transparency.entsoe.eu. All other pipeline steps will run normally.
+  settings.validate_all()
+2026-07-10 00:58:16,358 | WARNING | config.settings | ENTSOE_API_KEY is placeholder — skipping ingestion. Add your key to .env when received from transparency.entsoe.eu. All other pipeline steps will run normally.
+/Users/seyamakin/cobblestone-power/run_pipeline.py:432: UserWarning: GEMINI_API_KEY is placeholder — LLM modules will use fallback rules. Get a free key at aistudio.google.com.
+  settings.validate_all()
+2026-07-10 00:58:16,359 | WARNING | config.settings | GEMINI_API_KEY is placeholder — LLM modules will use fallback rules. Get a free key at aistudio.google.com.
+2026-07-10 00:58:16,359 | INFO | config.settings | Configuration validated | version=1.0.0
+2026-07-10 00:58:16,359 | INFO | cobblestone.pipeline | Config: {'pipeline_version': '1.0.0', 'start_date': '2022-01-01', 'end_date': '2024-12-31', 'test_start': '2024-01-01', 'market': 'DE_LU', 'bidding_zone': '10Y1001A1001A82H', 'log_level': 'INFO', 'dashboard_port': 8501, 'entsoe_api_key_set': False, 'gemini_api_key_set': False, 'gemini_model': 'gemini-2.0-flash', 'project_root': '/Users/seyamakin/cobblestone-power', 'xgb_params': {'n_estimators': 1200, 'max_depth': 6, 'learning_rate': 0.04, 'subsample': 0.8, 'colsample_bytree': 0.75, 'min_child_weight': 6, 'reg_alpha': 0.15, 'reg_lambda': 1.2, 'objective': 'reg:squarederror', 'tree_method': 'hist', 'early_stopping_rounds': 60, 'eval_metric': ['rmse', 'mae'], 'random_state': 42}}
+╭──────────────────────────────────────────────────╮
+│ COBBLESTONE POWER ANALYTICS — PIPELINE RUN       │
+│ German Day-Ahead Price Forecasting System v1.0.0 │
+╰──────────────────────────────────────────────────╯
+/Users/seyamakin/cobblestone-power/run_pipeline.py:328: UserWarning: ENTSOE_API_KEY is placeholder — skipping ingestion. Add your key to .env when received from transparency.entsoe.eu. All other pipeline steps will run normally.
+  settings.validate_all()
+2026-07-10 00:58:16,360 | WARNING | config.settings | ENTSOE_API_KEY is placeholder — skipping ingestion. Add your key to .env when received from transparency.entsoe.eu. All other pipeline steps will run normally.
+/Users/seyamakin/cobblestone-power/run_pipeline.py:328: UserWarning: GEMINI_API_KEY is placeholder — LLM modules will use fallback rules. Get a free key at aistudio.google.com.
+  settings.validate_all()
+2026-07-10 00:58:16,360 | WARNING | config.settings | GEMINI_API_KEY is placeholder — LLM modules will use fallback rules. Get a free key at aistudio.google.com.
+2026-07-10 00:58:16,361 | INFO | config.settings | Configuration validated | version=1.0.0
+[00:00] [1/10] ✓ Config validated
+        ENTSOE_API_KEY: ✗ placeholder  |  GEMINI_API_KEY: ✗ placeholder 
+(fallback)
+[WARNING] ENTSOE_API_KEY is placeholder — skipping live ingestion
+          Add your key to .env when received from transparency.entsoe.eu
+          All other pipeline steps will run normally (synthetic data)
+2026-07-10 00:58:16,367 | WARNING | src.llm_config | GEMINI_API_KEY placeholder — using fallback ingestion config
+2026-07-10 00:58:16,368 | WARNING | src.ingestion | ENTSOE_API_KEY is placeholder — skipping live ingestion. Add your key to .env when received from transparency.entsoe.eu
+2026-07-10 00:58:16,368 | WARNING | src.ingestion | Generating synthetic fundamental dataset for offline pipeline run
+2026-07-10 00:58:16,489 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/raw/prices/da_price.parquet (26304 rows)
+2026-07-10 00:58:16,494 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/raw/load/da_load.parquet (26304 rows)
+2026-07-10 00:58:16,499 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/raw/wind/da_wind.parquet (26304 rows)
+2026-07-10 00:58:16,504 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/raw/solar/da_solar.parquet (26304 rows)
+2026-07-10 00:58:16,511 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/raw/nuclear/nuclear_availability.parquet (26304 rows)
+2026-07-10 00:58:16,518 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/raw/flows/cross_border_flows.parquet (26304 rows)
+2026-07-10 00:58:16,538 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/raw/fuels/actual_generation.parquet (26304 rows)
+2026-07-10 00:58:16,546 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/raw/fuels/fuel_prices.parquet (26304 rows)
+2026-07-10 00:58:16,546 | INFO | src.ingestion | Synthetic dataset written — 26304 hours | 2022-01-01 → 2024-12-31
+2026-07-10 00:58:16,547 | INFO | src.ingestion | Ingestion manifest saved → /Users/seyamakin/cobblestone-power/data/raw/ingestion_manifest.json
+[00:00] [2/10] ✓ LLM config generation + data ingested
+2026-07-10 00:58:16,588 | INFO | src.cleaning | Loaded raw da_price — 26304 rows
+2026-07-10 00:58:16,592 | INFO | src.cleaning | Loaded raw da_load — 26304 rows
+2026-07-10 00:58:16,594 | INFO | src.cleaning | Loaded raw da_wind — 26304 rows
+2026-07-10 00:58:16,597 | INFO | src.cleaning | Loaded raw da_solar — 26304 rows
+2026-07-10 00:58:16,601 | INFO | src.cleaning | Loaded raw nuclear — 26304 rows
+2026-07-10 00:58:16,604 | INFO | src.cleaning | Loaded raw flows — 26304 rows
+2026-07-10 00:58:16,611 | INFO | src.cleaning | Loaded raw generation — 26304 rows
+2026-07-10 00:58:16,615 | INFO | src.cleaning | Loaded raw fuels — 26304 rows
+2026-07-10 00:58:17,391 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/master_dataset.parquet (26304 rows)
+2026-07-10 00:58:17,391 | INFO | src.cleaning | Master dataset saved — 26304 rows | DST spring=3 autumn=3 | outliers_z4=97
+[00:01] [3/10] ✓ Data cleaned — 26,304 hours
+2026-07-10 00:58:18,000 | WARNING | src.llm_qa | GEMINI_API_KEY placeholder — using fallback QA rules
+2026-07-10 00:58:18,021 | INFO | src.llm_qa | LLM QA executed 20/20 rules | violations=122
+2026-07-10 00:58:19,185 | INFO | src.qa | QA HTML written → /Users/seyamakin/cobblestone-power/outputs/qa_report/qa_detailed.html
+2026-07-10 00:58:19,185 | INFO | src.qa | QA complete — score=95.4 verdict=PASS
+[00:02] [4/10] ✓ QA + LLM QA — score 95.4/100 | rules 20/20
+2026-07-10 00:58:21,217 | INFO | src.regime | ✓ Dunkelflaute detection caught Nov 2024 Dunkelflaute
+2026-07-10 00:58:21,228 | INFO | src.regime | ✓ Dunkelflaute detection caught Dec 2024 Dunkelflaute
+/Users/seyamakin/cobblestone-power/.venv/lib/python3.10/site-packages/sklearn/linear_model/_logistic.py:1247: FutureWarning: 'multi_class' was deprecated in version 1.5 and will be removed in 1.7. From then on, it will always use 'multinomial'. Leave it to its default value to avoid this warning.
+  warnings.warn(
+2026-07-10 00:58:21,426 | INFO | src.regime | Regime detection — neg/zero hours=63 | dunkelflaute days≈9 | regime counts={0: 67, 1: 7183, 2: 18823, 3: 231}
+2026-07-10 00:58:24,046 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/regime/regime_timeline.png
+2026-07-10 00:58:24,105 | INFO | matplotlib.category | Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+/Users/seyamakin/cobblestone-power/src/regime.py:314: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `x` variable to `hue` and set `legend=False` for the same effect.
+
+  sns.violinplot(data=plot_df, x="price_regime", y="da_price", ax=ax, palette=colors)
+Traceback (most recent call last):
+  File "/Users/seyamakin/cobblestone-power/run_pipeline.py", line 464, in <module>
+    main()
+  File "/Users/seyamakin/cobblestone-power/run_pipeline.py", line 438, in main
+    run_full(resume=args.resume, fast=fast)
+  File "/Users/seyamakin/cobblestone-power/run_pipeline.py", line 357, in run_full
+    regime_df = cmd_regime(master)
+  File "/Users/seyamakin/cobblestone-power/run_pipeline.py", line 101, in cmd_regime
+    out = RegimeDetector().run(df)
+  File "/Users/seyamakin/cobblestone-power/src/regime.py", line 287, in run
+    self.produce_figures(out)
+  File "/Users/seyamakin/cobblestone-power/src/regime.py", line 314, in produce_figures
+    sns.violinplot(data=plot_df, x="price_regime", y="da_price", ax=ax, palette=colors)
+  File "/Users/seyamakin/cobblestone-power/.venv/lib/python3.10/site-packages/seaborn/categorical.py", line 1754, in violinplot
+    p.map_hue(palette=palette, order=hue_order, norm=hue_norm, saturation=saturation)
+  File "/Users/seyamakin/cobblestone-power/.venv/lib/python3.10/site-packages/seaborn/_base.py", line 838, in map_hue
+    mapping = HueMapping(self, palette, order, norm, saturation)
+  File "/Users/seyamakin/cobblestone-power/.venv/lib/python3.10/site-packages/seaborn/_base.py", line 150, in __init__
+    levels, lookup_table = self.categorical_mapping(
+  File "/Users/seyamakin/cobblestone-power/.venv/lib/python3.10/site-packages/seaborn/_base.py", line 234, in categorical_mapping
+    raise ValueError(err.format(missing))
+ValueError: The palette dictionary is missing keys: {'3', '1', '0', '2'}
+/Users/seyamakin/cobblestone-power/run_pipeline.py:432: UserWarning: ENTSOE_API_KEY is placeholder — skipping ingestion. Add your key to .env when received from transparency.entsoe.eu. All other pipeline steps will run normally.
+  settings.validate_all()
+2026-07-10 00:59:56,712 | WARNING | config.settings | ENTSOE_API_KEY is placeholder — skipping ingestion. Add your key to .env when received from transparency.entsoe.eu. All other pipeline steps will run normally.
+/Users/seyamakin/cobblestone-power/run_pipeline.py:432: UserWarning: GEMINI_API_KEY is placeholder — LLM modules will use fallback rules. Get a free key at aistudio.google.com.
+  settings.validate_all()
+2026-07-10 00:59:56,712 | WARNING | config.settings | GEMINI_API_KEY is placeholder — LLM modules will use fallback rules. Get a free key at aistudio.google.com.
+2026-07-10 00:59:56,713 | INFO | config.settings | Configuration validated | version=1.0.0
+2026-07-10 00:59:56,713 | INFO | cobblestone.pipeline | Config: {'pipeline_version': '1.0.0', 'start_date': '2022-01-01', 'end_date': '2024-12-31', 'test_start': '2024-01-01', 'market': 'DE_LU', 'bidding_zone': '10Y1001A1001A82H', 'log_level': 'INFO', 'dashboard_port': 8501, 'entsoe_api_key_set': False, 'gemini_api_key_set': False, 'gemini_model': 'gemini-2.0-flash', 'project_root': '/Users/seyamakin/cobblestone-power', 'xgb_params': {'n_estimators': 1200, 'max_depth': 6, 'learning_rate': 0.04, 'subsample': 0.8, 'colsample_bytree': 0.75, 'min_child_weight': 6, 'reg_alpha': 0.15, 'reg_lambda': 1.2, 'objective': 'reg:squarederror', 'tree_method': 'hist', 'early_stopping_rounds': 60, 'eval_metric': ['rmse', 'mae'], 'random_state': 42}}
+2026-07-10 00:59:58,802 | INFO | src.model | Ridge coefficients: {'residual_load': 8.473994777540568, 'hour_sin': 4.064704814548804, 'hour_cos': -1.72854195027638, 'dow_sin': -0.8211150494101086, 'dow_cos': 0.092846163767837, 'month_sin': -2.0680025632270334, 'month_cos': 2.027289987121588, 'price_lag_168h': 36.27363510928694, 'renewable_penetration': -3.1791546777525603}
+2026-07-10 00:59:59,749 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 00:59:59,779 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 00:59:59,782 | INFO | src.conformal | Regime 3 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 00:59:59,782 | INFO | src.conformal | Conformal calibrated — global q90=21.86 | regime counts={0: 0, 1: 1025, 2: 1135, 3: 0}
+2026-07-10 01:00:09,934 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-10 01:00:10,220 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_days_since_year_start.png
+2026-07-10 01:00:10,488 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_lag_24h.png
+2026-07-10 01:00:10,780 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_max.png
+2026-07-10 01:00:11,053 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_mean.png
+2026-07-10 01:00:11,417 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_hour_sin.png
+2026-07-10 01:00:11,426 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_000.parquet (168 rows)
+2026-07-10 01:00:11,427 | INFO | src.validation | Window 1/53 done — MAE=9.67
+2026-07-10 01:00:11,447 | INFO | src.model | Ridge coefficients: {'residual_load': 8.295935578126773, 'hour_sin': 3.9946945922507804, 'hour_cos': -1.6510711152549045, 'dow_sin': -0.7964873753732955, 'dow_cos': 0.08770905490254914, 'month_sin': -1.7630110318243253, 'month_cos': 1.8004073072881384, 'price_lag_168h': 36.40185133207624, 'renewable_penetration': -3.164522477695447}
+2026-07-10 01:00:12,416 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:00:12,448 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:12,451 | INFO | src.conformal | Regime 3 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:12,451 | INFO | src.conformal | Conformal calibrated — global q90=21.13 | regime counts={0: 0, 1: 1043, 2: 1117, 3: 0}
+2026-07-10 01:00:12,715 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_001.parquet (168 rows)
+2026-07-10 01:00:12,715 | INFO | src.validation | Window 2/53 done — MAE=10.50
+2026-07-10 01:00:12,735 | INFO | src.model | Ridge coefficients: {'residual_load': 8.138728698695815, 'hour_sin': 3.9447100455150235, 'hour_cos': -1.6690082521991345, 'dow_sin': -0.8193589317027127, 'dow_cos': 0.1022920757488795, 'month_sin': -1.5071780413737612, 'month_cos': 1.6237459048124359, 'price_lag_168h': 36.54211955265632, 'renewable_penetration': -3.2096975875432348}
+2026-07-10 01:00:13,766 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:00:13,799 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:13,803 | INFO | src.conformal | Regime 3 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:13,804 | INFO | src.conformal | Conformal calibrated — global q90=21.73 | regime counts={0: 0, 1: 1054, 2: 1106, 3: 0}
+2026-07-10 01:00:14,114 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_002.parquet (168 rows)
+2026-07-10 01:00:14,115 | INFO | src.validation | Window 3/53 done — MAE=10.85
+2026-07-10 01:00:14,139 | INFO | src.model | Ridge coefficients: {'residual_load': 7.9972312908621905, 'hour_sin': 3.9050088533367644, 'hour_cos': -1.658895719095785, 'dow_sin': -0.8165255218099149, 'dow_cos': 0.11871457619125345, 'month_sin': -1.3130041016482918, 'month_cos': 1.494308852494813, 'price_lag_168h': 36.65237610582066, 'renewable_penetration': -3.282414417449751}
+2026-07-10 01:00:15,274 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:00:15,308 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:15,312 | INFO | src.conformal | Regime 3 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:15,312 | INFO | src.conformal | Conformal calibrated — global q90=21.54 | regime counts={0: 0, 1: 1056, 2: 1104, 3: 0}
+2026-07-10 01:00:15,616 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_003.parquet (168 rows)
+2026-07-10 01:00:15,616 | INFO | src.validation | Window 4/53 done — MAE=10.39
+2026-07-10 01:00:15,647 | INFO | src.model | Ridge coefficients: {'residual_load': 7.704415333270451, 'hour_sin': 3.8620905292073, 'hour_cos': -1.7317660655360771, 'dow_sin': -0.7575979024060898, 'dow_cos': 0.09888235099166591, 'month_sin': -1.109723873253138, 'month_cos': 1.3809637571569815, 'price_lag_168h': 36.74256978431488, 'renewable_penetration': -3.5348011963233246}
+2026-07-10 01:00:16,745 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:00:16,778 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:16,781 | INFO | src.conformal | Regime 3 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:16,781 | INFO | src.conformal | Conformal calibrated — global q90=21.32 | regime counts={0: 0, 1: 1041, 2: 1119, 3: 0}
+2026-07-10 01:00:17,881 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-10 01:00:18,169 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_max.png
+2026-07-10 01:00:18,474 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_mean.png
+2026-07-10 01:00:18,756 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_lag_24h.png
+2026-07-10 01:00:19,055 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_hour_sin.png
+2026-07-10 01:00:19,333 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_regime_probability_0.png
+2026-07-10 01:00:19,341 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_004.parquet (168 rows)
+2026-07-10 01:00:19,341 | INFO | src.validation | Window 5/53 done — MAE=9.66
+2026-07-10 01:00:19,364 | INFO | src.model | Ridge coefficients: {'residual_load': 7.687741457073207, 'hour_sin': 3.8521414726793375, 'hour_cos': -1.6780917949766345, 'dow_sin': -0.7637138927596338, 'dow_cos': 0.0861521069887915, 'month_sin': -1.0027289203471696, 'month_cos': 1.226852839769115, 'price_lag_168h': 36.82002019912613, 'renewable_penetration': -3.5206164432556912}
+2026-07-10 01:00:20,322 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:00:20,352 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:20,355 | INFO | src.conformal | Regime 3 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:20,355 | INFO | src.conformal | Conformal calibrated — global q90=20.77 | regime counts={0: 0, 1: 1014, 2: 1146, 3: 0}
+2026-07-10 01:00:20,625 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_005.parquet (168 rows)
+2026-07-10 01:00:20,626 | INFO | src.validation | Window 6/53 done — MAE=10.01
+2026-07-10 01:00:20,648 | INFO | src.model | Ridge coefficients: {'residual_load': 7.598057184707594, 'hour_sin': 3.856737910903083, 'hour_cos': -1.7264235114264825, 'dow_sin': -0.7771961647758596, 'dow_cos': 0.08835035294369153, 'month_sin': -0.9066224194737531, 'month_cos': 1.100407636916823, 'price_lag_168h': 36.900599101069915, 'renewable_penetration': -3.624790800321023}
+2026-07-10 01:00:21,722 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:00:21,755 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:21,758 | INFO | src.conformal | Regime 3 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:21,758 | INFO | src.conformal | Conformal calibrated — global q90=20.80 | regime counts={0: 0, 1: 964, 2: 1196, 3: 0}
+2026-07-10 01:00:22,068 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_006.parquet (168 rows)
+2026-07-10 01:00:22,069 | INFO | src.validation | Window 7/53 done — MAE=9.83
+2026-07-10 01:00:22,100 | INFO | src.model | Ridge coefficients: {'residual_load': 7.475102368495545, 'hour_sin': 3.829633416117845, 'hour_cos': -1.747204869434256, 'dow_sin': -0.7495610638858519, 'dow_cos': 0.10493580068203408, 'month_sin': -0.81861939070795, 'month_cos': 0.9983908346164957, 'price_lag_168h': 36.97648165024018, 'renewable_penetration': -3.762165837689263}
+2026-07-10 01:00:23,294 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:00:23,327 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:23,331 | INFO | src.conformal | Regime 3 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:23,331 | INFO | src.conformal | Conformal calibrated — global q90=20.68 | regime counts={0: 0, 1: 915, 2: 1245, 3: 0}
+2026-07-10 01:00:23,639 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_007.parquet (168 rows)
+2026-07-10 01:00:23,639 | INFO | src.validation | Window 8/53 done — MAE=9.24
+2026-07-10 01:00:23,664 | INFO | src.model | Ridge coefficients: {'residual_load': 7.324017907444937, 'hour_sin': 3.8438045592870766, 'hour_cos': -1.8117923516612437, 'dow_sin': -0.7595171172541382, 'dow_cos': 0.10790879120994998, 'month_sin': -0.7217469120580413, 'month_cos': 0.893760587660751, 'price_lag_168h': 37.03082100634706, 'renewable_penetration': -3.970228326961553}
+2026-07-10 01:00:24,791 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:00:24,822 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:24,826 | INFO | src.conformal | Regime 3 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:24,826 | INFO | src.conformal | Conformal calibrated — global q90=20.49 | regime counts={0: 0, 1: 839, 2: 1321, 3: 0}
+2026-07-10 01:00:25,900 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-10 01:00:26,202 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_max.png
+2026-07-10 01:00:26,470 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_lag_24h.png
+2026-07-10 01:00:26,745 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_mean.png
+2026-07-10 01:00:27,044 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_years_since_ukraine_war.png
+2026-07-10 01:00:27,350 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_hour_sin.png
+2026-07-10 01:00:27,357 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_008.parquet (168 rows)
+2026-07-10 01:00:27,358 | INFO | src.validation | Window 9/53 done — MAE=9.33
+2026-07-10 01:00:27,381 | INFO | src.model | Ridge coefficients: {'residual_load': 7.343803832013941, 'hour_sin': 3.819921227833468, 'hour_cos': -1.7887890292811772, 'dow_sin': -0.7469682010090358, 'dow_cos': 0.09652653592062374, 'month_sin': -0.717460268277996, 'month_cos': 0.8374434128852914, 'price_lag_168h': 37.076832817038344, 'renewable_penetration': -3.9703643224167626}
+2026-07-10 01:00:28,362 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:00:28,390 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:28,393 | INFO | src.conformal | Regime 3 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:28,393 | INFO | src.conformal | Conformal calibrated — global q90=20.31 | regime counts={0: 0, 1: 759, 2: 1401, 3: 0}
+2026-07-10 01:00:28,664 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_009.parquet (168 rows)
+2026-07-10 01:00:28,664 | INFO | src.validation | Window 10/53 done — MAE=9.85
+2026-07-10 01:00:28,694 | INFO | src.model | Ridge coefficients: {'residual_load': 7.425488179903701, 'hour_sin': 3.8295418353575417, 'hour_cos': -1.7409038420078204, 'dow_sin': -0.7707229561468566, 'dow_cos': 0.10557855540208202, 'month_sin': -0.7363333319303477, 'month_cos': 0.7367611318759713, 'price_lag_168h': 37.122188132965604, 'renewable_penetration': -3.912403576437678}
+2026-07-10 01:00:29,809 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:00:29,844 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:29,848 | INFO | src.conformal | Regime 3 has 1 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:29,848 | INFO | src.conformal | Conformal calibrated — global q90=20.38 | regime counts={0: 0, 1: 683, 2: 1476, 3: 1}
+2026-07-10 01:00:30,160 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_010.parquet (168 rows)
+2026-07-10 01:00:30,160 | INFO | src.validation | Window 11/53 done — MAE=9.45
+2026-07-10 01:00:30,192 | INFO | src.model | Ridge coefficients: {'residual_load': 7.411857465343328, 'hour_sin': 3.834400994123018, 'hour_cos': -1.7476705658697893, 'dow_sin': -0.775845963646893, 'dow_cos': 0.1182855598616752, 'month_sin': -0.7305243658829805, 'month_cos': 0.6540992210734523, 'price_lag_168h': 37.163409156765425, 'renewable_penetration': -3.9677303101559716}
+2026-07-10 01:00:31,443 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:00:31,477 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:31,481 | INFO | src.conformal | Regime 3 has 2 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:31,481 | INFO | src.conformal | Conformal calibrated — global q90=20.19 | regime counts={0: 0, 1: 594, 2: 1564, 3: 2}
+2026-07-10 01:00:31,797 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_011.parquet (168 rows)
+2026-07-10 01:00:31,797 | INFO | src.validation | Window 12/53 done — MAE=10.20
+2026-07-10 01:00:31,831 | INFO | src.model | Ridge coefficients: {'residual_load': 7.340264608170881, 'hour_sin': 3.8482931323718064, 'hour_cos': -1.7833737547062536, 'dow_sin': -0.7501695074726998, 'dow_cos': 0.12446139122579278, 'month_sin': -0.7102418043669865, 'month_cos': 0.6138333899445219, 'price_lag_168h': 37.19175397953979, 'renewable_penetration': -4.078419751505002}
+2026-07-10 01:00:32,973 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:00:33,007 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:33,011 | INFO | src.conformal | Regime 3 has 3 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:33,011 | INFO | src.conformal | Conformal calibrated — global q90=20.15 | regime counts={0: 0, 1: 514, 2: 1643, 3: 3}
+2026-07-10 01:00:34,073 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-10 01:00:34,373 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_max.png
+2026-07-10 01:00:34,741 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_mean.png
+2026-07-10 01:00:35,023 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_years_since_ukraine_war.png
+2026-07-10 01:00:35,329 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_hour_sin.png
+2026-07-10 01:00:35,594 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_lag_24h.png
+2026-07-10 01:00:35,602 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_012.parquet (168 rows)
+2026-07-10 01:00:35,602 | INFO | src.validation | Window 13/53 done — MAE=10.95
+2026-07-10 01:00:35,623 | INFO | src.model | Ridge coefficients: {'residual_load': 7.336690477994941, 'hour_sin': 3.852352695494408, 'hour_cos': -1.7388687135668397, 'dow_sin': -0.77226979004482, 'dow_cos': 0.12822751571250138, 'month_sin': -0.7088824122315387, 'month_cos': 0.5363022180671451, 'price_lag_168h': 37.21009323139035, 'renewable_penetration': -4.092248202626617}
+2026-07-10 01:00:36,687 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:00:36,714 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:36,717 | INFO | src.conformal | Regime 3 has 3 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:36,717 | INFO | src.conformal | Conformal calibrated — global q90=20.19 | regime counts={0: 0, 1: 432, 2: 1725, 3: 3}
+2026-07-10 01:00:48,120 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_013.parquet (168 rows)
+2026-07-10 01:00:48,121 | INFO | src.validation | Window 14/53 done — MAE=8.74
+2026-07-10 01:00:48,156 | INFO | src.model | Ridge coefficients: {'residual_load': 7.443647552067792, 'hour_sin': 3.874933981653116, 'hour_cos': -1.6749533217655113, 'dow_sin': -0.776357128966926, 'dow_cos': 0.13680046681460092, 'month_sin': -0.7497819654598638, 'month_cos': 0.516328704083805, 'price_lag_168h': 37.19511347085178, 'renewable_penetration': -4.000965961361435}
+2026-07-10 01:00:49,323 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:00:49,355 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:49,358 | INFO | src.conformal | Regime 3 has 4 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:49,358 | INFO | src.conformal | Conformal calibrated — global q90=20.01 | regime counts={0: 0, 1: 367, 2: 1789, 3: 4}
+2026-07-10 01:00:49,676 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_014.parquet (168 rows)
+2026-07-10 01:00:49,677 | INFO | src.validation | Window 15/53 done — MAE=9.11
+2026-07-10 01:00:49,711 | INFO | src.model | Ridge coefficients: {'residual_load': 7.54001454107153, 'hour_sin': 3.890129765565887, 'hour_cos': -1.6324105168559908, 'dow_sin': -0.8000944886245702, 'dow_cos': 0.1360246572441192, 'month_sin': -0.8099956258147831, 'month_cos': 0.46617259283440887, 'price_lag_168h': 37.17860838087548, 'renewable_penetration': -3.9262642979715623}
+2026-07-10 01:00:50,795 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:00:50,827 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:50,830 | INFO | src.conformal | Regime 3 has 6 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:50,830 | INFO | src.conformal | Conformal calibrated — global q90=19.67 | regime counts={0: 0, 1: 299, 2: 1855, 3: 6}
+2026-07-10 01:00:51,140 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_015.parquet (168 rows)
+2026-07-10 01:00:51,140 | INFO | src.validation | Window 16/53 done — MAE=9.05
+2026-07-10 01:00:51,167 | INFO | src.model | Ridge coefficients: {'residual_load': 7.558074600013033, 'hour_sin': 3.889850561085849, 'hour_cos': -1.5866496153202037, 'dow_sin': -0.8112114992433938, 'dow_cos': 0.11479800118678882, 'month_sin': -0.8315801772339568, 'month_cos': 0.4349346019282945, 'price_lag_168h': 37.13394026727503, 'renewable_penetration': -3.91599051963162}
+2026-07-10 01:00:52,368 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:00:52,403 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:52,406 | INFO | src.conformal | Regime 3 has 8 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:52,406 | INFO | src.conformal | Conformal calibrated — global q90=19.51 | regime counts={0: 0, 1: 238, 2: 1914, 3: 8}
+2026-07-10 01:00:53,555 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-10 01:00:53,860 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_max.png
+2026-07-10 01:00:54,170 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_mean.png
+2026-07-10 01:00:54,479 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_hour_sin.png
+2026-07-10 01:00:54,744 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_residual_load.png
+2026-07-10 01:00:55,030 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_lag_24h.png
+2026-07-10 01:00:55,038 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_016.parquet (168 rows)
+2026-07-10 01:00:55,038 | INFO | src.validation | Window 17/53 done — MAE=9.93
+2026-07-10 01:00:55,063 | INFO | src.model | Ridge coefficients: {'residual_load': 7.549454755752471, 'hour_sin': 3.912355496211445, 'hour_cos': -1.5765965155395307, 'dow_sin': -0.8000503253195389, 'dow_cos': 0.12175288055543769, 'month_sin': -0.8627332988709746, 'month_cos': 0.37719434520111317, 'price_lag_168h': 37.07313242450591, 'renewable_penetration': -3.9257319445486343}
+2026-07-10 01:00:55,964 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:00:55,994 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:55,997 | INFO | src.conformal | Regime 3 has 10 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:55,997 | INFO | src.conformal | Conformal calibrated — global q90=19.67 | regime counts={0: 0, 1: 185, 2: 1965, 3: 10}
+2026-07-10 01:00:56,281 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_017.parquet (168 rows)
+2026-07-10 01:00:56,281 | INFO | src.validation | Window 18/53 done — MAE=10.46
+2026-07-10 01:00:56,312 | INFO | src.model | Ridge coefficients: {'residual_load': 7.525140328728586, 'hour_sin': 3.9123975860357034, 'hour_cos': -1.5705833683749322, 'dow_sin': -0.8215314002818903, 'dow_cos': 0.13365436076404313, 'month_sin': -0.9002188554701284, 'month_cos': 0.34020230721999617, 'price_lag_168h': 37.01885721370234, 'renewable_penetration': -3.9459643283189614}
+2026-07-10 01:00:57,296 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:00:57,325 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:57,329 | INFO | src.conformal | Regime 3 has 14 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:57,329 | INFO | src.conformal | Conformal calibrated — global q90=19.86 | regime counts={0: 0, 1: 147, 2: 1999, 3: 14}
+2026-07-10 01:00:57,625 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_018.parquet (168 rows)
+2026-07-10 01:00:57,626 | INFO | src.validation | Window 19/53 done — MAE=10.44
+2026-07-10 01:00:57,658 | INFO | src.model | Ridge coefficients: {'residual_load': 7.538757464054786, 'hour_sin': 3.9441161613117495, 'hour_cos': -1.5241388258421051, 'dow_sin': -0.8178855927098418, 'dow_cos': 0.1268171103429469, 'month_sin': -0.9540094672195355, 'month_cos': 0.3145251666743194, 'price_lag_168h': 36.93810186848829, 'renewable_penetration': -3.924156809927582}
+2026-07-10 01:00:58,569 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:00:58,600 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:58,604 | INFO | src.conformal | Regime 3 has 19 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:00:58,604 | INFO | src.conformal | Conformal calibrated — global q90=20.27 | regime counts={0: 0, 1: 130, 2: 2011, 3: 19}
+2026-07-10 01:00:59,018 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_019.parquet (168 rows)
+2026-07-10 01:00:59,018 | INFO | src.validation | Window 20/53 done — MAE=9.68
+2026-07-10 01:00:59,057 | INFO | src.model | Ridge coefficients: {'residual_load': 7.617689342890915, 'hour_sin': 3.924356679694395, 'hour_cos': -1.471944314214305, 'dow_sin': -0.8371803099806541, 'dow_cos': 0.141937255086618, 'month_sin': -1.0320119659928573, 'month_cos': 0.28850714916611525, 'price_lag_168h': 36.850364815445396, 'renewable_penetration': -3.830701202763669}
+2026-07-10 01:01:00,085 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:01:00,117 | INFO | src.conformal | Regime 0 has 1 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:00,121 | INFO | src.conformal | Regime 3 has 25 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:00,121 | INFO | src.conformal | Conformal calibrated — global q90=20.02 | regime counts={0: 1, 1: 121, 2: 2013, 3: 25}
+2026-07-10 01:01:01,260 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-10 01:01:01,594 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_max.png
+2026-07-10 01:01:01,910 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_mean.png
+2026-07-10 01:01:02,198 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_residual_load.png
+2026-07-10 01:01:02,499 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_hour_sin.png
+2026-07-10 01:01:02,777 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_lag_24h.png
+2026-07-10 01:01:02,784 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_020.parquet (168 rows)
+2026-07-10 01:01:02,784 | INFO | src.validation | Window 21/53 done — MAE=10.21
+2026-07-10 01:01:02,807 | INFO | src.model | Ridge coefficients: {'residual_load': 7.634799637283998, 'hour_sin': 3.9389484097418537, 'hour_cos': -1.4468395352075671, 'dow_sin': -0.8410034596283421, 'dow_cos': 0.14112395353005283, 'month_sin': -1.0846377784178147, 'month_cos': 0.264082524219369, 'price_lag_168h': 36.74969424648824, 'renewable_penetration': -3.7958819992747213}
+2026-07-10 01:01:03,671 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:01:03,700 | INFO | src.conformal | Regime 0 has 1 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:03,704 | INFO | src.conformal | Regime 3 has 29 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:03,704 | INFO | src.conformal | Conformal calibrated — global q90=20.41 | regime counts={0: 1, 1: 144, 2: 1986, 3: 29}
+2026-07-10 01:01:03,983 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_021.parquet (168 rows)
+2026-07-10 01:01:03,983 | INFO | src.validation | Window 22/53 done — MAE=10.56
+2026-07-10 01:01:04,013 | INFO | src.model | Ridge coefficients: {'residual_load': 7.6701793757826895, 'hour_sin': 3.9362848763145792, 'hour_cos': -1.4138709778178253, 'dow_sin': -0.8534318427135795, 'dow_cos': 0.14179765310280215, 'month_sin': -1.1496831854872407, 'month_cos': 0.25579020425063553, 'price_lag_168h': 36.64016618136614, 'renewable_penetration': -3.743575871320065}
+2026-07-10 01:01:04,998 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:01:05,032 | INFO | src.conformal | Regime 0 has 1 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:05,036 | INFO | src.conformal | Regime 3 has 39 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:05,036 | INFO | src.conformal | Conformal calibrated — global q90=20.53 | regime counts={0: 1, 1: 164, 2: 1956, 3: 39}
+2026-07-10 01:01:05,387 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_022.parquet (168 rows)
+2026-07-10 01:01:05,387 | INFO | src.validation | Window 23/53 done — MAE=10.36
+2026-07-10 01:01:05,422 | INFO | src.model | Ridge coefficients: {'residual_load': 7.613005479082294, 'hour_sin': 3.92739718417331, 'hour_cos': -1.4219326455618961, 'dow_sin': -0.8255750765869141, 'dow_cos': 0.14544071656100957, 'month_sin': -1.2135355436610957, 'month_cos': 0.25678277344117856, 'price_lag_168h': 36.53264427979999, 'renewable_penetration': -3.7795459992060016}
+2026-07-10 01:01:06,391 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:01:06,423 | INFO | src.conformal | Regime 0 has 3 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:06,426 | INFO | src.conformal | Regime 3 has 40 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:06,426 | INFO | src.conformal | Conformal calibrated — global q90=20.29 | regime counts={0: 3, 1: 194, 2: 1923, 3: 40}
+2026-07-10 01:01:06,746 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_023.parquet (168 rows)
+2026-07-10 01:01:06,746 | INFO | src.validation | Window 24/53 done — MAE=9.10
+2026-07-10 01:01:06,774 | INFO | src.model | Ridge coefficients: {'residual_load': 7.607048422607255, 'hour_sin': 3.928059533328893, 'hour_cos': -1.4001112073252515, 'dow_sin': -0.8217336029109934, 'dow_cos': 0.13632388340307888, 'month_sin': -1.2702460315577313, 'month_cos': 0.24929197701622757, 'price_lag_168h': 36.40056290748872, 'renewable_penetration': -3.770773128402411}
+2026-07-10 01:01:07,874 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:01:07,907 | INFO | src.conformal | Regime 0 has 6 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:07,911 | INFO | src.conformal | Regime 3 has 43 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:07,911 | INFO | src.conformal | Conformal calibrated — global q90=20.39 | regime counts={0: 6, 1: 230, 2: 1881, 3: 43}
+2026-07-10 01:01:09,066 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-10 01:01:09,380 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_max.png
+2026-07-10 01:01:09,685 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_residual_load.png
+2026-07-10 01:01:10,030 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_mean.png
+2026-07-10 01:01:10,336 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_hour_sin.png
+2026-07-10 01:01:10,622 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_lag_24h.png
+2026-07-10 01:01:10,629 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_024.parquet (168 rows)
+2026-07-10 01:01:10,630 | INFO | src.validation | Window 25/53 done — MAE=10.80
+2026-07-10 01:01:10,652 | INFO | src.model | Ridge coefficients: {'residual_load': 7.5040822864019665, 'hour_sin': 3.917577667285293, 'hour_cos': -1.4111636237432028, 'dow_sin': -0.8146054577508506, 'dow_cos': 0.13700277298501942, 'month_sin': -1.319206599097223, 'month_cos': 0.23825535279430368, 'price_lag_168h': 36.25987370271465, 'renewable_penetration': -3.8580937563999065}
+2026-07-10 01:01:11,633 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:01:11,663 | INFO | src.conformal | Regime 0 has 9 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:11,666 | INFO | src.conformal | Regime 3 has 45 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:11,667 | INFO | src.conformal | Conformal calibrated — global q90=20.57 | regime counts={0: 9, 1: 268, 2: 1838, 3: 45}
+2026-07-10 01:01:11,943 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_025.parquet (168 rows)
+2026-07-10 01:01:11,943 | INFO | src.validation | Window 26/53 done — MAE=453.93
+2026-07-10 01:01:11,975 | INFO | src.model | Ridge coefficients: {'residual_load': 7.3332806896170935, 'hour_sin': 3.8890917939754095, 'hour_cos': -1.4767421169015833, 'dow_sin': -0.752259297587943, 'dow_cos': 0.13235355328673823, 'month_sin': -1.3853569816581226, 'month_cos': 0.23349950238521106, 'price_lag_168h': 36.12808855295273, 'renewable_penetration': -3.9929193304240203}
+2026-07-10 01:01:13,173 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:01:13,205 | INFO | src.conformal | Regime 0 has 14 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:13,208 | INFO | src.conformal | Regime 3 has 49 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:13,209 | INFO | src.conformal | Conformal calibrated — global q90=26.13 | regime counts={0: 14, 1: 312, 2: 1785, 3: 49}
+2026-07-10 01:01:24,901 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_026.parquet (168 rows)
+2026-07-10 01:01:24,902 | INFO | src.validation | Window 27/53 done — MAE=31.78
+2026-07-10 01:01:24,939 | INFO | src.model | Ridge coefficients: {'residual_load': 7.219825276880056, 'hour_sin': 3.8829050001295697, 'hour_cos': -1.488630152161539, 'dow_sin': -0.7275084090978933, 'dow_cos': 0.1136418647900091, 'month_sin': -1.449298164436125, 'month_cos': 0.2879842124403626, 'price_lag_168h': 36.00265359255801, 'renewable_penetration': -4.091294275608377}
+2026-07-10 01:01:26,148 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:01:26,181 | INFO | src.conformal | Regime 0 has 16 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:26,185 | INFO | src.conformal | Conformal calibrated — global q90=38.36 | regime counts={0: 16, 1: 362, 2: 1730, 3: 52}
+2026-07-10 01:01:26,496 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_027.parquet (168 rows)
+2026-07-10 01:01:26,496 | INFO | src.validation | Window 28/53 done — MAE=11.86
+2026-07-10 01:01:26,524 | INFO | src.model | Ridge coefficients: {'residual_load': 7.092034926941973, 'hour_sin': 3.853314036980659, 'hour_cos': -1.5251534336768633, 'dow_sin': -0.7116410543133351, 'dow_cos': 0.10869705552157069, 'month_sin': -1.5154822169092361, 'month_cos': 0.35006243714975405, 'price_lag_168h': 35.885601444122706, 'renewable_penetration': -4.208241472280287}
+2026-07-10 01:01:27,737 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:01:27,769 | INFO | src.conformal | Regime 0 has 20 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:27,773 | INFO | src.conformal | Conformal calibrated — global q90=40.48 | regime counts={0: 20, 1: 408, 2: 1682, 3: 50}
+2026-07-10 01:01:28,897 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-10 01:01:29,235 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_max.png
+2026-07-10 01:01:29,536 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_thermal_gap.png
+2026-07-10 01:01:29,850 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_hour_sin.png
+2026-07-10 01:01:30,132 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_regime_probability_3.png
+2026-07-10 01:01:30,417 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_lag_24h.png
+2026-07-10 01:01:30,424 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_028.parquet (168 rows)
+2026-07-10 01:01:30,425 | INFO | src.validation | Window 29/53 done — MAE=9.88
+2026-07-10 01:01:30,449 | INFO | src.model | Ridge coefficients: {'residual_load': 7.10298004442183, 'hour_sin': 3.8674917754609366, 'hour_cos': -1.49247813594685, 'dow_sin': -0.7102607010452212, 'dow_cos': 0.10720851290566702, 'month_sin': -1.5972777288735787, 'month_cos': 0.40958563069203724, 'price_lag_168h': 35.75766578808636, 'renewable_penetration': -4.213454464166384}
+2026-07-10 01:01:31,654 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:01:31,687 | INFO | src.conformal | Regime 0 has 21 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:31,691 | INFO | src.conformal | Conformal calibrated — global q90=42.85 | regime counts={0: 21, 1: 458, 2: 1629, 3: 52}
+2026-07-10 01:01:31,982 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_029.parquet (168 rows)
+2026-07-10 01:01:31,983 | INFO | src.validation | Window 30/53 done — MAE=11.49
+2026-07-10 01:01:32,018 | INFO | src.model | Ridge coefficients: {'residual_load': 6.999287840826169, 'hour_sin': 3.836701749052981, 'hour_cos': -1.531784889061963, 'dow_sin': -0.7040944716403859, 'dow_cos': 0.11780827517300811, 'month_sin': -1.6592582982355015, 'month_cos': 0.46039515725985747, 'price_lag_168h': 35.64834965339839, 'renewable_penetration': -4.290834399969328}
+2026-07-10 01:01:33,412 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:01:33,445 | INFO | src.conformal | Regime 0 has 25 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:33,449 | INFO | src.conformal | Regime 3 has 49 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:33,449 | INFO | src.conformal | Conformal calibrated — global q90=43.58 | regime counts={0: 25, 1: 505, 2: 1581, 3: 49}
+2026-07-10 01:01:33,765 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_030.parquet (168 rows)
+2026-07-10 01:01:33,766 | INFO | src.validation | Window 31/53 done — MAE=10.61
+2026-07-10 01:01:33,803 | INFO | src.model | Ridge coefficients: {'residual_load': 6.972914742799207, 'hour_sin': 3.8353780541228955, 'hour_cos': -1.5388311429525192, 'dow_sin': -0.6832805414574307, 'dow_cos': 0.0889932182005801, 'month_sin': -1.6917013215738002, 'month_cos': 0.559651063220182, 'price_lag_168h': 35.55198996008354, 'renewable_penetration': -4.342993485022979}
+2026-07-10 01:01:35,089 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:01:35,122 | INFO | src.conformal | Regime 0 has 26 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:35,126 | INFO | src.conformal | Regime 3 has 47 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:35,126 | INFO | src.conformal | Conformal calibrated — global q90=43.80 | regime counts={0: 26, 1: 549, 2: 1538, 3: 47}
+2026-07-10 01:01:35,443 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_031.parquet (168 rows)
+2026-07-10 01:01:35,443 | INFO | src.validation | Window 32/53 done — MAE=9.92
+2026-07-10 01:01:35,472 | INFO | src.model | Ridge coefficients: {'residual_load': 6.878106549005665, 'hour_sin': 3.843022876039565, 'hour_cos': -1.5972066851627675, 'dow_sin': -0.6591964814962766, 'dow_cos': 0.0997652456530199, 'month_sin': -1.7055279678759219, 'month_cos': 0.65646887277037, 'price_lag_168h': 35.47067628111991, 'renewable_penetration': -4.420271346442378}
+2026-07-10 01:01:36,699 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:01:36,733 | INFO | src.conformal | Regime 0 has 27 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:36,737 | INFO | src.conformal | Regime 3 has 45 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:36,737 | INFO | src.conformal | Conformal calibrated — global q90=43.19 | regime counts={0: 27, 1: 585, 2: 1503, 3: 45}
+2026-07-10 01:01:37,826 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-10 01:01:38,109 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_max.png
+2026-07-10 01:01:38,417 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_hour_sin.png
+2026-07-10 01:01:38,707 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_mean.png
+2026-07-10 01:01:38,980 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_lag_24h.png
+2026-07-10 01:01:39,260 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_residual_load.png
+2026-07-10 01:01:39,267 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_032.parquet (168 rows)
+2026-07-10 01:01:39,268 | INFO | src.validation | Window 33/53 done — MAE=9.51
+2026-07-10 01:01:39,292 | INFO | src.model | Ridge coefficients: {'residual_load': 6.8882352420817625, 'hour_sin': 3.830996798105312, 'hour_cos': -1.6095136831327348, 'dow_sin': -0.6538212769014581, 'dow_cos': 0.08349006802760109, 'month_sin': -1.7416811402572951, 'month_cos': 0.7655150917763197, 'price_lag_168h': 35.40126650857554, 'renewable_penetration': -4.451858210235454}
+2026-07-10 01:01:40,419 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:01:40,448 | INFO | src.conformal | Regime 0 has 26 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:40,452 | INFO | src.conformal | Regime 3 has 40 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:40,452 | INFO | src.conformal | Conformal calibrated — global q90=41.41 | regime counts={0: 26, 1: 614, 2: 1480, 3: 40}
+2026-07-10 01:01:40,736 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_033.parquet (168 rows)
+2026-07-10 01:01:40,737 | INFO | src.validation | Window 34/53 done — MAE=9.50
+2026-07-10 01:01:40,770 | INFO | src.model | Ridge coefficients: {'residual_load': 6.979431226093979, 'hour_sin': 3.8425011599659635, 'hour_cos': -1.589759011714253, 'dow_sin': -0.6984984160729383, 'dow_cos': 0.1071664701546636, 'month_sin': -1.7890084415190572, 'month_cos': 0.8340774953567214, 'price_lag_168h': 35.31449140855622, 'renewable_penetration': -4.397175819571572}
+2026-07-10 01:01:41,875 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:01:41,907 | INFO | src.conformal | Regime 0 has 26 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:41,910 | INFO | src.conformal | Regime 3 has 36 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:41,911 | INFO | src.conformal | Conformal calibrated — global q90=45.11 | regime counts={0: 26, 1: 629, 2: 1469, 3: 36}
+2026-07-10 01:01:42,226 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_034.parquet (168 rows)
+2026-07-10 01:01:42,226 | INFO | src.validation | Window 35/53 done — MAE=9.76
+2026-07-10 01:01:42,262 | INFO | src.model | Ridge coefficients: {'residual_load': 6.976133866049765, 'hour_sin': 3.8259810166707533, 'hour_cos': -1.6345318591662372, 'dow_sin': -0.6763521103280057, 'dow_cos': 0.10781119180241194, 'month_sin': -1.7899353227500434, 'month_cos': 0.8998712585255448, 'price_lag_168h': 35.242846528703396, 'renewable_penetration': -4.383532111565782}
+2026-07-10 01:01:43,445 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:01:43,477 | INFO | src.conformal | Regime 0 has 26 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:43,480 | INFO | src.conformal | Regime 3 has 27 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:43,480 | INFO | src.conformal | Conformal calibrated — global q90=44.28 | regime counts={0: 26, 1: 630, 2: 1477, 3: 27}
+2026-07-10 01:01:43,795 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_035.parquet (168 rows)
+2026-07-10 01:01:43,795 | INFO | src.validation | Window 36/53 done — MAE=10.57
+2026-07-10 01:01:43,824 | INFO | src.model | Ridge coefficients: {'residual_load': 6.883149612650979, 'hour_sin': 3.8179101806878357, 'hour_cos': -1.70922392184965, 'dow_sin': -0.6542294328819859, 'dow_cos': 0.10566229619778313, 'month_sin': -1.7423095831994997, 'month_cos': 1.0124207184710963, 'price_lag_168h': 35.18969928781226, 'renewable_penetration': -4.528486325160494}
+2026-07-10 01:01:44,933 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:01:44,963 | INFO | src.conformal | Regime 0 has 24 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:44,967 | INFO | src.conformal | Regime 3 has 23 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:44,967 | INFO | src.conformal | Conformal calibrated — global q90=46.26 | regime counts={0: 24, 1: 621, 2: 1492, 3: 23}
+2026-07-10 01:01:46,047 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-10 01:01:46,423 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_max.png
+2026-07-10 01:01:46,720 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_hour_sin.png
+2026-07-10 01:01:46,995 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_mean.png
+2026-07-10 01:01:47,266 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_lag_24h.png
+2026-07-10 01:01:47,540 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_years_since_ukraine_war.png
+2026-07-10 01:01:47,547 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_036.parquet (168 rows)
+2026-07-10 01:01:47,548 | INFO | src.validation | Window 37/53 done — MAE=10.94
+2026-07-10 01:01:47,571 | INFO | src.model | Ridge coefficients: {'residual_load': 6.899244650717214, 'hour_sin': 3.815152839867929, 'hour_cos': -1.7398668846524608, 'dow_sin': -0.6418011056713058, 'dow_cos': 0.07731892199720898, 'month_sin': -1.7217010535313002, 'month_cos': 1.1326073326630621, 'price_lag_168h': 35.168460991354586, 'renewable_penetration': -4.561718185213738}
+2026-07-10 01:01:48,616 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:01:48,648 | INFO | src.conformal | Regime 0 has 21 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:48,651 | INFO | src.conformal | Regime 3 has 21 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:48,652 | INFO | src.conformal | Conformal calibrated — global q90=43.41 | regime counts={0: 21, 1: 611, 2: 1507, 3: 21}
+2026-07-10 01:01:48,929 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_037.parquet (168 rows)
+2026-07-10 01:01:48,929 | INFO | src.validation | Window 38/53 done — MAE=10.62
+2026-07-10 01:01:48,963 | INFO | src.model | Ridge coefficients: {'residual_load': 7.042272617249647, 'hour_sin': 3.861018923757124, 'hour_cos': -1.726393176140874, 'dow_sin': -0.6365670887655893, 'dow_cos': 0.08920967943268639, 'month_sin': -1.7451196867740084, 'month_cos': 1.2192808216524338, 'price_lag_168h': 35.09140237589047, 'renewable_penetration': -4.505965691879323}
+2026-07-10 01:01:50,051 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:01:50,084 | INFO | src.conformal | Regime 0 has 18 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:50,088 | INFO | src.conformal | Regime 3 has 15 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:50,088 | INFO | src.conformal | Conformal calibrated — global q90=46.60 | regime counts={0: 18, 1: 592, 2: 1535, 3: 15}
+2026-07-10 01:01:50,392 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_038.parquet (168 rows)
+2026-07-10 01:01:50,393 | INFO | src.validation | Window 39/53 done — MAE=9.51
+2026-07-10 01:01:50,430 | INFO | src.model | Ridge coefficients: {'residual_load': -1.9223632266432635, 'hour_sin': 3.121580506239959, 'hour_cos': -4.8439811041646825, 'dow_sin': 5.606144000572724, 'dow_cos': 0.5324005865249616, 'month_sin': -0.2874325242481349, 'month_cos': -4.608774798430438, 'price_lag_168h': 32.460057045413066, 'renewable_penetration': -12.362244501323987}
+2026-07-10 01:01:51,777 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:01:51,813 | INFO | src.conformal | Regime 0 has 13 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:51,817 | INFO | src.conformal | Regime 3 has 13 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:01:51,817 | INFO | src.conformal | Conformal calibrated — global q90=23.30 | regime counts={0: 13, 1: 581, 2: 1553, 3: 13}
+2026-07-10 01:02:04,236 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_039.parquet (168 rows)
+2026-07-10 01:02:04,237 | INFO | src.validation | Window 40/53 done — MAE=8.78
+2026-07-10 01:02:04,272 | INFO | src.model | Ridge coefficients: {'residual_load': 10.52204960937839, 'hour_sin': 9.071684195023805, 'hour_cos': -2.8873512426387955, 'dow_sin': 5.463818791458852, 'dow_cos': 0.0844116336339643, 'month_sin': -4.953128450408939, 'month_cos': -6.082687517889405, 'price_lag_168h': 14.05507860398545, 'renewable_penetration': -8.71187226862874}
+2026-07-10 01:02:05,478 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:02:05,507 | INFO | src.conformal | Regime 0 has 11 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:02:05,511 | INFO | src.conformal | Regime 3 has 10 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:02:05,511 | INFO | src.conformal | Conformal calibrated — global q90=20.73 | regime counts={0: 11, 1: 580, 2: 1559, 3: 10}
+2026-07-10 01:02:06,581 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-10 01:02:06,867 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_max.png
+2026-07-10 01:02:07,170 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_hour_sin.png
+2026-07-10 01:02:07,453 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_mean.png
+2026-07-10 01:02:07,730 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_lag_24h.png
+2026-07-10 01:02:08,098 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_years_since_ukraine_war.png
+2026-07-10 01:02:08,106 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_040.parquet (168 rows)
+2026-07-10 01:02:08,106 | INFO | src.validation | Window 41/53 done — MAE=9.61
+2026-07-10 01:02:08,129 | INFO | src.model | Ridge coefficients: {'residual_load': 10.56519891306727, 'hour_sin': 9.054316881188363, 'hour_cos': -2.9203049465800652, 'dow_sin': 5.434383260666686, 'dow_cos': 0.07620467467820755, 'month_sin': -4.68492158086552, 'month_cos': -5.684178551257694, 'price_lag_168h': 14.22229213252552, 'renewable_penetration': -8.865476211254075}
+2026-07-10 01:02:09,264 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:02:09,296 | INFO | src.conformal | Regime 0 has 7 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:02:09,299 | INFO | src.conformal | Regime 3 has 9 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:02:09,300 | INFO | src.conformal | Conformal calibrated — global q90=20.36 | regime counts={0: 7, 1: 583, 2: 1561, 3: 9}
+2026-07-10 01:02:09,703 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_041.parquet (168 rows)
+2026-07-10 01:02:09,704 | INFO | src.validation | Window 42/53 done — MAE=8.81
+2026-07-10 01:02:09,750 | INFO | src.model | Ridge coefficients: {'residual_load': 10.799759040850478, 'hour_sin': 9.086705074754914, 'hour_cos': -2.8601450538236595, 'dow_sin': 5.340495907028335, 'dow_cos': 0.07432610033435265, 'month_sin': -4.476344347193263, 'month_cos': -5.3129369380558265, 'price_lag_168h': 14.395478061311477, 'renewable_penetration': -8.723934122194175}
+2026-07-10 01:02:11,319 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:02:11,352 | INFO | src.conformal | Regime 0 has 6 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:02:11,355 | INFO | src.conformal | Regime 3 has 6 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:02:11,355 | INFO | src.conformal | Conformal calibrated — global q90=20.10 | regime counts={0: 6, 1: 585, 2: 1563, 3: 6}
+2026-07-10 01:02:11,668 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_042.parquet (168 rows)
+2026-07-10 01:02:11,668 | INFO | src.validation | Window 43/53 done — MAE=9.78
+2026-07-10 01:02:11,706 | INFO | src.model | Ridge coefficients: {'residual_load': 11.420943590546639, 'hour_sin': 9.154893833536558, 'hour_cos': -2.6469259748089735, 'dow_sin': 5.2143900469111895, 'dow_cos': 0.08060686397240045, 'month_sin': -4.361616676883381, 'month_cos': -4.896476856718232, 'price_lag_168h': 14.55587363070041, 'renewable_penetration': -8.257608428362262}
+2026-07-10 01:02:12,767 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:02:12,799 | INFO | src.conformal | Regime 0 has 2 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:02:12,803 | INFO | src.conformal | Regime 3 has 6 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:02:12,803 | INFO | src.conformal | Conformal calibrated — global q90=20.13 | regime counts={0: 2, 1: 604, 2: 1548, 3: 6}
+2026-07-10 01:02:13,103 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_043.parquet (168 rows)
+2026-07-10 01:02:13,103 | INFO | src.validation | Window 44/53 done — MAE=158.48
+2026-07-10 01:02:13,141 | INFO | src.model | Ridge coefficients: {'residual_load': 11.373232138654272, 'hour_sin': 9.145484643765062, 'hour_cos': -2.6685445513305908, 'dow_sin': 5.172230663845133, 'dow_cos': 0.0716350644652195, 'month_sin': -4.01987314569242, 'month_cos': -4.6775093968559736, 'price_lag_168h': 14.688088015812019, 'renewable_penetration': -8.299297019952268}
+2026-07-10 01:02:14,257 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:02:14,289 | INFO | src.conformal | Regime 0 has 1 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:02:14,293 | INFO | src.conformal | Regime 3 has 3 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:02:14,293 | INFO | src.conformal | Conformal calibrated — global q90=21.33 | regime counts={0: 1, 1: 582, 2: 1574, 3: 3}
+2026-07-10 01:02:15,352 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-10 01:02:15,628 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_max.png
+2026-07-10 01:02:15,903 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_mean.png
+2026-07-10 01:02:16,179 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_regime_probability_3.png
+2026-07-10 01:02:16,461 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_lag_24h.png
+2026-07-10 01:02:16,760 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_hour_sin.png
+2026-07-10 01:02:16,768 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_044.parquet (168 rows)
+2026-07-10 01:02:16,769 | INFO | src.validation | Window 45/53 done — MAE=330.45
+2026-07-10 01:02:16,794 | INFO | src.model | Ridge coefficients: {'residual_load': 11.252907285978065, 'hour_sin': 9.121100536007775, 'hour_cos': -2.687879297849314, 'dow_sin': 5.1476505498873975, 'dow_cos': 0.06305430047925883, 'month_sin': -3.6202767791812476, 'month_cos': -4.516099427681334, 'price_lag_168h': 14.824043270524832, 'renewable_penetration': -8.379383447845978}
+2026-07-10 01:02:17,914 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:02:17,943 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:02:17,946 | INFO | src.conformal | Regime 3 has 19 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:02:17,946 | INFO | src.conformal | Conformal calibrated — global q90=39.26 | regime counts={0: 0, 1: 583, 2: 1558, 3: 19}
+2026-07-10 01:02:18,229 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_045.parquet (168 rows)
+2026-07-10 01:02:18,230 | INFO | src.validation | Window 46/53 done — MAE=39.18
+2026-07-10 01:02:18,265 | INFO | src.model | Ridge coefficients: {'residual_load': 11.287372416650204, 'hour_sin': 9.113594108675809, 'hour_cos': -2.6541302139823797, 'dow_sin': 5.107269123365353, 'dow_cos': 0.0752797683692891, 'month_sin': -3.3016154034130505, 'month_cos': -4.368570055743671, 'price_lag_168h': 14.935728906502485, 'renewable_penetration': -8.27806088441685}
+2026-07-10 01:02:19,515 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:02:19,546 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:02:19,550 | INFO | src.conformal | Regime 3 has 18 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:02:19,550 | INFO | src.conformal | Conformal calibrated — global q90=52.30 | regime counts={0: 0, 1: 619, 2: 1523, 3: 18}
+2026-07-10 01:02:19,854 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_046.parquet (168 rows)
+2026-07-10 01:02:19,855 | INFO | src.validation | Window 47/53 done — MAE=10.13
+2026-07-10 01:02:19,894 | INFO | src.model | Ridge coefficients: {'residual_load': 11.51633577815936, 'hour_sin': 9.125112436614687, 'hour_cos': -2.545464596460721, 'dow_sin': 5.017484345356404, 'dow_cos': 0.0843229781709076, 'month_sin': -3.04999363561179, 'month_cos': -4.216544158797712, 'price_lag_168h': 15.029256370739189, 'renewable_penetration': -7.98098571984683}
+2026-07-10 01:02:21,234 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:02:21,267 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:02:21,271 | INFO | src.conformal | Regime 3 has 17 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:02:21,271 | INFO | src.conformal | Conformal calibrated — global q90=60.65 | regime counts={0: 0, 1: 662, 2: 1481, 3: 17}
+2026-07-10 01:02:21,598 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_047.parquet (168 rows)
+2026-07-10 01:02:21,599 | INFO | src.validation | Window 48/53 done — MAE=9.30
+2026-07-10 01:02:21,632 | INFO | src.model | Ridge coefficients: {'residual_load': 11.707874573220586, 'hour_sin': 9.133265197572893, 'hour_cos': -2.4350758934755246, 'dow_sin': 4.940204178152559, 'dow_cos': 0.09630989683027648, 'month_sin': -2.7823036771008587, 'month_cos': -4.114764113116057, 'price_lag_168h': 15.120290553883653, 'renewable_penetration': -7.682504375764315}
+2026-07-10 01:02:22,931 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:02:22,963 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:02:22,967 | INFO | src.conformal | Regime 3 has 17 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:02:22,967 | INFO | src.conformal | Conformal calibrated — global q90=60.65 | regime counts={0: 0, 1: 712, 2: 1431, 3: 17}
+2026-07-10 01:02:24,039 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-10 01:02:24,345 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_max.png
+2026-07-10 01:02:24,638 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_hour_sin.png
+2026-07-10 01:02:25,022 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_mean.png
+2026-07-10 01:02:25,279 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_residual_load.png
+2026-07-10 01:02:25,561 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_lag_24h.png
+2026-07-10 01:02:25,569 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_048.parquet (168 rows)
+2026-07-10 01:02:25,569 | INFO | src.validation | Window 49/53 done — MAE=9.94
+2026-07-10 01:02:25,595 | INFO | src.model | Ridge coefficients: {'residual_load': 11.616209091976772, 'hour_sin': 9.108293664447816, 'hour_cos': -2.410353103262287, 'dow_sin': 4.9199560373031686, 'dow_cos': 0.09271666782976552, 'month_sin': -2.4398511435541024, 'month_cos': -4.168056425701859, 'price_lag_168h': 15.194735410487281, 'renewable_penetration': -7.60314599360562}
+2026-07-10 01:02:26,705 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:02:26,735 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:02:26,738 | INFO | src.conformal | Regime 3 has 17 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:02:26,738 | INFO | src.conformal | Conformal calibrated — global q90=57.21 | regime counts={0: 0, 1: 772, 2: 1371, 3: 17}
+2026-07-10 01:02:27,011 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_049.parquet (168 rows)
+2026-07-10 01:02:27,012 | INFO | src.validation | Window 50/53 done — MAE=255.69
+2026-07-10 01:02:27,048 | INFO | src.model | Ridge coefficients: {'residual_load': 11.57172562065884, 'hour_sin': 9.094164740085027, 'hour_cos': -2.3601564204374568, 'dow_sin': 4.898250336651679, 'dow_cos': 0.0850642285110417, 'month_sin': -2.1199238210469633, 'month_cos': -4.214058192365006, 'price_lag_168h': 15.257280875513112, 'renewable_penetration': -7.490360928906459}
+2026-07-10 01:02:28,309 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:02:28,341 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:02:28,344 | INFO | src.conformal | Regime 3 has 33 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:02:28,344 | INFO | src.conformal | Conformal calibrated — global q90=212.73 | regime counts={0: 0, 1: 790, 2: 1337, 3: 33}
+2026-07-10 01:02:28,647 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_050.parquet (168 rows)
+2026-07-10 01:02:28,648 | INFO | src.validation | Window 51/53 done — MAE=47.42
+2026-07-10 01:02:28,687 | INFO | src.model | Ridge coefficients: {'residual_load': 11.585491332834746, 'hour_sin': 9.082601722716879, 'hour_cos': -2.288758441963649, 'dow_sin': 4.862323505173744, 'dow_cos': 0.09320941598190291, 'month_sin': -1.8526936291840255, 'month_cos': -4.250288488046847, 'price_lag_168h': 15.306612740522628, 'renewable_penetration': -7.321731553103303}
+2026-07-10 01:02:29,969 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:02:30,001 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:02:30,004 | INFO | src.conformal | Regime 3 has 33 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:02:30,004 | INFO | src.conformal | Conformal calibrated — global q90=210.98 | regime counts={0: 0, 1: 858, 2: 1269, 3: 33}
+2026-07-10 01:02:30,311 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_051.parquet (168 rows)
+2026-07-10 01:02:30,312 | INFO | src.validation | Window 52/53 done — MAE=9.99
+2026-07-10 01:02:30,343 | INFO | src.model | Ridge coefficients: {'residual_load': 11.67300385960869, 'hour_sin': 9.07571510409341, 'hour_cos': -2.210850587859692, 'dow_sin': 4.800251509174528, 'dow_cos': 0.09185179960851238, 'month_sin': -1.5924769724510721, 'month_cos': -4.276615485190927, 'price_lag_168h': 15.345564125580996, 'renewable_penetration': -7.105986552743395}
+2026-07-10 01:02:31,495 | INFO | src.model | XGBoost point model saved → /Users/seyamakin/cobblestone-power/outputs/models/xgboost_point.json
+2026-07-10 01:02:31,526 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:02:31,529 | INFO | src.conformal | Regime 3 has 33 cal samples (< 50) — using global conformal quantiles
+2026-07-10 01:02:31,530 | INFO | src.conformal | Conformal calibrated — global q90=208.64 | regime counts={0: 0, 1: 913, 2: 1214, 3: 33}
+2026-07-10 01:02:45,181 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-10 01:02:45,486 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_max.png
+2026-07-10 01:02:45,746 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_mean.png
+2026-07-10 01:02:46,051 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_hour_sin.png
+2026-07-10 01:02:46,331 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_thermal_gap.png
+2026-07-10 01:02:46,605 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_lag_24h.png
+2026-07-10 01:02:46,612 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_052.parquet (48 rows)
+2026-07-10 01:02:46,612 | INFO | src.validation | Window 53/53 done — MAE=10.77
+2026-07-10 01:02:46,646 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/outputs/forecasts/walk_forward_results.parquet (8784 rows)
+2026-07-10 01:02:46,661 | INFO | src.validation | Walk-forward metrics: MAE=33.83 skill_naive=+47.6% cov90=86.6%
+2026-07-10 01:02:47,784 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/walk_forward_forecast_vs_actual.png
+2026-07-10 01:02:47,828 | INFO | matplotlib.category | Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-07-10 01:02:47,839 | INFO | matplotlib.category | Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-07-10 01:02:48,569 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/residuals_by_hour.png
+2026-07-10 01:02:48,606 | INFO | matplotlib.category | Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-07-10 01:02:48,618 | INFO | matplotlib.category | Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-07-10 01:02:49,009 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/residuals_by_regime.png
+2026-07-10 01:02:49,414 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/metrics_dashboard.png
+2026-07-10 01:02:49,726 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/quantile_reliability.png
+2026-07-10 01:02:50,387 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/feature_importance_stability.png
+2026-07-10 01:02:50,744 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_waterfall_dunkelflaute.png
+/Users/seyamakin/cobblestone-power/run_pipeline.py:432: UserWarning: ENTSOE_API_KEY is placeholder — skipping ingestion. Add your key to .env when received from transparency.entsoe.eu. All other pipeline steps will run normally.
+  settings.validate_all()
+2026-07-10 19:01:54,511 | WARNING | config.settings | ENTSOE_API_KEY is placeholder — skipping ingestion. Add your key to .env when received from transparency.entsoe.eu. All other pipeline steps will run normally.
+/Users/seyamakin/cobblestone-power/run_pipeline.py:432: UserWarning: GEMINI_API_KEY is placeholder — LLM modules will use fallback rules. Get a free key at aistudio.google.com.
+  settings.validate_all()
+2026-07-10 19:01:54,512 | WARNING | config.settings | GEMINI_API_KEY is placeholder — LLM modules will use fallback rules. Get a free key at aistudio.google.com.
+2026-07-10 19:01:54,512 | INFO | config.settings | Configuration validated | version=1.0.0
+2026-07-10 19:01:54,512 | INFO | cobblestone.pipeline | Config: {'pipeline_version': '1.0.0', 'start_date': '2022-01-01', 'end_date': '2024-12-31', 'test_start': '2024-01-01', 'market': 'DE_LU', 'bidding_zone': '10Y1001A1001A82H', 'log_level': 'INFO', 'dashboard_port': 8501, 'entsoe_api_key_set': False, 'gemini_api_key_set': False, 'gemini_model': 'gemini-2.0-flash', 'project_root': '/Users/seyamakin/cobblestone-power', 'xgb_params': {'n_estimators': 1200, 'max_depth': 6, 'learning_rate': 0.04, 'subsample': 0.8, 'colsample_bytree': 0.75, 'min_child_weight': 6, 'reg_alpha': 0.15, 'reg_lambda': 1.2, 'objective': 'reg:squarederror', 'tree_method': 'hist', 'early_stopping_rounds': 60, 'eval_metric': ['rmse', 'mae'], 'random_state': 42}}
+2026-07-10 19:01:57,926 | INFO | src.validation | Resume: loading window 0
+2026-07-10 19:01:57,931 | INFO | src.validation | Resume: loading window 1
+2026-07-10 19:01:57,935 | INFO | src.validation | Resume: loading window 2
+2026-07-10 19:01:57,939 | INFO | src.validation | Resume: loading window 3
+2026-07-10 19:01:57,943 | INFO | src.validation | Resume: loading window 4
+2026-07-10 19:01:57,948 | INFO | src.validation | Resume: loading window 5
+2026-07-10 19:01:57,953 | INFO | src.validation | Resume: loading window 6
+2026-07-10 19:01:57,957 | INFO | src.validation | Resume: loading window 7
+2026-07-10 19:01:57,962 | INFO | src.validation | Resume: loading window 8
+2026-07-10 19:01:57,966 | INFO | src.validation | Resume: loading window 9
+2026-07-10 19:01:57,970 | INFO | src.validation | Resume: loading window 10
+2026-07-10 19:01:57,976 | INFO | src.validation | Resume: loading window 11
+2026-07-10 19:01:57,981 | INFO | src.validation | Resume: loading window 12
+2026-07-10 19:01:57,986 | INFO | src.validation | Resume: loading window 13
+2026-07-10 19:01:57,990 | INFO | src.validation | Resume: loading window 14
+2026-07-10 19:01:57,994 | INFO | src.validation | Resume: loading window 15
+2026-07-10 19:01:58,000 | INFO | src.validation | Resume: loading window 16
+2026-07-10 19:01:58,004 | INFO | src.validation | Resume: loading window 17
+2026-07-10 19:01:58,007 | INFO | src.validation | Resume: loading window 18
+2026-07-10 19:01:58,013 | INFO | src.validation | Resume: loading window 19
+2026-07-10 19:01:58,017 | INFO | src.validation | Resume: loading window 20
+2026-07-10 19:01:58,021 | INFO | src.validation | Resume: loading window 21
+2026-07-10 19:01:58,027 | INFO | src.validation | Resume: loading window 22
+2026-07-10 19:01:58,032 | INFO | src.validation | Resume: loading window 23
+2026-07-10 19:01:58,036 | INFO | src.validation | Resume: loading window 24
+2026-07-10 19:01:58,040 | INFO | src.validation | Resume: loading window 25
+2026-07-10 19:01:58,044 | INFO | src.validation | Resume: loading window 26
+2026-07-10 19:01:58,049 | INFO | src.validation | Resume: loading window 27
+2026-07-10 19:01:58,053 | INFO | src.validation | Resume: loading window 28
+2026-07-10 19:01:58,057 | INFO | src.validation | Resume: loading window 29
+2026-07-10 19:01:58,064 | INFO | src.validation | Resume: loading window 30
+2026-07-10 19:01:58,068 | INFO | src.validation | Resume: loading window 31
+2026-07-10 19:01:58,072 | INFO | src.validation | Resume: loading window 32
+2026-07-10 19:01:58,076 | INFO | src.validation | Resume: loading window 33
+2026-07-10 19:01:58,082 | INFO | src.validation | Resume: loading window 34
+2026-07-10 19:01:58,087 | INFO | src.validation | Resume: loading window 35
+2026-07-10 19:01:58,091 | INFO | src.validation | Resume: loading window 36
+2026-07-10 19:01:58,097 | INFO | src.validation | Resume: loading window 37
+2026-07-10 19:01:58,101 | INFO | src.validation | Resume: loading window 38
+2026-07-10 19:01:58,104 | INFO | src.validation | Resume: loading window 39
+2026-07-10 19:01:58,108 | INFO | src.validation | Resume: loading window 40
+2026-07-10 19:01:58,114 | INFO | src.validation | Resume: loading window 41
+2026-07-10 19:01:58,118 | INFO | src.validation | Resume: loading window 42
+2026-07-10 19:01:58,122 | INFO | src.validation | Resume: loading window 43
+2026-07-10 19:01:58,126 | INFO | src.validation | Resume: loading window 44
+2026-07-10 19:01:58,132 | INFO | src.validation | Resume: loading window 45
+2026-07-10 19:01:58,136 | INFO | src.validation | Resume: loading window 46
+2026-07-10 19:01:58,140 | INFO | src.validation | Resume: loading window 47
+2026-07-10 19:01:58,143 | INFO | src.validation | Resume: loading window 48
+2026-07-10 19:01:58,148 | INFO | src.validation | Resume: loading window 49
+2026-07-10 19:01:58,153 | INFO | src.validation | Resume: loading window 50
+2026-07-10 19:01:58,157 | INFO | src.validation | Resume: loading window 51
+2026-07-10 19:01:58,163 | INFO | src.validation | Resume: loading window 52
+2026-07-10 19:01:58,188 | INFO | src.conformal | Empirical coverage 86.6% < 90% — widening intervals ×1.05 (scale=1.050)
+2026-07-10 19:01:58,195 | INFO | src.conformal | Empirical coverage 87.5% < 90% — widening intervals ×1.05 (scale=1.103)
+2026-07-10 19:01:58,201 | INFO | src.conformal | Empirical coverage 88.5% < 90% — widening intervals ×1.05 (scale=1.158)
+2026-07-10 19:01:58,205 | INFO | src.conformal | Empirical coverage 89.2% < 90% — widening intervals ×1.05 (scale=1.216)
+2026-07-10 19:01:58,207 | INFO | src.conformal | Post-hoc widen reached coverage 90.1% after 4 ×1.05 steps (total scale=1.216)
+2026-07-10 19:01:58,215 | INFO | src.conformal | Conformal coverage assertion PASS: 90.1% ≥ 90%
+2026-07-10 19:01:58,224 | INFO | src.conformal | Conformal coverage empirical=90.1% (nominal 90%)
+2026-07-10 19:01:58,224 | INFO | src.validation | Conformal 90% coverage enforced: empirical=90.1% (target ≥ 90%)
+2026-07-10 19:01:58,258 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/outputs/forecasts/walk_forward_results.parquet (8784 rows)
+2026-07-10 19:01:58,285 | INFO | src.validation | Walk-forward metrics: MAE=33.83 skill_naive=+47.6% cov90=90.1%
+2026-07-10 19:01:59,832 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/walk_forward_forecast_vs_actual.png
+2026-07-10 19:01:59,899 | INFO | matplotlib.category | Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-07-10 19:01:59,915 | INFO | matplotlib.category | Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-07-10 19:02:00,733 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/residuals_by_hour.png
+2026-07-10 19:02:00,777 | INFO | matplotlib.category | Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-07-10 19:02:00,789 | INFO | matplotlib.category | Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-07-10 19:02:01,222 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/residuals_by_regime.png
+2026-07-10 19:02:01,580 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/metrics_dashboard.png
+2026-07-10 19:02:01,922 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/quantile_reliability.png
+2026-07-10 19:02:02,333 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_waterfall_dunkelflaute.png
+/Users/seyamakin/cobblestone-power/run_pipeline.py:432: UserWarning: ENTSOE_API_KEY is placeholder — skipping ingestion. Add your key to .env when received from transparency.entsoe.eu. All other pipeline steps will run normally.
+  settings.validate_all()
+2026-07-10 19:08:38,555 | WARNING | config.settings | ENTSOE_API_KEY is placeholder — skipping ingestion. Add your key to .env when received from transparency.entsoe.eu. All other pipeline steps will run normally.
+/Users/seyamakin/cobblestone-power/run_pipeline.py:432: UserWarning: GEMINI_API_KEY is placeholder — LLM modules will use fallback rules. Get a free key at aistudio.google.com.
+  settings.validate_all()
+2026-07-10 19:08:38,556 | WARNING | config.settings | GEMINI_API_KEY is placeholder — LLM modules will use fallback rules. Get a free key at aistudio.google.com.
+2026-07-10 19:08:38,556 | INFO | config.settings | Configuration validated | version=1.0.0
+2026-07-10 19:08:38,557 | INFO | cobblestone.pipeline | Config: {'pipeline_version': '1.0.0', 'start_date': '2022-01-01', 'end_date': '2024-12-31', 'test_start': '2024-01-01', 'market': 'DE_LU', 'bidding_zone': '10Y1001A1001A82H', 'log_level': 'INFO', 'dashboard_port': 8501, 'entsoe_api_key_set': False, 'gemini_api_key_set': False, 'gemini_model': 'gemini-2.0-flash', 'project_root': '/Users/seyamakin/cobblestone-power', 'xgb_params': {'n_estimators': 1200, 'max_depth': 6, 'learning_rate': 0.04, 'subsample': 0.8, 'colsample_bytree': 0.75, 'min_child_weight': 6, 'reg_alpha': 0.15, 'reg_lambda': 1.2, 'objective': 'reg:squarederror', 'tree_method': 'hist', 'early_stopping_rounds': 60, 'eval_metric': ['rmse', 'mae'], 'random_state': 42}}
+2026-07-10 19:08:40,616 | INFO | src.model | Ridge coefficients: {'residual_load': 8.473994777540568, 'hour_sin': 4.064704814548804, 'hour_cos': -1.72854195027638, 'dow_sin': -0.8211150494101086, 'dow_cos': 0.092846163767837, 'month_sin': -2.0680025632270334, 'month_cos': 2.027289987121588, 'price_lag_168h': 36.27363510928694, 'renewable_penetration': -3.1791546777525603}
+2026-07-10 19:08:42,465 | INFO | src.model | Two-stage fit — extreme hours=8926 (66.2%) | classifier saved | extreme_regressor=True
+2026-07-10 19:08:42,529 | INFO | src.model | Two-stage predict — 2134/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:08:42,532 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:08:42,536 | INFO | src.conformal | Regime 3 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:08:42,902 | INFO | src.conformal | Calibration coverage OK: 93.1% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:08:42,902 | INFO | src.conformal | Conformal calibrated — global q90=68.91 | scale=1.050 | regime counts={0: 0, 1: 1025, 2: 1135, 3: 0}
+2026-07-10 19:08:42,933 | INFO | src.model | Two-stage predict — 0/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:08:52,814 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-10 19:08:53,100 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_days_since_year_start.png
+2026-07-10 19:08:53,370 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_lag_24h.png
+2026-07-10 19:08:53,659 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_max.png
+2026-07-10 19:08:53,995 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_mean.png
+2026-07-10 19:08:54,286 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_hour_sin.png
+2026-07-10 19:08:54,320 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_000.parquet (168 rows)
+2026-07-10 19:08:54,321 | INFO | src.validation | Window 1/53 done — MAE=9.67
+2026-07-10 19:08:54,340 | INFO | src.model | Ridge coefficients: {'residual_load': 8.295935578126773, 'hour_sin': 3.9946945922507804, 'hour_cos': -1.6510711152549045, 'dow_sin': -0.7964873753732955, 'dow_cos': 0.08770905490254914, 'month_sin': -1.7630110318243253, 'month_cos': 1.8004073072881384, 'price_lag_168h': 36.40185133207624, 'renewable_penetration': -3.164522477695447}
+2026-07-10 19:08:56,480 | INFO | src.model | Two-stage fit — extreme hours=8954 (65.6%) | classifier saved | extreme_regressor=True
+2026-07-10 19:08:56,549 | INFO | src.model | Two-stage predict — 1966/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:08:56,552 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:08:56,555 | INFO | src.conformal | Regime 3 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:08:56,944 | INFO | src.conformal | Calibration coverage OK: 93.2% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:08:56,944 | INFO | src.conformal | Conformal calibrated — global q90=68.29 | scale=1.050 | regime counts={0: 0, 1: 1043, 2: 1117, 3: 0}
+2026-07-10 19:08:56,977 | INFO | src.model | Two-stage predict — 0/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:08:57,239 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_001.parquet (168 rows)
+2026-07-10 19:08:57,239 | INFO | src.validation | Window 2/53 done — MAE=10.50
+2026-07-10 19:08:57,263 | INFO | src.model | Ridge coefficients: {'residual_load': 8.138728698695815, 'hour_sin': 3.9447100455150235, 'hour_cos': -1.6690082521991345, 'dow_sin': -0.8193589317027127, 'dow_cos': 0.1022920757488795, 'month_sin': -1.5071780413737612, 'month_cos': 1.6237459048124359, 'price_lag_168h': 36.54211955265632, 'renewable_penetration': -3.2096975875432348}
+2026-07-10 19:08:59,491 | INFO | src.model | Two-stage fit — extreme hours=8984 (65.1%) | classifier saved | extreme_regressor=True
+2026-07-10 19:08:59,562 | INFO | src.model | Two-stage predict — 1792/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:08:59,565 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:08:59,569 | INFO | src.conformal | Regime 3 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:08:59,988 | INFO | src.conformal | Calibration coverage OK: 93.5% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:08:59,988 | INFO | src.conformal | Conformal calibrated — global q90=68.39 | scale=1.050 | regime counts={0: 0, 1: 1054, 2: 1106, 3: 0}
+2026-07-10 19:09:00,024 | INFO | src.model | Two-stage predict — 0/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:09:00,300 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_002.parquet (168 rows)
+2026-07-10 19:09:00,301 | INFO | src.validation | Window 3/53 done — MAE=10.85
+2026-07-10 19:09:00,328 | INFO | src.model | Ridge coefficients: {'residual_load': 7.9972312908621905, 'hour_sin': 3.9050088533367644, 'hour_cos': -1.658895719095785, 'dow_sin': -0.8165255218099149, 'dow_cos': 0.11871457619125345, 'month_sin': -1.3130041016482918, 'month_cos': 1.494308852494813, 'price_lag_168h': 36.65237610582066, 'renewable_penetration': -3.282414417449751}
+2026-07-10 19:09:02,503 | INFO | src.model | Two-stage fit — extreme hours=9013 (64.7%) | classifier saved | extreme_regressor=True
+2026-07-10 19:09:02,572 | INFO | src.model | Two-stage predict — 1633/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:09:02,576 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:09:02,579 | INFO | src.conformal | Regime 3 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:09:02,979 | INFO | src.conformal | Calibration coverage OK: 93.1% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:09:02,980 | INFO | src.conformal | Conformal calibrated — global q90=67.71 | scale=1.050 | regime counts={0: 0, 1: 1056, 2: 1104, 3: 0}
+2026-07-10 19:09:03,013 | INFO | src.model | Two-stage predict — 0/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:09:03,284 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_003.parquet (168 rows)
+2026-07-10 19:09:03,285 | INFO | src.validation | Window 4/53 done — MAE=10.39
+2026-07-10 19:09:03,317 | INFO | src.model | Ridge coefficients: {'residual_load': 7.704415333270451, 'hour_sin': 3.8620905292073, 'hour_cos': -1.7317660655360771, 'dow_sin': -0.7575979024060898, 'dow_cos': 0.09888235099166591, 'month_sin': -1.109723873253138, 'month_cos': 1.3809637571569815, 'price_lag_168h': 36.74256978431488, 'renewable_penetration': -3.5348011963233246}
+2026-07-10 19:09:05,485 | INFO | src.model | Two-stage fit — extreme hours=9031 (64.1%) | classifier saved | extreme_regressor=True
+2026-07-10 19:09:05,559 | INFO | src.model | Two-stage predict — 1465/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:09:05,562 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:09:05,565 | INFO | src.conformal | Regime 3 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:09:05,963 | INFO | src.conformal | Calibration coverage OK: 92.7% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:09:05,964 | INFO | src.conformal | Conformal calibrated — global q90=64.16 | scale=1.050 | regime counts={0: 0, 1: 1041, 2: 1119, 3: 0}
+2026-07-10 19:09:05,997 | INFO | src.model | Two-stage predict — 0/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:09:07,035 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-10 19:09:07,319 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_max.png
+2026-07-10 19:09:07,631 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_mean.png
+2026-07-10 19:09:07,914 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_lag_24h.png
+2026-07-10 19:09:08,212 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_hour_sin.png
+2026-07-10 19:09:08,492 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_regime_probability_0.png
+2026-07-10 19:09:08,500 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_004.parquet (168 rows)
+2026-07-10 19:09:08,501 | INFO | src.validation | Window 5/53 done — MAE=9.66
+2026-07-10 19:09:08,523 | INFO | src.model | Ridge coefficients: {'residual_load': 7.687741457073207, 'hour_sin': 3.8521414726793375, 'hour_cos': -1.6780917949766345, 'dow_sin': -0.7637138927596338, 'dow_cos': 0.0861521069887915, 'month_sin': -1.0027289203471696, 'month_cos': 1.226852839769115, 'price_lag_168h': 36.82002019912613, 'renewable_penetration': -3.5206164432556912}
+2026-07-10 19:09:10,738 | INFO | src.model | Two-stage fit — extreme hours=9053 (63.6%) | classifier saved | extreme_regressor=True
+2026-07-10 19:09:10,812 | INFO | src.model | Two-stage predict — 1302/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:09:10,815 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:09:10,819 | INFO | src.conformal | Regime 3 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:09:11,239 | INFO | src.conformal | Calibration coverage OK: 92.4% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:09:11,240 | INFO | src.conformal | Conformal calibrated — global q90=64.63 | scale=1.050 | regime counts={0: 0, 1: 1014, 2: 1146, 3: 0}
+2026-07-10 19:09:11,276 | INFO | src.model | Two-stage predict — 0/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:09:11,560 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_005.parquet (168 rows)
+2026-07-10 19:09:11,561 | INFO | src.validation | Window 6/53 done — MAE=10.01
+2026-07-10 19:09:11,588 | INFO | src.model | Ridge coefficients: {'residual_load': 7.598057184707594, 'hour_sin': 3.856737910903083, 'hour_cos': -1.7264235114264825, 'dow_sin': -0.7771961647758596, 'dow_cos': 0.08835035294369153, 'month_sin': -0.9066224194737531, 'month_cos': 1.100407636916823, 'price_lag_168h': 36.900599101069915, 'renewable_penetration': -3.624790800321023}
+2026-07-10 19:09:14,024 | INFO | src.model | Two-stage fit — extreme hours=9070 (63.0%) | classifier saved | extreme_regressor=True
+2026-07-10 19:09:14,090 | INFO | src.model | Two-stage predict — 1135/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:09:14,094 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:09:14,097 | INFO | src.conformal | Regime 3 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:09:14,495 | INFO | src.conformal | Calibration coverage OK: 92.2% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:09:14,495 | INFO | src.conformal | Conformal calibrated — global q90=61.81 | scale=1.050 | regime counts={0: 0, 1: 964, 2: 1196, 3: 0}
+2026-07-10 19:09:14,531 | INFO | src.model | Two-stage predict — 0/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:09:14,789 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_006.parquet (168 rows)
+2026-07-10 19:09:14,790 | INFO | src.validation | Window 7/53 done — MAE=9.83
+2026-07-10 19:09:14,822 | INFO | src.model | Ridge coefficients: {'residual_load': 7.475102368495545, 'hour_sin': 3.829633416117845, 'hour_cos': -1.747204869434256, 'dow_sin': -0.7495610638858519, 'dow_cos': 0.10493580068203408, 'month_sin': -0.81861939070795, 'month_cos': 0.9983908346164957, 'price_lag_168h': 36.97648165024018, 'renewable_penetration': -3.762165837689263}
+2026-07-10 19:09:17,103 | INFO | src.model | Two-stage fit — extreme hours=9083 (62.4%) | classifier saved | extreme_regressor=True
+2026-07-10 19:09:17,178 | INFO | src.model | Two-stage predict — 968/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:09:17,181 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:09:17,185 | INFO | src.conformal | Regime 3 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:09:17,610 | INFO | src.conformal | Calibration coverage OK: 92.1% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:09:17,610 | INFO | src.conformal | Conformal calibrated — global q90=59.69 | scale=1.050 | regime counts={0: 0, 1: 915, 2: 1245, 3: 0}
+2026-07-10 19:09:17,646 | INFO | src.model | Two-stage predict — 0/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:09:17,927 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_007.parquet (168 rows)
+2026-07-10 19:09:17,927 | INFO | src.validation | Window 8/53 done — MAE=9.24
+2026-07-10 19:09:17,959 | INFO | src.model | Ridge coefficients: {'residual_load': 7.324017907444937, 'hour_sin': 3.8438045592870766, 'hour_cos': -1.8117923516612437, 'dow_sin': -0.7595171172541382, 'dow_cos': 0.10790879120994998, 'month_sin': -0.7217469120580413, 'month_cos': 0.893760587660751, 'price_lag_168h': 37.03082100634706, 'renewable_penetration': -3.970228326961553}
+2026-07-10 19:09:20,225 | INFO | src.model | Two-stage fit — extreme hours=9100 (61.9%) | classifier saved | extreme_regressor=True
+2026-07-10 19:09:20,294 | INFO | src.model | Two-stage predict — 799/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:09:20,297 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:09:20,301 | INFO | src.conformal | Regime 3 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:09:20,713 | INFO | src.conformal | Calibration coverage OK: 91.4% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:09:20,713 | INFO | src.conformal | Conformal calibrated — global q90=56.19 | scale=1.050 | regime counts={0: 0, 1: 839, 2: 1321, 3: 0}
+2026-07-10 19:09:20,772 | INFO | src.model | Two-stage predict — 13/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:09:21,819 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-10 19:09:22,124 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_max.png
+2026-07-10 19:09:22,411 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_lag_24h.png
+2026-07-10 19:09:22,715 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_mean.png
+2026-07-10 19:09:23,040 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_years_since_ukraine_war.png
+2026-07-10 19:09:23,345 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_hour_sin.png
+2026-07-10 19:09:23,353 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_008.parquet (168 rows)
+2026-07-10 19:09:23,354 | INFO | src.validation | Window 9/53 done — MAE=9.47
+2026-07-10 19:09:23,377 | INFO | src.model | Ridge coefficients: {'residual_load': 7.343803832013941, 'hour_sin': 3.819921227833468, 'hour_cos': -1.7887890292811772, 'dow_sin': -0.7469682010090358, 'dow_cos': 0.09652653592062374, 'month_sin': -0.717460268277996, 'month_cos': 0.8374434128852914, 'price_lag_168h': 37.076832817038344, 'renewable_penetration': -3.9703643224167626}
+2026-07-10 19:09:25,541 | INFO | src.model | Two-stage fit — extreme hours=9116 (61.4%) | classifier saved | extreme_regressor=True
+2026-07-10 19:09:25,614 | INFO | src.model | Two-stage predict — 644/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:09:25,618 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:09:25,621 | INFO | src.conformal | Regime 3 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:09:26,052 | INFO | src.conformal | Calibration coverage OK: 91.6% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:09:26,052 | INFO | src.conformal | Conformal calibrated — global q90=53.32 | scale=1.050 | regime counts={0: 0, 1: 759, 2: 1401, 3: 0}
+2026-07-10 19:09:26,115 | INFO | src.model | Two-stage predict — 62/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:09:26,395 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_009.parquet (168 rows)
+2026-07-10 19:09:26,396 | INFO | src.validation | Window 10/53 done — MAE=11.59
+2026-07-10 19:09:26,432 | INFO | src.model | Ridge coefficients: {'residual_load': 7.425488179903701, 'hour_sin': 3.8295418353575417, 'hour_cos': -1.7409038420078204, 'dow_sin': -0.7707229561468566, 'dow_cos': 0.10557855540208202, 'month_sin': -0.7363333319303477, 'month_cos': 0.7367611318759713, 'price_lag_168h': 37.122188132965604, 'renewable_penetration': -3.912403576437678}
+2026-07-10 19:09:28,787 | INFO | src.model | Two-stage fit — extreme hours=9141 (60.9%) | classifier saved | extreme_regressor=True
+2026-07-10 19:09:28,858 | INFO | src.model | Two-stage predict — 541/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:09:28,861 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:09:28,865 | INFO | src.conformal | Regime 3 has 1 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:09:29,293 | INFO | src.conformal | Calibration coverage OK: 91.2% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:09:29,293 | INFO | src.conformal | Conformal calibrated — global q90=49.58 | scale=1.050 | regime counts={0: 0, 1: 683, 2: 1476, 3: 1}
+2026-07-10 19:09:29,355 | INFO | src.model | Two-stage predict — 72/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:09:29,654 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_010.parquet (168 rows)
+2026-07-10 19:09:29,654 | INFO | src.validation | Window 11/53 done — MAE=11.58
+2026-07-10 19:09:29,689 | INFO | src.model | Ridge coefficients: {'residual_load': 7.411857465343328, 'hour_sin': 3.834400994123018, 'hour_cos': -1.7476705658697893, 'dow_sin': -0.775845963646893, 'dow_cos': 0.1182855598616752, 'month_sin': -0.7305243658829805, 'month_cos': 0.6540992210734523, 'price_lag_168h': 37.163409156765425, 'renewable_penetration': -3.9677303101559716}
+2026-07-10 19:09:32,125 | INFO | src.model | Two-stage fit — extreme hours=9159 (60.5%) | classifier saved | extreme_regressor=True
+2026-07-10 19:09:32,194 | INFO | src.model | Two-stage predict — 457/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:09:32,198 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:09:32,201 | INFO | src.conformal | Regime 3 has 2 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:09:32,611 | INFO | src.conformal | Calibration coverage OK: 91.3% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:09:32,611 | INFO | src.conformal | Conformal calibrated — global q90=35.95 | scale=1.050 | regime counts={0: 0, 1: 594, 2: 1564, 3: 2}
+2026-07-10 19:09:32,671 | INFO | src.model | Two-stage predict — 84/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:09:33,027 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_011.parquet (168 rows)
+2026-07-10 19:09:33,028 | INFO | src.validation | Window 12/53 done — MAE=11.85
+2026-07-10 19:09:33,065 | INFO | src.model | Ridge coefficients: {'residual_load': 7.340264608170881, 'hour_sin': 3.8482931323718064, 'hour_cos': -1.7833737547062536, 'dow_sin': -0.7501695074726998, 'dow_cos': 0.12446139122579278, 'month_sin': -0.7102418043669865, 'month_cos': 0.6138333899445219, 'price_lag_168h': 37.19175397953979, 'renewable_penetration': -4.078419751505002}
+2026-07-10 19:09:35,386 | INFO | src.model | Two-stage fit — extreme hours=9169 (59.9%) | classifier saved | extreme_regressor=True
+2026-07-10 19:09:35,459 | INFO | src.model | Two-stage predict — 380/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:09:35,463 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:09:35,466 | INFO | src.conformal | Regime 3 has 3 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:09:35,893 | INFO | src.conformal | Calibration coverage OK: 91.6% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:09:35,894 | INFO | src.conformal | Conformal calibrated — global q90=26.92 | scale=1.050 | regime counts={0: 0, 1: 514, 2: 1643, 3: 3}
+2026-07-10 19:09:35,955 | INFO | src.model | Two-stage predict — 94/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:09:37,031 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-10 19:09:37,343 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_max.png
+2026-07-10 19:09:37,653 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_mean.png
+2026-07-10 19:09:37,937 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_years_since_ukraine_war.png
+2026-07-10 19:09:38,254 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_hour_sin.png
+2026-07-10 19:09:38,531 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_lag_24h.png
+2026-07-10 19:09:38,539 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_012.parquet (168 rows)
+2026-07-10 19:09:38,540 | INFO | src.validation | Window 13/53 done — MAE=11.98
+2026-07-10 19:09:38,564 | INFO | src.model | Ridge coefficients: {'residual_load': 7.336690477994941, 'hour_sin': 3.852352695494408, 'hour_cos': -1.7388687135668397, 'dow_sin': -0.77226979004482, 'dow_cos': 0.12822751571250138, 'month_sin': -0.7088824122315387, 'month_cos': 0.5363022180671451, 'price_lag_168h': 37.21009323139035, 'renewable_penetration': -4.092248202626617}
+2026-07-10 19:09:40,936 | INFO | src.model | Two-stage fit — extreme hours=9174 (59.4%) | classifier saved | extreme_regressor=True
+2026-07-10 19:09:41,006 | INFO | src.model | Two-stage predict — 336/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:09:41,009 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:09:41,013 | INFO | src.conformal | Regime 3 has 3 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:09:41,411 | INFO | src.conformal | Calibration coverage OK: 91.4% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:09:41,411 | INFO | src.conformal | Conformal calibrated — global q90=22.47 | scale=1.050 | regime counts={0: 0, 1: 432, 2: 1725, 3: 3}
+2026-07-10 19:09:41,468 | INFO | src.model | Two-stage predict — 99/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:09:52,572 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_013.parquet (168 rows)
+2026-07-10 19:09:52,573 | INFO | src.validation | Window 14/53 done — MAE=10.84
+2026-07-10 19:09:52,608 | INFO | src.model | Ridge coefficients: {'residual_load': 7.443647552067792, 'hour_sin': 3.874933981653116, 'hour_cos': -1.6749533217655113, 'dow_sin': -0.776357128966926, 'dow_cos': 0.13680046681460092, 'month_sin': -0.7497819654598638, 'month_cos': 0.516328704083805, 'price_lag_168h': 37.19511347085178, 'renewable_penetration': -4.000965961361435}
+2026-07-10 19:09:55,026 | INFO | src.model | Two-stage fit — extreme hours=9178 (58.8%) | classifier saved | extreme_regressor=True
+2026-07-10 19:09:55,101 | INFO | src.model | Two-stage predict — 458/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:09:55,105 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:09:55,109 | INFO | src.conformal | Regime 3 has 4 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:09:55,529 | INFO | src.conformal | Calibration coverage OK: 91.4% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:09:55,529 | INFO | src.conformal | Conformal calibrated — global q90=22.70 | scale=1.050 | regime counts={0: 0, 1: 367, 2: 1789, 3: 4}
+2026-07-10 19:09:55,589 | INFO | src.model | Two-stage predict — 101/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:09:55,863 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_014.parquet (168 rows)
+2026-07-10 19:09:55,863 | INFO | src.validation | Window 15/53 done — MAE=11.28
+2026-07-10 19:09:55,898 | INFO | src.model | Ridge coefficients: {'residual_load': 7.54001454107153, 'hour_sin': 3.890129765565887, 'hour_cos': -1.6324105168559908, 'dow_sin': -0.8000944886245702, 'dow_cos': 0.1360246572441192, 'month_sin': -0.8099956258147831, 'month_cos': 0.46617259283440887, 'price_lag_168h': 37.17860838087548, 'renewable_penetration': -3.9262642979715623}
+2026-07-10 19:09:58,105 | INFO | src.model | Two-stage fit — extreme hours=9184 (58.3%) | classifier saved | extreme_regressor=True
+2026-07-10 19:09:58,177 | INFO | src.model | Two-stage predict — 568/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:09:58,180 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:09:58,184 | INFO | src.conformal | Regime 3 has 6 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:09:58,609 | INFO | src.conformal | Calibration coverage OK: 91.1% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:09:58,610 | INFO | src.conformal | Conformal calibrated — global q90=22.99 | scale=1.050 | regime counts={0: 0, 1: 299, 2: 1855, 3: 6}
+2026-07-10 19:09:58,676 | INFO | src.model | Two-stage predict — 97/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:09:58,962 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_015.parquet (168 rows)
+2026-07-10 19:09:58,962 | INFO | src.validation | Window 16/53 done — MAE=11.77
+2026-07-10 19:09:58,997 | INFO | src.model | Ridge coefficients: {'residual_load': 7.558074600013033, 'hour_sin': 3.889850561085849, 'hour_cos': -1.5866496153202037, 'dow_sin': -0.8112114992433938, 'dow_cos': 0.11479800118678882, 'month_sin': -0.8315801772339568, 'month_cos': 0.4349346019282945, 'price_lag_168h': 37.13394026727503, 'renewable_penetration': -3.91599051963162}
+2026-07-10 19:10:01,823 | INFO | src.model | Two-stage fit — extreme hours=9192 (57.8%) | classifier saved | extreme_regressor=True
+2026-07-10 19:10:01,902 | INFO | src.model | Two-stage predict — 652/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:10:01,906 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:10:01,910 | INFO | src.conformal | Regime 3 has 8 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:10:02,370 | INFO | src.conformal | Calibration coverage OK: 91.4% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:10:02,371 | INFO | src.conformal | Conformal calibrated — global q90=23.04 | scale=1.050 | regime counts={0: 0, 1: 238, 2: 1914, 3: 8}
+2026-07-10 19:10:02,436 | INFO | src.model | Two-stage predict — 88/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:10:03,697 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-10 19:10:04,050 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_max.png
+2026-07-10 19:10:04,498 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_mean.png
+2026-07-10 19:10:04,826 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_hour_sin.png
+2026-07-10 19:10:05,104 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_residual_load.png
+2026-07-10 19:10:05,417 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_lag_24h.png
+2026-07-10 19:10:05,426 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_016.parquet (168 rows)
+2026-07-10 19:10:05,427 | INFO | src.validation | Window 17/53 done — MAE=12.14
+2026-07-10 19:10:05,451 | INFO | src.model | Ridge coefficients: {'residual_load': 7.549454755752471, 'hour_sin': 3.912355496211445, 'hour_cos': -1.5765965155395307, 'dow_sin': -0.8000503253195389, 'dow_cos': 0.12175288055543769, 'month_sin': -0.8627332988709746, 'month_cos': 0.37719434520111317, 'price_lag_168h': 37.07313242450591, 'renewable_penetration': -3.9257319445486343}
+2026-07-10 19:10:07,998 | INFO | src.model | Two-stage fit — extreme hours=9200 (57.3%) | classifier saved | extreme_regressor=True
+2026-07-10 19:10:08,077 | INFO | src.model | Two-stage predict — 795/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:10:08,081 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:10:08,084 | INFO | src.conformal | Regime 3 has 10 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:10:08,542 | INFO | src.conformal | Calibration coverage OK: 91.8% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:10:08,542 | INFO | src.conformal | Conformal calibrated — global q90=23.77 | scale=1.050 | regime counts={0: 0, 1: 185, 2: 1965, 3: 10}
+2026-07-10 19:10:08,609 | INFO | src.model | Two-stage predict — 84/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:10:08,901 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_017.parquet (168 rows)
+2026-07-10 19:10:08,902 | INFO | src.validation | Window 18/53 done — MAE=11.48
+2026-07-10 19:10:08,940 | INFO | src.model | Ridge coefficients: {'residual_load': 7.525140328728586, 'hour_sin': 3.9123975860357034, 'hour_cos': -1.5705833683749322, 'dow_sin': -0.8215314002818903, 'dow_cos': 0.13365436076404313, 'month_sin': -0.9002188554701284, 'month_cos': 0.34020230721999617, 'price_lag_168h': 37.01885721370234, 'renewable_penetration': -3.9459643283189614}
+2026-07-10 19:10:11,215 | INFO | src.model | Two-stage fit — extreme hours=9204 (56.8%) | classifier saved | extreme_regressor=True
+2026-07-10 19:10:11,298 | INFO | src.model | Two-stage predict — 894/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:10:11,301 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:10:11,306 | INFO | src.conformal | Regime 3 has 14 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:10:11,766 | INFO | src.conformal | Calibration coverage OK: 91.6% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:10:11,767 | INFO | src.conformal | Conformal calibrated — global q90=24.12 | scale=1.050 | regime counts={0: 0, 1: 147, 2: 1999, 3: 14}
+2026-07-10 19:10:11,835 | INFO | src.model | Two-stage predict — 85/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:10:12,131 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_018.parquet (168 rows)
+2026-07-10 19:10:12,131 | INFO | src.validation | Window 19/53 done — MAE=12.57
+2026-07-10 19:10:12,160 | INFO | src.model | Ridge coefficients: {'residual_load': 7.538757464054786, 'hour_sin': 3.9441161613117495, 'hour_cos': -1.5241388258421051, 'dow_sin': -0.8178855927098418, 'dow_cos': 0.1268171103429469, 'month_sin': -0.9540094672195355, 'month_cos': 0.3145251666743194, 'price_lag_168h': 36.93810186848829, 'renewable_penetration': -3.924156809927582}
+2026-07-10 19:10:14,223 | INFO | src.model | Two-stage fit — extreme hours=9209 (56.3%) | classifier saved | extreme_regressor=True
+2026-07-10 19:10:14,296 | INFO | src.model | Two-stage predict — 1007/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:10:14,300 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:10:14,304 | INFO | src.conformal | Regime 3 has 19 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:10:14,720 | INFO | src.conformal | Calibration coverage OK: 91.4% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:10:14,720 | INFO | src.conformal | Conformal calibrated — global q90=25.16 | scale=1.050 | regime counts={0: 0, 1: 130, 2: 2011, 3: 19}
+2026-07-10 19:10:14,780 | INFO | src.model | Two-stage predict — 82/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:10:15,057 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_019.parquet (168 rows)
+2026-07-10 19:10:15,058 | INFO | src.validation | Window 20/53 done — MAE=11.88
+2026-07-10 19:10:15,087 | INFO | src.model | Ridge coefficients: {'residual_load': 7.617689342890915, 'hour_sin': 3.924356679694395, 'hour_cos': -1.471944314214305, 'dow_sin': -0.8371803099806541, 'dow_cos': 0.141937255086618, 'month_sin': -1.0320119659928573, 'month_cos': 0.28850714916611525, 'price_lag_168h': 36.850364815445396, 'renewable_penetration': -3.830701202763669}
+2026-07-10 19:10:17,340 | INFO | src.model | Two-stage fit — extreme hours=9210 (55.8%) | classifier saved | extreme_regressor=True
+2026-07-10 19:10:17,410 | INFO | src.model | Two-stage predict — 1114/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:10:17,414 | INFO | src.conformal | Regime 0 has 1 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:10:17,417 | INFO | src.conformal | Regime 3 has 25 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:10:17,848 | INFO | src.conformal | Calibration coverage OK: 91.8% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:10:17,848 | INFO | src.conformal | Conformal calibrated — global q90=25.75 | scale=1.050 | regime counts={0: 1, 1: 121, 2: 2013, 3: 25}
+2026-07-10 19:10:17,912 | INFO | src.model | Two-stage predict — 85/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:10:18,993 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-10 19:10:19,406 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_max.png
+2026-07-10 19:10:19,721 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_mean.png
+2026-07-10 19:10:20,018 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_residual_load.png
+2026-07-10 19:10:20,327 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_hour_sin.png
+2026-07-10 19:10:20,615 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_lag_24h.png
+2026-07-10 19:10:20,625 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_020.parquet (168 rows)
+2026-07-10 19:10:20,626 | INFO | src.validation | Window 21/53 done — MAE=12.47
+2026-07-10 19:10:20,657 | INFO | src.model | Ridge coefficients: {'residual_load': 7.634799637283998, 'hour_sin': 3.9389484097418537, 'hour_cos': -1.4468395352075671, 'dow_sin': -0.8410034596283421, 'dow_cos': 0.14112395353005283, 'month_sin': -1.0846377784178147, 'month_cos': 0.264082524219369, 'price_lag_168h': 36.74969424648824, 'renewable_penetration': -3.7958819992747213}
+2026-07-10 19:10:22,670 | INFO | src.model | Two-stage fit — extreme hours=9214 (55.3%) | classifier saved | extreme_regressor=True
+2026-07-10 19:10:22,742 | INFO | src.model | Two-stage predict — 1235/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:10:22,746 | INFO | src.conformal | Regime 0 has 1 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:10:22,749 | INFO | src.conformal | Regime 3 has 29 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:10:23,163 | INFO | src.conformal | Calibration coverage OK: 91.8% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:10:23,164 | INFO | src.conformal | Conformal calibrated — global q90=27.22 | scale=1.050 | regime counts={0: 1, 1: 144, 2: 1986, 3: 29}
+2026-07-10 19:10:23,225 | INFO | src.model | Two-stage predict — 81/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:10:23,506 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_021.parquet (168 rows)
+2026-07-10 19:10:23,507 | INFO | src.validation | Window 22/53 done — MAE=11.62
+2026-07-10 19:10:23,536 | INFO | src.model | Ridge coefficients: {'residual_load': 7.6701793757826895, 'hour_sin': 3.9362848763145792, 'hour_cos': -1.4138709778178253, 'dow_sin': -0.8534318427135795, 'dow_cos': 0.14179765310280215, 'month_sin': -1.1496831854872407, 'month_cos': 0.25579020425063553, 'price_lag_168h': 36.64016618136614, 'renewable_penetration': -3.743575871320065}
+2026-07-10 19:10:26,155 | INFO | src.model | Two-stage fit — extreme hours=9218 (54.8%) | classifier saved | extreme_regressor=True
+2026-07-10 19:10:26,231 | INFO | src.model | Two-stage predict — 1298/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:10:26,235 | INFO | src.conformal | Regime 0 has 1 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:10:26,238 | INFO | src.conformal | Regime 3 has 39 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:10:26,681 | INFO | src.conformal | Calibration coverage OK: 91.9% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:10:26,681 | INFO | src.conformal | Conformal calibrated — global q90=27.42 | scale=1.050 | regime counts={0: 1, 1: 164, 2: 1956, 3: 39}
+2026-07-10 19:10:26,744 | INFO | src.model | Two-stage predict — 78/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:10:27,029 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_022.parquet (168 rows)
+2026-07-10 19:10:27,029 | INFO | src.validation | Window 23/53 done — MAE=11.84
+2026-07-10 19:10:27,068 | INFO | src.model | Ridge coefficients: {'residual_load': 7.613005479082294, 'hour_sin': 3.92739718417331, 'hour_cos': -1.4219326455618961, 'dow_sin': -0.8255750765869141, 'dow_cos': 0.14544071656100957, 'month_sin': -1.2135355436610957, 'month_cos': 0.25678277344117856, 'price_lag_168h': 36.53264427979999, 'renewable_penetration': -3.7795459992060016}
+2026-07-10 19:10:29,191 | INFO | src.model | Two-stage fit — extreme hours=9221 (54.4%) | classifier saved | extreme_regressor=True
+2026-07-10 19:10:29,262 | INFO | src.model | Two-stage predict — 1313/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:10:29,265 | INFO | src.conformal | Regime 0 has 3 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:10:29,269 | INFO | src.conformal | Regime 3 has 40 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:10:29,684 | INFO | src.conformal | Calibration coverage OK: 91.7% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:10:29,685 | INFO | src.conformal | Conformal calibrated — global q90=27.45 | scale=1.050 | regime counts={0: 3, 1: 194, 2: 1923, 3: 40}
+2026-07-10 19:10:29,746 | INFO | src.model | Two-stage predict — 77/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:10:30,030 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_023.parquet (168 rows)
+2026-07-10 19:10:30,030 | INFO | src.validation | Window 24/53 done — MAE=10.97
+2026-07-10 19:10:30,066 | INFO | src.model | Ridge coefficients: {'residual_load': 7.607048422607255, 'hour_sin': 3.928059533328893, 'hour_cos': -1.4001112073252515, 'dow_sin': -0.8217336029109934, 'dow_cos': 0.13632388340307888, 'month_sin': -1.2702460315577313, 'month_cos': 0.24929197701622757, 'price_lag_168h': 36.40056290748872, 'renewable_penetration': -3.770773128402411}
+2026-07-10 19:10:32,246 | INFO | src.model | Two-stage fit — extreme hours=9225 (53.9%) | classifier saved | extreme_regressor=True
+2026-07-10 19:10:32,320 | INFO | src.model | Two-stage predict — 1323/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:10:32,324 | INFO | src.conformal | Regime 0 has 6 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:10:32,328 | INFO | src.conformal | Regime 3 has 43 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:10:32,760 | INFO | src.conformal | Calibration coverage OK: 91.7% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:10:32,760 | INFO | src.conformal | Conformal calibrated — global q90=27.92 | scale=1.050 | regime counts={0: 6, 1: 230, 2: 1881, 3: 43}
+2026-07-10 19:10:32,821 | INFO | src.model | Two-stage predict — 82/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:10:33,902 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-10 19:10:34,210 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_max.png
+2026-07-10 19:10:34,620 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_residual_load.png
+2026-07-10 19:10:34,894 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_mean.png
+2026-07-10 19:10:35,208 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_hour_sin.png
+2026-07-10 19:10:35,496 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_lag_24h.png
+2026-07-10 19:10:35,506 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_024.parquet (168 rows)
+2026-07-10 19:10:35,507 | INFO | src.validation | Window 25/53 done — MAE=13.68
+2026-07-10 19:10:35,530 | INFO | src.model | Ridge coefficients: {'residual_load': 7.5040822864019665, 'hour_sin': 3.917577667285293, 'hour_cos': -1.4111636237432028, 'dow_sin': -0.8146054577508506, 'dow_cos': 0.13700277298501942, 'month_sin': -1.319206599097223, 'month_cos': 0.23825535279430368, 'price_lag_168h': 36.25987370271465, 'renewable_penetration': -3.8580937563999065}
+2026-07-10 19:10:37,686 | INFO | src.model | Two-stage fit — extreme hours=9232 (53.5%) | classifier saved | extreme_regressor=True
+2026-07-10 19:10:37,766 | INFO | src.model | Two-stage predict — 1315/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:10:37,769 | INFO | src.conformal | Regime 0 has 9 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:10:37,773 | INFO | src.conformal | Regime 3 has 45 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:10:38,187 | INFO | src.conformal | Calibration coverage OK: 91.7% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:10:38,187 | INFO | src.conformal | Conformal calibrated — global q90=28.67 | scale=1.050 | regime counts={0: 9, 1: 268, 2: 1838, 3: 45}
+2026-07-10 19:10:38,247 | INFO | src.model | Two-stage predict — 86/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:10:38,538 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_025.parquet (168 rows)
+2026-07-10 19:10:38,539 | INFO | src.validation | Window 26/53 done — MAE=452.37
+2026-07-10 19:10:38,584 | INFO | src.model | Ridge coefficients: {'residual_load': 7.3332806896170935, 'hour_sin': 3.8890917939754095, 'hour_cos': -1.4767421169015833, 'dow_sin': -0.752259297587943, 'dow_cos': 0.13235355328673823, 'month_sin': -1.3853569816581226, 'month_cos': 0.23349950238521106, 'price_lag_168h': 36.12808855295273, 'renewable_penetration': -3.9929193304240203}
+2026-07-10 19:10:41,130 | INFO | src.model | Two-stage fit — extreme hours=9238 (53.0%) | classifier saved | extreme_regressor=True
+2026-07-10 19:10:41,204 | INFO | src.model | Two-stage predict — 1289/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:10:41,208 | INFO | src.conformal | Regime 0 has 14 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:10:41,212 | INFO | src.conformal | Regime 3 has 49 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:10:41,653 | INFO | src.conformal | Calibration coverage OK: 91.0% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:10:41,653 | INFO | src.conformal | Conformal calibrated — global q90=36.23 | scale=1.050 | regime counts={0: 14, 1: 312, 2: 1785, 3: 49}
+2026-07-10 19:10:41,715 | INFO | src.model | Two-stage predict — 75/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:10:53,564 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_026.parquet (168 rows)
+2026-07-10 19:10:53,565 | INFO | src.validation | Window 27/53 done — MAE=29.99
+2026-07-10 19:10:53,601 | INFO | src.model | Ridge coefficients: {'residual_load': 7.219825276880056, 'hour_sin': 3.8829050001295697, 'hour_cos': -1.488630152161539, 'dow_sin': -0.7275084090978933, 'dow_cos': 0.1136418647900091, 'month_sin': -1.449298164436125, 'month_cos': 0.2879842124403626, 'price_lag_168h': 36.00265359255801, 'renewable_penetration': -4.091294275608377}
+2026-07-10 19:10:55,980 | INFO | src.model | Two-stage fit — extreme hours=9252 (52.7%) | classifier saved | extreme_regressor=True
+2026-07-10 19:10:56,048 | INFO | src.model | Two-stage predict — 1270/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:10:56,052 | INFO | src.conformal | Regime 0 has 16 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:10:56,476 | INFO | src.conformal | Calibration coverage OK: 90.9% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:10:56,477 | INFO | src.conformal | Conformal calibrated — global q90=43.50 | scale=1.050 | regime counts={0: 16, 1: 362, 2: 1730, 3: 52}
+2026-07-10 19:10:56,536 | INFO | src.model | Two-stage predict — 78/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:10:56,813 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_027.parquet (168 rows)
+2026-07-10 19:10:56,814 | INFO | src.validation | Window 28/53 done — MAE=14.51
+2026-07-10 19:10:56,847 | INFO | src.model | Ridge coefficients: {'residual_load': 7.092034926941973, 'hour_sin': 3.853314036980659, 'hour_cos': -1.5251534336768633, 'dow_sin': -0.7116410543133351, 'dow_cos': 0.10869705552157069, 'month_sin': -1.5154822169092361, 'month_cos': 0.35006243714975405, 'price_lag_168h': 35.885601444122706, 'renewable_penetration': -4.208241472280287}
+2026-07-10 19:10:59,186 | INFO | src.model | Two-stage fit — extreme hours=9263 (52.3%) | classifier saved | extreme_regressor=True
+2026-07-10 19:10:59,254 | INFO | src.model | Two-stage predict — 1229/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:10:59,258 | INFO | src.conformal | Regime 0 has 20 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:10:59,672 | INFO | src.conformal | Calibration coverage OK: 90.7% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:10:59,672 | INFO | src.conformal | Conformal calibrated — global q90=44.59 | scale=1.050 | regime counts={0: 20, 1: 408, 2: 1682, 3: 50}
+2026-07-10 19:10:59,731 | INFO | src.model | Two-stage predict — 82/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:11:00,804 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-10 19:11:01,133 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_max.png
+2026-07-10 19:11:01,429 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_thermal_gap.png
+2026-07-10 19:11:01,743 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_hour_sin.png
+2026-07-10 19:11:02,126 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_regime_probability_3.png
+2026-07-10 19:11:02,408 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_lag_24h.png
+2026-07-10 19:11:02,416 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_028.parquet (168 rows)
+2026-07-10 19:11:02,417 | INFO | src.validation | Window 29/53 done — MAE=13.41
+2026-07-10 19:11:02,441 | INFO | src.model | Ridge coefficients: {'residual_load': 7.10298004442183, 'hour_sin': 3.8674917754609366, 'hour_cos': -1.49247813594685, 'dow_sin': -0.7102607010452212, 'dow_cos': 0.10720851290566702, 'month_sin': -1.5972777288735787, 'month_cos': 0.40958563069203724, 'price_lag_168h': 35.75766578808636, 'renewable_penetration': -4.213454464166384}
+2026-07-10 19:11:04,662 | INFO | src.model | Two-stage fit — extreme hours=9278 (51.9%) | classifier saved | extreme_regressor=True
+2026-07-10 19:11:04,735 | INFO | src.model | Two-stage predict — 1215/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:11:04,738 | INFO | src.conformal | Regime 0 has 21 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:11:05,170 | INFO | src.conformal | Calibration coverage OK: 90.7% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:11:05,170 | INFO | src.conformal | Conformal calibrated — global q90=45.07 | scale=1.050 | regime counts={0: 21, 1: 458, 2: 1629, 3: 52}
+2026-07-10 19:11:05,237 | INFO | src.model | Two-stage predict — 76/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:11:05,527 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_029.parquet (168 rows)
+2026-07-10 19:11:05,528 | INFO | src.validation | Window 30/53 done — MAE=14.83
+2026-07-10 19:11:05,566 | INFO | src.model | Ridge coefficients: {'residual_load': 6.999287840826169, 'hour_sin': 3.836701749052981, 'hour_cos': -1.531784889061963, 'dow_sin': -0.7040944716403859, 'dow_cos': 0.11780827517300811, 'month_sin': -1.6592582982355015, 'month_cos': 0.46039515725985747, 'price_lag_168h': 35.64834965339839, 'renewable_penetration': -4.290834399969328}
+2026-07-10 19:11:08,318 | INFO | src.model | Two-stage fit — extreme hours=9289 (51.5%) | classifier saved | extreme_regressor=True
+2026-07-10 19:11:08,393 | INFO | src.model | Two-stage predict — 1180/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:11:08,397 | INFO | src.conformal | Regime 0 has 25 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:11:08,401 | INFO | src.conformal | Regime 3 has 49 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:11:08,831 | INFO | src.conformal | Calibration coverage OK: 90.5% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:11:08,831 | INFO | src.conformal | Conformal calibrated — global q90=46.26 | scale=1.050 | regime counts={0: 25, 1: 505, 2: 1581, 3: 49}
+2026-07-10 19:11:08,895 | INFO | src.model | Two-stage predict — 69/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:11:09,192 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_030.parquet (168 rows)
+2026-07-10 19:11:09,193 | INFO | src.validation | Window 31/53 done — MAE=12.93
+2026-07-10 19:11:09,230 | INFO | src.model | Ridge coefficients: {'residual_load': 6.972914742799207, 'hour_sin': 3.8353780541228955, 'hour_cos': -1.5388311429525192, 'dow_sin': -0.6832805414574307, 'dow_cos': 0.0889932182005801, 'month_sin': -1.6917013215738002, 'month_cos': 0.559651063220182, 'price_lag_168h': 35.55198996008354, 'renewable_penetration': -4.342993485022979}
+2026-07-10 19:11:11,632 | INFO | src.model | Two-stage fit — extreme hours=9304 (51.2%) | classifier saved | extreme_regressor=True
+2026-07-10 19:11:11,708 | INFO | src.model | Two-stage predict — 1155/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:11:11,712 | INFO | src.conformal | Regime 0 has 26 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:11:11,716 | INFO | src.conformal | Regime 3 has 47 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:11:12,135 | INFO | src.conformal | Calibration coverage OK: 90.4% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:11:12,135 | INFO | src.conformal | Conformal calibrated — global q90=44.96 | scale=1.050 | regime counts={0: 26, 1: 549, 2: 1538, 3: 47}
+2026-07-10 19:11:12,196 | INFO | src.model | Two-stage predict — 64/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:11:12,477 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_031.parquet (168 rows)
+2026-07-10 19:11:12,478 | INFO | src.validation | Window 32/53 done — MAE=13.52
+2026-07-10 19:11:12,508 | INFO | src.model | Ridge coefficients: {'residual_load': 6.878106549005665, 'hour_sin': 3.843022876039565, 'hour_cos': -1.5972066851627675, 'dow_sin': -0.6591964814962766, 'dow_cos': 0.0997652456530199, 'month_sin': -1.7055279678759219, 'month_cos': 0.65646887277037, 'price_lag_168h': 35.47067628111991, 'renewable_penetration': -4.420271346442378}
+2026-07-10 19:11:14,819 | INFO | src.model | Two-stage fit — extreme hours=9328 (50.9%) | classifier saved | extreme_regressor=True
+2026-07-10 19:11:14,888 | INFO | src.model | Two-stage predict — 1120/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:11:14,891 | INFO | src.conformal | Regime 0 has 27 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:11:14,895 | INFO | src.conformal | Regime 3 has 45 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:11:15,315 | INFO | src.conformal | Calibration coverage OK: 90.6% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:11:15,315 | INFO | src.conformal | Conformal calibrated — global q90=46.92 | scale=1.050 | regime counts={0: 27, 1: 585, 2: 1503, 3: 45}
+2026-07-10 19:11:15,376 | INFO | src.model | Two-stage predict — 58/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:11:16,442 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-10 19:11:16,728 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_max.png
+2026-07-10 19:11:17,041 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_hour_sin.png
+2026-07-10 19:11:17,340 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_mean.png
+2026-07-10 19:11:17,619 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_lag_24h.png
+2026-07-10 19:11:17,909 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_residual_load.png
+2026-07-10 19:11:17,917 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_032.parquet (168 rows)
+2026-07-10 19:11:17,918 | INFO | src.validation | Window 33/53 done — MAE=11.91
+2026-07-10 19:11:17,945 | INFO | src.model | Ridge coefficients: {'residual_load': 6.8882352420817625, 'hour_sin': 3.830996798105312, 'hour_cos': -1.6095136831327348, 'dow_sin': -0.6538212769014581, 'dow_cos': 0.08349006802760109, 'month_sin': -1.7416811402572951, 'month_cos': 0.7655150917763197, 'price_lag_168h': 35.40126650857554, 'renewable_penetration': -4.451858210235454}
+2026-07-10 19:11:20,197 | INFO | src.model | Two-stage fit — extreme hours=9352 (50.6%) | classifier saved | extreme_regressor=True
+2026-07-10 19:11:20,268 | INFO | src.model | Two-stage predict — 1084/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:11:20,272 | INFO | src.conformal | Regime 0 has 26 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:11:20,276 | INFO | src.conformal | Regime 3 has 40 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:11:20,703 | INFO | src.conformal | Calibration coverage OK: 90.4% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:11:20,704 | INFO | src.conformal | Conformal calibrated — global q90=44.72 | scale=1.050 | regime counts={0: 26, 1: 614, 2: 1480, 3: 40}
+2026-07-10 19:11:20,766 | INFO | src.model | Two-stage predict — 57/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:11:21,050 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_033.parquet (168 rows)
+2026-07-10 19:11:21,050 | INFO | src.validation | Window 34/53 done — MAE=13.30
+2026-07-10 19:11:21,090 | INFO | src.model | Ridge coefficients: {'residual_load': 6.979431226093979, 'hour_sin': 3.8425011599659635, 'hour_cos': -1.589759011714253, 'dow_sin': -0.6984984160729383, 'dow_cos': 0.1071664701546636, 'month_sin': -1.7890084415190572, 'month_cos': 0.8340774953567214, 'price_lag_168h': 35.31449140855622, 'renewable_penetration': -4.397175819571572}
+2026-07-10 19:11:23,463 | INFO | src.model | Two-stage fit — extreme hours=9378 (50.3%) | classifier saved | extreme_regressor=True
+2026-07-10 19:11:23,538 | INFO | src.model | Two-stage predict — 1059/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:11:23,542 | INFO | src.conformal | Regime 0 has 26 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:11:23,545 | INFO | src.conformal | Regime 3 has 36 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:11:23,985 | INFO | src.conformal | Calibration coverage OK: 90.8% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:11:23,985 | INFO | src.conformal | Conformal calibrated — global q90=46.19 | scale=1.050 | regime counts={0: 26, 1: 629, 2: 1469, 3: 36}
+2026-07-10 19:11:24,044 | INFO | src.model | Two-stage predict — 49/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:11:24,314 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_034.parquet (168 rows)
+2026-07-10 19:11:24,315 | INFO | src.validation | Window 35/53 done — MAE=12.85
+2026-07-10 19:11:24,351 | INFO | src.model | Ridge coefficients: {'residual_load': 6.976133866049765, 'hour_sin': 3.8259810166707533, 'hour_cos': -1.6345318591662372, 'dow_sin': -0.6763521103280057, 'dow_cos': 0.10781119180241194, 'month_sin': -1.7899353227500434, 'month_cos': 0.8998712585255448, 'price_lag_168h': 35.242846528703396, 'renewable_penetration': -4.383532111565782}
+2026-07-10 19:11:26,597 | INFO | src.model | Two-stage fit — extreme hours=9420 (50.2%) | classifier saved | extreme_regressor=True
+2026-07-10 19:11:26,764 | INFO | src.model | Two-stage predict — 1005/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:11:26,767 | INFO | src.conformal | Regime 0 has 26 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:11:26,771 | INFO | src.conformal | Regime 3 has 27 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:11:27,196 | INFO | src.conformal | Calibration coverage OK: 90.4% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:11:27,196 | INFO | src.conformal | Conformal calibrated — global q90=46.52 | scale=1.050 | regime counts={0: 26, 1: 630, 2: 1477, 3: 27}
+2026-07-10 19:11:27,258 | INFO | src.model | Two-stage predict — 57/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:11:27,541 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_035.parquet (168 rows)
+2026-07-10 19:11:27,541 | INFO | src.validation | Window 36/53 done — MAE=14.82
+2026-07-10 19:11:27,580 | INFO | src.model | Ridge coefficients: {'residual_load': 6.883149612650979, 'hour_sin': 3.8179101806878357, 'hour_cos': -1.70922392184965, 'dow_sin': -0.6542294328819859, 'dow_cos': 0.10566229619778313, 'month_sin': -1.7423095831994997, 'month_cos': 1.0124207184710963, 'price_lag_168h': 35.18969928781226, 'renewable_penetration': -4.528486325160494}
+2026-07-10 19:11:29,780 | INFO | src.model | Two-stage fit — extreme hours=9473 (50.0%) | classifier saved | extreme_regressor=True
+2026-07-10 19:11:29,849 | INFO | src.model | Two-stage predict — 976/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:11:29,852 | INFO | src.conformal | Regime 0 has 24 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:11:29,857 | INFO | src.conformal | Regime 3 has 23 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:11:30,275 | INFO | src.conformal | Calibration coverage OK: 90.6% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:11:30,275 | INFO | src.conformal | Conformal calibrated — global q90=47.08 | scale=1.050 | regime counts={0: 24, 1: 621, 2: 1492, 3: 23}
+2026-07-10 19:11:30,335 | INFO | src.model | Two-stage predict — 47/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:11:31,409 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-10 19:11:31,721 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_max.png
+2026-07-10 19:11:32,028 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_hour_sin.png
+2026-07-10 19:11:32,309 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_mean.png
+2026-07-10 19:11:32,585 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_lag_24h.png
+2026-07-10 19:11:32,866 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_years_since_ukraine_war.png
+2026-07-10 19:11:32,875 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_036.parquet (168 rows)
+2026-07-10 19:11:32,876 | INFO | src.validation | Window 37/53 done — MAE=13.97
+2026-07-10 19:11:32,901 | INFO | src.model | Ridge coefficients: {'residual_load': 6.899244650717214, 'hour_sin': 3.815152839867929, 'hour_cos': -1.7398668846524608, 'dow_sin': -0.6418011056713058, 'dow_cos': 0.07731892199720898, 'month_sin': -1.7217010535313002, 'month_cos': 1.1326073326630621, 'price_lag_168h': 35.168460991354586, 'renewable_penetration': -4.561718185213738}
+2026-07-10 19:11:35,236 | INFO | src.model | Two-stage fit — extreme hours=9526 (49.9%) | classifier saved | extreme_regressor=True
+2026-07-10 19:11:35,312 | INFO | src.model | Two-stage predict — 955/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:11:35,315 | INFO | src.conformal | Regime 0 has 21 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:11:35,319 | INFO | src.conformal | Regime 3 has 21 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:11:35,755 | INFO | src.conformal | Calibration coverage OK: 90.5% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:11:35,755 | INFO | src.conformal | Conformal calibrated — global q90=47.36 | scale=1.050 | regime counts={0: 21, 1: 611, 2: 1507, 3: 21}
+2026-07-10 19:11:35,817 | INFO | src.model | Two-stage predict — 52/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:11:36,106 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_037.parquet (168 rows)
+2026-07-10 19:11:36,107 | INFO | src.validation | Window 38/53 done — MAE=13.76
+2026-07-10 19:11:36,146 | INFO | src.model | Ridge coefficients: {'residual_load': 7.042272617249647, 'hour_sin': 3.861018923757124, 'hour_cos': -1.726393176140874, 'dow_sin': -0.6365670887655893, 'dow_cos': 0.08920967943268639, 'month_sin': -1.7451196867740084, 'month_cos': 1.2192808216524338, 'price_lag_168h': 35.09140237589047, 'renewable_penetration': -4.505965691879323}
+2026-07-10 19:11:38,434 | INFO | src.model | Two-stage fit — extreme hours=9600 (49.9%) | classifier saved | extreme_regressor=True
+2026-07-10 19:11:38,501 | INFO | src.model | Two-stage predict — 897/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:11:38,504 | INFO | src.conformal | Regime 0 has 18 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:11:38,508 | INFO | src.conformal | Regime 3 has 15 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:11:38,928 | INFO | src.conformal | Calibration coverage OK: 90.8% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:11:38,928 | INFO | src.conformal | Conformal calibrated — global q90=48.25 | scale=1.050 | regime counts={0: 18, 1: 592, 2: 1535, 3: 15}
+2026-07-10 19:11:38,989 | INFO | src.model | Two-stage predict — 38/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:11:39,268 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_038.parquet (168 rows)
+2026-07-10 19:11:39,269 | INFO | src.validation | Window 39/53 done — MAE=12.10
+2026-07-10 19:11:39,310 | INFO | src.model | Ridge coefficients: {'residual_load': -1.9223632266432635, 'hour_sin': 3.121580506239959, 'hour_cos': -4.8439811041646825, 'dow_sin': 5.606144000572724, 'dow_cos': 0.5324005865249616, 'month_sin': -0.2874325242481349, 'month_cos': -4.608774798430438, 'price_lag_168h': 32.460057045413066, 'renewable_penetration': -12.362244501323987}
+2026-07-10 19:11:41,625 | INFO | src.model | Two-stage fit — extreme hours=9669 (49.9%) | classifier saved | extreme_regressor=True
+2026-07-10 19:11:41,692 | INFO | src.model | Two-stage predict — 838/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:11:41,695 | INFO | src.conformal | Regime 0 has 13 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:11:41,699 | INFO | src.conformal | Regime 3 has 13 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:11:42,116 | INFO | src.conformal | Calibration coverage OK: 91.2% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:11:42,116 | INFO | src.conformal | Conformal calibrated — global q90=33.82 | scale=1.050 | regime counts={0: 13, 1: 581, 2: 1553, 3: 13}
+2026-07-10 19:11:42,178 | INFO | src.model | Two-stage predict — 26/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:11:54,750 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_039.parquet (168 rows)
+2026-07-10 19:11:54,751 | INFO | src.validation | Window 40/53 done — MAE=10.93
+2026-07-10 19:11:54,787 | INFO | src.model | Ridge coefficients: {'residual_load': 10.52204960937839, 'hour_sin': 9.071684195023805, 'hour_cos': -2.8873512426387955, 'dow_sin': 5.463818791458852, 'dow_cos': 0.0844116336339643, 'month_sin': -4.953128450408939, 'month_cos': -6.082687517889405, 'price_lag_168h': 14.05507860398545, 'renewable_penetration': -8.71187226862874}
+2026-07-10 19:11:57,356 | INFO | src.model | Two-stage fit — extreme hours=9735 (49.8%) | classifier saved | extreme_regressor=True
+2026-07-10 19:11:57,429 | INFO | src.model | Two-stage predict — 779/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:11:57,433 | INFO | src.conformal | Regime 0 has 11 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:11:57,436 | INFO | src.conformal | Regime 3 has 10 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:11:57,863 | INFO | src.conformal | Calibration coverage OK: 91.1% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:11:57,864 | INFO | src.conformal | Conformal calibrated — global q90=30.76 | scale=1.050 | regime counts={0: 11, 1: 580, 2: 1559, 3: 10}
+2026-07-10 19:11:57,926 | INFO | src.model | Two-stage predict — 20/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:11:59,051 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-10 19:11:59,336 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_max.png
+2026-07-10 19:11:59,644 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_hour_sin.png
+2026-07-10 19:11:59,937 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_mean.png
+2026-07-10 19:12:00,223 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_lag_24h.png
+2026-07-10 19:12:00,523 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_years_since_ukraine_war.png
+2026-07-10 19:12:00,531 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_040.parquet (168 rows)
+2026-07-10 19:12:00,531 | INFO | src.validation | Window 41/53 done — MAE=10.96
+2026-07-10 19:12:00,557 | INFO | src.model | Ridge coefficients: {'residual_load': 10.56519891306727, 'hour_sin': 9.054316881188363, 'hour_cos': -2.9203049465800652, 'dow_sin': 5.434383260666686, 'dow_cos': 0.07620467467820755, 'month_sin': -4.68492158086552, 'month_cos': -5.684178551257694, 'price_lag_168h': 14.22229213252552, 'renewable_penetration': -8.865476211254075}
+2026-07-10 19:12:02,833 | INFO | src.model | Two-stage fit — extreme hours=9808 (49.8%) | classifier saved | extreme_regressor=True
+2026-07-10 19:12:02,906 | INFO | src.model | Two-stage predict — 699/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:12:02,910 | INFO | src.conformal | Regime 0 has 7 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:12:02,913 | INFO | src.conformal | Regime 3 has 9 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:12:03,340 | INFO | src.conformal | Calibration coverage OK: 90.8% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:12:03,340 | INFO | src.conformal | Conformal calibrated — global q90=30.19 | scale=1.050 | regime counts={0: 7, 1: 583, 2: 1561, 3: 9}
+2026-07-10 19:12:03,402 | INFO | src.model | Two-stage predict — 24/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:12:03,694 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_041.parquet (168 rows)
+2026-07-10 19:12:03,695 | INFO | src.validation | Window 42/53 done — MAE=10.59
+2026-07-10 19:12:03,733 | INFO | src.model | Ridge coefficients: {'residual_load': 10.799759040850478, 'hour_sin': 9.086705074754914, 'hour_cos': -2.8601450538236595, 'dow_sin': 5.340495907028335, 'dow_cos': 0.07432610033435265, 'month_sin': -4.476344347193263, 'month_cos': -5.3129369380558265, 'price_lag_168h': 14.395478061311477, 'renewable_penetration': -8.723934122194175}
+2026-07-10 19:12:06,255 | INFO | src.model | Two-stage fit — extreme hours=9875 (49.8%) | classifier saved | extreme_regressor=True
+2026-07-10 19:12:06,329 | INFO | src.model | Two-stage predict — 642/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:12:06,332 | INFO | src.conformal | Regime 0 has 6 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:12:06,336 | INFO | src.conformal | Regime 3 has 6 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:12:06,748 | INFO | src.conformal | Calibration coverage OK: 91.2% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:12:06,748 | INFO | src.conformal | Conformal calibrated — global q90=29.87 | scale=1.050 | regime counts={0: 6, 1: 585, 2: 1563, 3: 6}
+2026-07-10 19:12:06,808 | INFO | src.model | Two-stage predict — 11/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:12:07,086 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_042.parquet (168 rows)
+2026-07-10 19:12:07,087 | INFO | src.validation | Window 43/53 done — MAE=10.37
+2026-07-10 19:12:07,131 | INFO | src.model | Ridge coefficients: {'residual_load': 11.420943590546639, 'hour_sin': 9.154893833536558, 'hour_cos': -2.6469259748089735, 'dow_sin': 5.2143900469111895, 'dow_cos': 0.08060686397240045, 'month_sin': -4.361616676883381, 'month_cos': -4.896476856718232, 'price_lag_168h': 14.55587363070041, 'renewable_penetration': -8.257608428362262}
+2026-07-10 19:12:09,417 | INFO | src.model | Two-stage fit — extreme hours=9939 (49.7%) | classifier saved | extreme_regressor=True
+2026-07-10 19:12:09,485 | INFO | src.model | Two-stage predict — 588/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:12:09,489 | INFO | src.conformal | Regime 0 has 2 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:12:09,492 | INFO | src.conformal | Regime 3 has 6 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:12:09,902 | INFO | src.conformal | Calibration coverage OK: 91.1% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:12:09,902 | INFO | src.conformal | Conformal calibrated — global q90=29.08 | scale=1.050 | regime counts={0: 2, 1: 604, 2: 1548, 3: 6}
+2026-07-10 19:12:09,962 | INFO | src.model | Two-stage predict — 42/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:12:10,225 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_043.parquet (168 rows)
+2026-07-10 19:12:10,226 | INFO | src.validation | Window 44/53 done — MAE=157.35
+2026-07-10 19:12:10,260 | INFO | src.model | Ridge coefficients: {'residual_load': 11.373232138654272, 'hour_sin': 9.145484643765062, 'hour_cos': -2.6685445513305908, 'dow_sin': 5.172230663845133, 'dow_cos': 0.0716350644652195, 'month_sin': -4.01987314569242, 'month_cos': -4.6775093968559736, 'price_lag_168h': 14.688088015812019, 'renewable_penetration': -8.299297019952268}
+2026-07-10 19:12:12,531 | INFO | src.model | Two-stage fit — extreme hours=10002 (49.7%) | classifier saved | extreme_regressor=True
+2026-07-10 19:12:12,601 | INFO | src.model | Two-stage predict — 580/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:12:12,605 | INFO | src.conformal | Regime 0 has 1 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:12:12,609 | INFO | src.conformal | Regime 3 has 3 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:12:13,035 | INFO | src.conformal | Calibration coverage OK: 91.4% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:12:13,035 | INFO | src.conformal | Conformal calibrated — global q90=30.91 | scale=1.050 | regime counts={0: 1, 1: 582, 2: 1574, 3: 3}
+2026-07-10 19:12:13,102 | INFO | src.model | Two-stage predict — 98/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:12:14,159 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-10 19:12:14,452 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_max.png
+2026-07-10 19:12:14,730 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_mean.png
+2026-07-10 19:12:15,014 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_regime_probability_3.png
+2026-07-10 19:12:15,406 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_lag_24h.png
+2026-07-10 19:12:15,710 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_hour_sin.png
+2026-07-10 19:12:15,718 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_044.parquet (168 rows)
+2026-07-10 19:12:15,718 | INFO | src.validation | Window 45/53 done — MAE=332.62
+2026-07-10 19:12:15,752 | INFO | src.model | Ridge coefficients: {'residual_load': 11.252907285978065, 'hour_sin': 9.121100536007775, 'hour_cos': -2.687879297849314, 'dow_sin': 5.1476505498873975, 'dow_cos': 0.06305430047925883, 'month_sin': -3.6202767791812476, 'month_cos': -4.516099427681334, 'price_lag_168h': 14.824043270524832, 'renewable_penetration': -8.379383447845978}
+2026-07-10 19:12:18,026 | INFO | src.model | Two-stage fit — extreme hours=10063 (49.6%) | classifier saved | extreme_regressor=True
+2026-07-10 19:12:18,096 | INFO | src.model | Two-stage predict — 607/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:12:18,099 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:12:18,103 | INFO | src.conformal | Regime 3 has 19 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:12:18,530 | INFO | src.conformal | Calibration coverage 89.6% < 90% — widening scale → 1.103
+2026-07-10 19:12:18,911 | INFO | src.conformal | Calibration coverage 89.9% < 90% — widening scale → 1.158
+2026-07-10 19:12:19,256 | INFO | src.conformal | Calibration coverage OK: 90.0% ≥ 90% (scale=1.158, iter=2)
+2026-07-10 19:12:19,257 | INFO | src.conformal | Conformal calibrated — global q90=54.71 | scale=1.158 | regime counts={0: 0, 1: 583, 2: 1558, 3: 19}
+2026-07-10 19:12:19,310 | INFO | src.model | Two-stage predict — 12/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:12:19,554 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_045.parquet (168 rows)
+2026-07-10 19:12:19,554 | INFO | src.validation | Window 46/53 done — MAE=39.32
+2026-07-10 19:12:19,590 | INFO | src.model | Ridge coefficients: {'residual_load': 11.287372416650204, 'hour_sin': 9.113594108675809, 'hour_cos': -2.6541302139823797, 'dow_sin': 5.107269123365353, 'dow_cos': 0.0752797683692891, 'month_sin': -3.3016154034130505, 'month_cos': -4.368570055743671, 'price_lag_168h': 14.935728906502485, 'renewable_penetration': -8.27806088441685}
+2026-07-10 19:12:22,065 | INFO | src.model | Two-stage fit — extreme hours=10112 (49.5%) | classifier saved | extreme_regressor=True
+2026-07-10 19:12:22,174 | INFO | src.model | Two-stage predict — 555/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:12:22,177 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:12:22,181 | INFO | src.conformal | Regime 3 has 18 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:12:22,627 | INFO | src.conformal | Calibration coverage OK: 90.2% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:12:22,627 | INFO | src.conformal | Conformal calibrated — global q90=55.95 | scale=1.050 | regime counts={0: 0, 1: 619, 2: 1523, 3: 18}
+2026-07-10 19:12:22,689 | INFO | src.model | Two-stage predict — 14/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:12:22,973 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_046.parquet (168 rows)
+2026-07-10 19:12:22,973 | INFO | src.validation | Window 47/53 done — MAE=11.45
+2026-07-10 19:12:23,014 | INFO | src.model | Ridge coefficients: {'residual_load': 11.51633577815936, 'hour_sin': 9.125112436614687, 'hour_cos': -2.545464596460721, 'dow_sin': 5.017484345356404, 'dow_cos': 0.0843229781709076, 'month_sin': -3.04999363561179, 'month_cos': -4.216544158797712, 'price_lag_168h': 15.029256370739189, 'renewable_penetration': -7.98098571984683}
+2026-07-10 19:12:25,538 | INFO | src.model | Two-stage fit — extreme hours=10163 (49.3%) | classifier saved | extreme_regressor=True
+2026-07-10 19:12:25,607 | INFO | src.model | Two-stage predict — 481/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:12:25,611 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:12:25,614 | INFO | src.conformal | Regime 3 has 17 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:12:26,037 | INFO | src.conformal | Calibration coverage OK: 90.2% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:12:26,037 | INFO | src.conformal | Conformal calibrated — global q90=64.16 | scale=1.050 | regime counts={0: 0, 1: 662, 2: 1481, 3: 17}
+2026-07-10 19:12:26,106 | INFO | src.model | Two-stage predict — 9/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:12:26,385 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_047.parquet (168 rows)
+2026-07-10 19:12:26,386 | INFO | src.validation | Window 48/53 done — MAE=10.26
+2026-07-10 19:12:26,426 | INFO | src.model | Ridge coefficients: {'residual_load': 11.707874573220586, 'hour_sin': 9.133265197572893, 'hour_cos': -2.4350758934755246, 'dow_sin': 4.940204178152559, 'dow_cos': 0.09630989683027648, 'month_sin': -2.7823036771008587, 'month_cos': -4.114764113116057, 'price_lag_168h': 15.120290553883653, 'renewable_penetration': -7.682504375764315}
+2026-07-10 19:12:29,011 | INFO | src.model | Two-stage fit — extreme hours=10219 (49.3%) | classifier saved | extreme_regressor=True
+2026-07-10 19:12:29,080 | INFO | src.model | Two-stage predict — 463/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:12:29,084 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:12:29,088 | INFO | src.conformal | Regime 3 has 17 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:12:29,498 | INFO | src.conformal | Calibration coverage OK: 90.0% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:12:29,499 | INFO | src.conformal | Conformal calibrated — global q90=64.40 | scale=1.050 | regime counts={0: 0, 1: 712, 2: 1431, 3: 17}
+2026-07-10 19:12:29,558 | INFO | src.model | Two-stage predict — 7/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:12:30,597 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-10 19:12:30,910 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_max.png
+2026-07-10 19:12:31,212 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_hour_sin.png
+2026-07-10 19:12:31,505 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_mean.png
+2026-07-10 19:12:31,767 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_residual_load.png
+2026-07-10 19:12:32,061 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_lag_24h.png
+2026-07-10 19:12:32,070 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_048.parquet (168 rows)
+2026-07-10 19:12:32,070 | INFO | src.validation | Window 49/53 done — MAE=10.53
+2026-07-10 19:12:32,099 | INFO | src.model | Ridge coefficients: {'residual_load': 11.616209091976772, 'hour_sin': 9.108293664447816, 'hour_cos': -2.410353103262287, 'dow_sin': 4.9199560373031686, 'dow_cos': 0.09271666782976552, 'month_sin': -2.4398511435541024, 'month_cos': -4.168056425701859, 'price_lag_168h': 15.194735410487281, 'renewable_penetration': -7.60314599360562}
+2026-07-10 19:12:34,517 | INFO | src.model | Two-stage fit — extreme hours=10271 (49.2%) | classifier saved | extreme_regressor=True
+2026-07-10 19:12:34,592 | INFO | src.model | Two-stage predict — 413/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:12:34,595 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:12:34,599 | INFO | src.conformal | Regime 3 has 17 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:12:35,038 | INFO | src.conformal | Calibration coverage 89.7% < 90% — widening scale → 1.103
+2026-07-10 19:12:35,413 | INFO | src.conformal | Calibration coverage OK: 90.0% ≥ 90% (scale=1.103, iter=1)
+2026-07-10 19:12:35,413 | INFO | src.conformal | Conformal calibrated — global q90=64.28 | scale=1.103 | regime counts={0: 0, 1: 772, 2: 1371, 3: 17}
+2026-07-10 19:12:35,472 | INFO | src.model | Two-stage predict — 71/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:12:35,733 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_049.parquet (168 rows)
+2026-07-10 19:12:35,734 | INFO | src.validation | Window 50/53 done — MAE=254.93
+2026-07-10 19:12:35,772 | INFO | src.model | Ridge coefficients: {'residual_load': 11.57172562065884, 'hour_sin': 9.094164740085027, 'hour_cos': -2.3601564204374568, 'dow_sin': 4.898250336651679, 'dow_cos': 0.0850642285110417, 'month_sin': -2.1199238210469633, 'month_cos': -4.214058192365006, 'price_lag_168h': 15.257280875513112, 'renewable_penetration': -7.490360928906459}
+2026-07-10 19:12:38,227 | INFO | src.model | Two-stage fit — extreme hours=10317 (49.0%) | classifier saved | extreme_regressor=True
+2026-07-10 19:12:38,302 | INFO | src.model | Two-stage predict — 434/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:12:38,306 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:12:38,310 | INFO | src.conformal | Regime 3 has 33 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:12:38,744 | INFO | src.conformal | Calibration coverage 89.8% < 90% — widening scale → 1.103
+2026-07-10 19:12:39,117 | INFO | src.conformal | Calibration coverage OK: 90.6% ≥ 90% (scale=1.103, iter=1)
+2026-07-10 19:12:39,117 | INFO | src.conformal | Conformal calibrated — global q90=238.48 | scale=1.103 | regime counts={0: 0, 1: 790, 2: 1337, 3: 33}
+2026-07-10 19:12:39,174 | INFO | src.model | Two-stage predict — 13/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:12:39,436 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_050.parquet (168 rows)
+2026-07-10 19:12:39,437 | INFO | src.validation | Window 51/53 done — MAE=47.88
+2026-07-10 19:12:39,478 | INFO | src.model | Ridge coefficients: {'residual_load': 11.585491332834746, 'hour_sin': 9.082601722716879, 'hour_cos': -2.288758441963649, 'dow_sin': 4.862323505173744, 'dow_cos': 0.09320941598190291, 'month_sin': -1.8526936291840255, 'month_cos': -4.250288488046847, 'price_lag_168h': 15.306612740522628, 'renewable_penetration': -7.321731553103303}
+2026-07-10 19:12:41,932 | INFO | src.model | Two-stage fit — extreme hours=10372 (48.9%) | classifier saved | extreme_regressor=True
+2026-07-10 19:12:42,009 | INFO | src.model | Two-stage predict — 410/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:12:42,013 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:12:42,016 | INFO | src.conformal | Regime 3 has 33 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:12:42,444 | INFO | src.conformal | Calibration coverage 89.8% < 90% — widening scale → 1.103
+2026-07-10 19:12:42,813 | INFO | src.conformal | Calibration coverage OK: 91.4% ≥ 90% (scale=1.103, iter=1)
+2026-07-10 19:12:42,814 | INFO | src.conformal | Conformal calibrated — global q90=240.80 | scale=1.103 | regime counts={0: 0, 1: 858, 2: 1269, 3: 33}
+2026-07-10 19:12:42,871 | INFO | src.model | Two-stage predict — 10/168 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:12:43,191 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_051.parquet (168 rows)
+2026-07-10 19:12:43,192 | INFO | src.validation | Window 52/53 done — MAE=10.95
+2026-07-10 19:12:43,223 | INFO | src.model | Ridge coefficients: {'residual_load': 11.67300385960869, 'hour_sin': 9.07571510409341, 'hour_cos': -2.210850587859692, 'dow_sin': 4.800251509174528, 'dow_cos': 0.09185179960851238, 'month_sin': -1.5924769724510721, 'month_cos': -4.276615485190927, 'price_lag_168h': 15.345564125580996, 'renewable_penetration': -7.105986552743395}
+2026-07-10 19:12:45,507 | INFO | src.model | Two-stage fit — extreme hours=10427 (48.8%) | classifier saved | extreme_regressor=True
+2026-07-10 19:12:45,679 | INFO | src.model | Two-stage predict — 361/2160 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:12:45,682 | INFO | src.conformal | Regime 0 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:12:45,686 | INFO | src.conformal | Regime 3 has 33 cal samples (< 50) — using global conformal quantiles
+2026-07-10 19:12:46,111 | INFO | src.conformal | Calibration coverage OK: 90.1% ≥ 90% (scale=1.050, iter=0)
+2026-07-10 19:12:46,112 | INFO | src.conformal | Conformal calibrated — global q90=226.83 | scale=1.050 | regime counts={0: 0, 1: 913, 2: 1214, 3: 33}
+2026-07-10 19:12:46,173 | INFO | src.model | Two-stage predict — 5/48 hours routed to extreme model (threshold=0.60)
+2026-07-10 19:13:00,280 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-10 19:13:00,595 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_max.png
+2026-07-10 19:13:00,861 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_roll7d_mean.png
+2026-07-10 19:13:01,172 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_hour_sin.png
+2026-07-10 19:13:01,461 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_thermal_gap.png
+2026-07-10 19:13:01,747 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_price_lag_24h.png
+2026-07-10 19:13:01,756 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits/window_052.parquet (48 rows)
+2026-07-10 19:13:01,756 | INFO | src.validation | Window 53/53 done — MAE=12.38
+2026-07-10 19:13:01,782 | INFO | src.conformal | Empirical coverage 89.3% < 90% — widening intervals ×1.05 (scale=1.050)
+2026-07-10 19:13:01,784 | INFO | src.conformal | Post-hoc widen reached coverage 90.1% after 1 ×1.05 steps (total scale=1.050)
+2026-07-10 19:13:01,790 | INFO | src.conformal | Conformal coverage assertion PASS: 90.1% ≥ 90%
+2026-07-10 19:13:01,799 | INFO | src.conformal | Conformal coverage empirical=90.1% (nominal 90%)
+2026-07-10 19:13:01,799 | INFO | src.validation | Conformal 90% coverage enforced: empirical=90.1% (target ≥ 90%)
+2026-07-10 19:13:01,828 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/outputs/forecasts/walk_forward_results.parquet (8784 rows)
+2026-07-10 19:13:01,857 | INFO | src.validation | Walk-forward metrics: MAE=35.29 skill_naive=+45.3% cov90=90.1% | mae_extreme=104.99 (n=1965) mae_normal=15.20 (n=6819)
+2026-07-10 19:13:03,050 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/walk_forward_forecast_vs_actual.png
+2026-07-10 19:13:03,117 | INFO | matplotlib.category | Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-07-10 19:13:03,131 | INFO | matplotlib.category | Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-07-10 19:13:03,894 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/residuals_by_hour.png
+2026-07-10 19:13:03,936 | INFO | matplotlib.category | Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-07-10 19:13:03,946 | INFO | matplotlib.category | Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-07-10 19:13:04,341 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/residuals_by_regime.png
+2026-07-10 19:13:04,664 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/metrics_dashboard.png
+2026-07-10 19:13:04,986 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/quantile_reliability.png
+2026-07-10 19:13:05,751 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/feature_importance_stability.png
+2026-07-10 19:13:06,114 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_waterfall_dunkelflaute.png

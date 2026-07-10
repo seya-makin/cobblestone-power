@@ -1,0 +1,32 @@
+{
+  "threshold_eur": 8.0,
+  "n_trades": 326,
+  "win_rate": 0.8220858895705522,
+  "total_pnl_eur_per_mw": 10272.418333333331,
+  "sharpe_ratio": 9.01235959682192,
+  "max_drawdown_eur": -148.03916666666646,
+  "profit_factor": 14.949587800944919,
+  "by_regime": {
+    "0": {
+      "n_trades": 7,
+      "total_pnl": 241.86583333333328,
+      "win_rate": 1.0
+    },
+    "1": {
+      "n_trades": 136,
+      "total_pnl": 4748.190833333333,
+      "win_rate": 0.8161764705882353
+    },
+    "2": {
+      "n_trades": 179,
+      "total_pnl": 4694.713333333333,
+      "win_rate": 0.8212290502793296
+    },
+    "3": {
+      "n_trades": 4,
+      "total_pnl": 587.6483333333334,
+      "win_rate": 0.75
+    }
+  },
+  "disclaimer": "Simplified research backtest. Does not account for bid-ask spreads, market impact, position limits, counterparty credit, or actual EPEX trading constraints. For illustrative purposes only."
+}

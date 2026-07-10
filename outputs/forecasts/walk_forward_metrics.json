@@ -1,0 +1,61 @@
+{
+  "MAE": 25.373288681666654,
+  "RMSE": 40.0196158815253,
+  "MAPE": 191.3640614897465,
+  "sMAPE": 40.222033292547835,
+  "skill_vs_naive_pct": 22.663888903719165,
+  "skill_vs_ridge_pct": 33.06973868126121,
+  "directional_accuracy_pct": 82.93488160291439,
+  "winkler_score_80": 120.71959617829557,
+  "winkler_score_80_qra": 148.59357112655294,
+  "pinball_q10": 5.653423106311593,
+  "pinball_q50": 11.084289124470713,
+  "pinball_q90": 9.205934006343698,
+  "pinball_q10_before_qra": 5.5791063926841025,
+  "pinball_q50_before_qra": 11.263529474787372,
+  "pinball_q90_before_qra": 9.660967205641697,
+  "qra_comparison": {
+    "method": "QRA (Nowotarski & Weron, 2018)",
+    "q10": {
+      "before_single_balanced": 5.5791063926841025,
+      "after_qra": 5.653423106311593,
+      "improvement_pct": -1.3320540673851038
+    },
+    "q50": {
+      "before_single_balanced": 11.263529474787372,
+      "after_qra": 11.084289124470713,
+      "improvement_pct": 1.591333788559584
+    },
+    "q90": {
+      "before_single_balanced": 9.660967205641697,
+      "after_qra": 9.205934006343698,
+      "improvement_pct": 4.710017016021687
+    },
+    "winkler_80_before_qra": 152.40073598325802,
+    "winkler_80_after_qra": 148.59357112655294,
+    "winkler_80_improvement_pct": 2.4981276055801382
+  },
+  "conformal_coverage_90_empirical": 0.902436247723133,
+  "mae_regime_0": 28.740029844311405,
+  "mae_regime_1": 17.033936394497857,
+  "mae_regime_2": 28.87546532251026,
+  "mae_regime_3": 125.34562786768353,
+  "peak_mae": 32.43014761914582,
+  "offpeak_mae": 21.439465188859124,
+  "mae_negative_price_hours": 30.314706219794385,
+  "negative_price_recall": 0.8774617067833698,
+  "n_negative_price_hours": 457,
+  "n_high_negative_price_risk_hours": 695,
+  "negative_price_risk_threshold": 0.3,
+  "negative_price_feature": "negative_price_probability",
+  "tail_mae_p95": 53.828893199410295,
+  "mae_extreme_hours": 25.046421400486324,
+  "mae_normal_hours": 25.505373158460756,
+  "n_extreme_hours": 2528,
+  "n_normal_hours": 6256,
+  "n_routed_to_extreme_model": 2009,
+  "extreme_definition": "per-window: price > train p85 OR price < 0",
+  "extreme_percentile": 85.0,
+  "mean_absolute_signal_error_eur": 25.373288681666654,
+  "n_hours": 8784
+}

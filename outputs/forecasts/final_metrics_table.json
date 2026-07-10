@@ -1,0 +1,15 @@
+{
+  "MAE": 30.9061867103261,
+  "RMSE": 41.8232268611531,
+  "skill_vs_naive_pct": 5.799980484233435,
+  "conformal_coverage_90_empirical": 0.9207650273224044,
+  "directional_accuracy_pct": 83.44717668488161,
+  "negative_price_recall": 0.87527352297593,
+  "peak_mae": 36.16323466917406,
+  "offpeak_mae": 27.97566210347894,
+  "tail_mae_p95": 50.49926284535056,
+  "mae_regime_0": 7.341212036412591,
+  "mae_regime_1": 18.33083216359388,
+  "mae_regime_2": 41.789790822620425,
+  "mae_regime_3": 109.48573881829412
+}

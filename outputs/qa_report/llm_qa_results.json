@@ -1,0 +1,150 @@
+{
+  "rules_executed": 20,
+  "rules_proposed": 20,
+  "total_violations": 2,
+  "results": [
+    {
+      "rule_id": "R001",
+      "severity": "ERROR",
+      "violations": 0,
+      "sample_indices": [],
+      "error": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "ERROR",
+      "violations": 0,
+      "sample_indices": [],
+      "error": null
+    },
+    {
+      "rule_id": "R003",
+      "severity": "ERROR",
+      "violations": 0,
+      "sample_indices": [],
+      "error": null
+    },
+    {
+      "rule_id": "R004",
+      "severity": "WARNING",
+      "violations": 0,
+      "sample_indices": [],
+      "error": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "ERROR",
+      "violations": 2,
+      "sample_indices": [
+        "2024-06-24 03:00:00+00:00",
+        "2024-06-25 03:00:00+00:00"
+      ],
+      "error": null
+    },
+    {
+      "rule_id": "R006",
+      "severity": "ERROR",
+      "violations": 0,
+      "sample_indices": [],
+      "error": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "ERROR",
+      "violations": 0,
+      "sample_indices": [],
+      "error": null
+    },
+    {
+      "rule_id": "R008",
+      "severity": "WARNING",
+      "violations": 0,
+      "sample_indices": [],
+      "error": null
+    },
+    {
+      "rule_id": "R009",
+      "severity": "WARNING",
+      "violations": 0,
+      "sample_indices": [],
+      "error": null
+    },
+    {
+      "rule_id": "R010",
+      "severity": "WARNING",
+      "violations": 0,
+      "sample_indices": [],
+      "error": null
+    },
+    {
+      "rule_id": "R011",
+      "severity": "ERROR",
+      "violations": 0,
+      "sample_indices": [],
+      "error": null
+    },
+    {
+      "rule_id": "R012",
+      "severity": "WARNING",
+      "violations": 0,
+      "sample_indices": [],
+      "error": null
+    },
+    {
+      "rule_id": "R013",
+      "severity": "WARNING",
+      "violations": 0,
+      "sample_indices": [],
+      "error": null
+    },
+    {
+      "rule_id": "R014",
+      "severity": "ERROR",
+      "violations": 0,
+      "sample_indices": [],
+      "error": null
+    },
+    {
+      "rule_id": "R015",
+      "severity": "ERROR",
+      "violations": 0,
+      "sample_indices": [],
+      "error": null
+    },
+    {
+      "rule_id": "R016",
+      "severity": "ERROR",
+      "violations": 0,
+      "sample_indices": [],
+      "error": null
+    },
+    {
+      "rule_id": "R017",
+      "severity": "WARNING",
+      "violations": 0,
+      "sample_indices": [],
+      "error": null
+    },
+    {
+      "rule_id": "R018",
+      "severity": "ERROR",
+      "violations": 0,
+      "sample_indices": [],
+      "error": null
+    },
+    {
+      "rule_id": "R019",
+      "severity": "ERROR",
+      "violations": 0,
+      "sample_indices": [],
+      "error": null
+    },
+    {
+      "rule_id": "R020",
+      "severity": "ERROR",
+      "violations": 0,
+      "sample_indices": [],
+      "error": null
+    }
+  ]
+}
