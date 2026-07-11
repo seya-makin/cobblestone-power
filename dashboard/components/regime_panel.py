@@ -78,7 +78,7 @@ def render_regime_panel(
     wf: Optional[pd.DataFrame] = None,
 ) -> None:
     """Full regime analysis with Dunkelflaute cards and interactive filter."""
-    tab_section_header("🔄 MARKET REGIME — Price regime detection and Dunkelflaute analysis")
+    tab_section_header("MARKET REGIME — Price regime detection and Dunkelflaute analysis")
 
     fig_dir = REGIME_FIG_DIR
     if figures_dir is not None:
@@ -302,7 +302,7 @@ def _dunkelflaute_card(df: pd.DataFrame, ev: dict) -> None:
         f'<div class="event-card">'
         f'<h4>{ev["label"]}</h4>'
         f'<div class="event-stat">Duration: <b>{duration_h} h</b> '
-        f'({ev["start"]} → {ev["end"]})</div>'
+        f'({ev["start"]} to {ev["end"]})</div>'
         f'<div class="event-stat">Min wind output: <b>{wind_txt}</b></div>'
         f'<div class="event-stat">Max DA price: <b>{price_txt}</b></div>'
         f'<div class="event-stat">Revenue opportunity (1 MW vs €80): '

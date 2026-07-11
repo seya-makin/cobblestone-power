@@ -61,7 +61,7 @@ def render_backtest_panel(stats: Dict[str, Any], figures_dir: Path) -> None:
             '<div class="metric-label">SHARPE</div>'
             f'<div class="metric-value" style="color:#f59e0b;">{float(stats.get("sharpe_ratio", 0)):.2f}</div>'
             '<div class="metric-subtext" style="color:#f59e0b;text-transform:none;letter-spacing:0;">'
-            "⚠ No transaction costs assumed — not comparable to live trading."
+            "WARNING: No transaction costs assumed — not comparable to live trading."
             "</div></div>",
             unsafe_allow_html=True,
         )

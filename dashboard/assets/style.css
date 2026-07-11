@@ -394,9 +394,7 @@ section[data-testid="stSidebar"] {
   background: rgba(239, 68, 68, 0.06);
 }
 .placeholder-icon {
-  font-size: 24px;
-  color: #3b82f6;
-  margin-bottom: 8px;
+  display: none;
 }
 .placeholder-title, .error-title {
   font-size: 15px;
@@ -507,9 +505,9 @@ section[data-testid="stSidebar"] {
   border: 1px solid #1f2937;
 }
 .inv-ok { color: #10b981; }
-.inv-ok::before { content: "✓ "; font-weight: 700; }
+.inv-ok::before { content: ""; }
 .inv-hit { color: #ef4444; border-color: rgba(239, 68, 68, 0.4) !important; }
-.inv-hit::before { content: "✗ "; font-weight: 700; }
+.inv-hit::before { content: ""; }
 
 .hallu-pass {
   display: inline-block;

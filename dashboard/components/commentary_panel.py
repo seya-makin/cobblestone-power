@@ -28,7 +28,7 @@ def render_commentary_panel(
     signal: Dict[str, Any] | None = None,
 ) -> None:
     """Today's commentary, model vs market card, searchable audit log."""
-    tab_section_header("💬 MARKET COMMENTARY — AI-generated analyst note (Gemini 2.0 Flash)")
+    tab_section_header("MARKET COMMENTARY — AI-generated analyst note (Gemini 2.0 Flash)")
 
     has_text = bool((commentary or {}).get("commentary"))
     if not has_text:
@@ -40,7 +40,7 @@ def render_commentary_panel(
         )
         st.markdown(
             f'<div class="placeholder-card">'
-            f'<div class="placeholder-icon">◇</div>'
+            f'<div class="placeholder-icon"></div>'
             f'<div class="placeholder-title">{msg}</div>'
             f'<div class="placeholder-sub">Gemini 2.0 Flash · anti-hallucination guard enabled</div>'
             f"</div>",
@@ -52,12 +52,12 @@ def render_commentary_panel(
     hallu = commentary.get("hallucination_check", "—")
     if hallu == "PASS" or commentary.get("contains_hallucination_flag") is False:
         st.markdown(
-            '<div class="hallu-pass">✓ VERIFIED — No hallucinations detected</div>',
+            '<div class="hallu-pass">VERIFIED — No hallucinations detected</div>',
             unsafe_allow_html=True,
         )
     else:
         st.markdown(
-            '<div class="hallu-fail">⚠ HALLUCINATION FLAG — Review required</div>',
+            '<div class="hallu-fail">WARNING — HALLUCINATION FLAG — Review required</div>',
             unsafe_allow_html=True,
         )
 

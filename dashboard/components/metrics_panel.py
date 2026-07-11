@@ -26,7 +26,7 @@ def render_metrics_panel(
     wf: pd.DataFrame | None = None,
 ) -> None:
     """Headline metrics, MAE chart with DF bands, benchmark table."""
-    tab_section_header("📊 MODEL VALIDATION — Walk-forward performance vs published benchmarks")
+    tab_section_header("MODEL VALIDATION — Walk-forward performance vs published benchmarks")
     if not metrics:
         render_placeholder("Run pipeline to generate this data")
         return
@@ -217,18 +217,18 @@ def render_metrics_panel(
         ridge_skill_vs_naive = 100.0 * (1.0 - ridge_mae / naive_mae)
 
     comp = [
-        ("MAE ↓", naive_mae, ridge_mae, mae),
-        ("Skill vs Naive % ↑", 0.0, ridge_skill_vs_naive, skill_n),
-        ("Dir. Accuracy % ↑", None, None, direc),
-        ("Cov 90% ↑", None, None, 100 * cov if cov is not None else None),
+        ("MAE (lower better)", naive_mae, ridge_mae, mae),
+        ("Skill vs Naive % (higher better)", 0.0, ridge_skill_vs_naive, skill_n),
+        ("Dir. Accuracy % (higher better)", None, None, direc),
+        ("Cov 90% (higher better)", None, None, 100 * cov if cov is not None else None),
     ]
     body = []
     for label, n, r, x in comp:
         vals = [("Naive", n), ("Ridge", r), ("XGBoost", x)]
         numeric = [(k, v) for k, v in vals if v is not None]
-        if "↓" in label and numeric:
+        if "lower better" in label and numeric:
             winner = min(numeric, key=lambda t: t[1])[0]
-        elif "↑" in label and numeric:
+        elif "higher better" in label and numeric:
             winner = max(numeric, key=lambda t: t[1])[0]
         else:
             winner = None
@@ -256,7 +256,7 @@ def render_metrics_panel(
         + "</tbody></table>"
         + (
             f'<p style="color:#6b7280;font-size:11px;margin-top:8px;">'
-            f"Ridge MAE {ridge_mae:.2f} &gt; Naive MAE {naive_mae:.2f} → "
+            f"Ridge MAE {ridge_mae:.2f} &gt; Naive MAE {naive_mae:.2f} - "
             f"Ridge skill vs naive <span style='color:#ef4444;font-family:JetBrains Mono,monospace;'>"
             f"{ridge_skill_vs_naive:.1f}%</span>.</p>"
             if ridge_mae and naive_mae and ridge_skill_vs_naive is not None

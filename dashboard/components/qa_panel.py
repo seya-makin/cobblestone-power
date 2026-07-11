@@ -21,7 +21,7 @@ from dashboard.utils.dashboard_helpers import (
 @safe_render("QA panel unavailable — run pipeline --mode qa")
 def render_qa_panel(qa_summary: Dict[str, Any], qa_dir: Path) -> None:
     """Quality gauge, provenance, coverage, LLM rules with CSV export."""
-    tab_section_header("✅ DATA QUALITY — LLM-powered validation with 20 physics-grounded rules")
+    tab_section_header("DATA QUALITY — LLM-powered validation with 20 physics-grounded rules")
     if not qa_summary:
         render_placeholder("Run pipeline to generate this data")
         return
@@ -34,7 +34,7 @@ def render_qa_panel(qa_summary: Dict[str, Any], qa_dir: Path) -> None:
         f'<div class="metric-label">Data Provenance</div>'
         f'<div style="font-size:13px;color:#f9fafb;line-height:1.6;margin-top:6px;font-weight:300;">'
         f"<b>Source:</b> SMARD (smard.de) — Bundesnetzagentur / ENTSO-E fallback<br>"
-        f"<b>Date range:</b> {dr.get('start', '—')} → {dr.get('end', '—')}<br>"
+        f"<b>Date range:</b> {dr.get('start', '—')} to {dr.get('end', '—')}<br>"
         f"<b>Total hours:</b> {qa_summary.get('total_hours', '—'):,}<br>"
         f"<b>Pipeline version:</b> {qa_summary.get('pipeline_version', '—')}"
         f"</div></div>",

@@ -109,7 +109,7 @@ def render_placeholder(message: str = "Run pipeline to generate this data") -> N
     """Styled empty-state card when a parquet/JSON artefact is missing."""
     st.markdown(
         f'<div class="placeholder-card">'
-        f'<div class="placeholder-icon">◇</div>'
+        f'<div class="placeholder-icon"></div>'
         f'<div class="placeholder-title">{message}</div>'
         f'<div class="placeholder-sub">python run_pipeline.py --mode full</div>'
         f"</div>",
@@ -193,7 +193,7 @@ def safe_dataframe(df: Any, **kwargs: Any) -> None:
 
 
 def _delta_class_and_text(delta: str) -> tuple[str, str]:
-    """Map a delta string to (css_class, display with ↑/↓)."""
+    """Map a delta string to (css_class, display text without arrows)."""
     raw = (delta or "").strip()
     if not raw:
         return "flat", ""
@@ -208,10 +208,8 @@ def _delta_class_and_text(delta: str) -> tuple[str, str]:
                 cls = "down"
         except ValueError:
             cls = "flat"
-    if cls == "up" and "↑" not in raw:
-        raw = f"↑ {raw.lstrip('+')}"
-    elif cls == "down" and "↓" not in raw:
-        raw = f"↓ {raw}"
+    # Strip any legacy arrow glyphs
+    raw = raw.replace("↑", "").replace("↓", "").strip()
     return cls, raw
 
 
@@ -224,12 +222,12 @@ def metric_card_html(
     large: bool = False,
 ) -> str:
     """
-    KPI card HTML — label / value / delta↑↓ / subtext only.
+    KPI card HTML — label / value / delta / subtext only.
 
     Args:
         label: 11px uppercase grey
         value: 24px (or 36px if large) JetBrains Mono
-        delta: signed change — rendered with ↑ green / ↓ red
+        delta: signed change — green/red via CSS class
         subtext: 11px grey units/metadata
     """
     size_cls = "metric-value-lg" if large else "metric-value"
@@ -311,7 +309,7 @@ def system_status_dot(
     """
     Return (css_class, label, color) for system status.
 
-    Prefers walk_forward_metrics.json: if MAE exists and MAE < 50 → LIVE SMARD.
+    Prefers walk_forward_metrics.json: if MAE exists and MAE < 50, show LIVE SMARD.
     Otherwise amber SYNTHETIC. Red if pipeline never run.
     """
     metrics = metrics or {}

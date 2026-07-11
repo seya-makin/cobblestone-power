@@ -28,7 +28,7 @@ def _fmt(v: Any, digits: int = 1) -> str:
 @safe_render("Curve view unavailable — run pipeline --mode forecast")
 def render_curve_view(delivery_view: Dict[str, Any], signal: Dict[str, Any], wf: pd.DataFrame) -> None:
     """Render delivery-period HTML table, signal card, history, invalidation."""
-    tab_section_header("📈 TRADING SIGNAL — Prompt curve view and position recommendation")
+    tab_section_header("TRADING SIGNAL — Prompt curve view and position recommendation")
     if not delivery_view:
         render_placeholder("Run pipeline to generate this data")
         return

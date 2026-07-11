@@ -149,7 +149,6 @@ def _render_last_auction(wf: pd.DataFrame, date_sel) -> None:
         color = "#f59e0b"
     else:
         color = "#ef4444"
-    arrow = "↑" if delta > 0 else ("↓" if delta < 0 else "")
     st.markdown(
         f'<div class="compare-card">'
         f'<div class="compare-side"><div class="label">Yesterday actual baseload ({yday.date()})</div>'
@@ -158,7 +157,7 @@ def _render_last_auction(wf: pd.DataFrame, date_sel) -> None:
         f'<div class="compare-side"><div class="label">Model forecast (same day)</div>'
         f'<div class="value">{forecast_bl:.1f}</div>'
         f'<div style="color:{color};font-size:13px;font-family:JetBrains Mono,monospace;">'
-        f"{arrow} {delta:+.1f} EUR/MWh</div></div>"
+        f"{delta:+.1f} EUR/MWh</div></div>"
         f"</div>",
         unsafe_allow_html=True,
     )
@@ -167,7 +166,7 @@ def _render_last_auction(wf: pd.DataFrame, date_sel) -> None:
 def main() -> None:
     st.set_page_config(
         page_title="Cobblestone Power Analytics",
-        page_icon="⚡",
+        page_icon=None,
         layout="wide",
         initial_sidebar_state="expanded",
     )
@@ -251,7 +250,10 @@ def main() -> None:
 
         section_spacer()
         for name, done in steps.items():
-            mark = '<span class="ok">✓</span>' if done else '<span class="pending">○</span>'
+            if done:
+                mark = '<span class="ok">DONE</span>'
+            else:
+                mark = '<span class="pending">PENDING</span>'
             st.markdown(
                 f'<div class="pipeline-step">{mark} {name}</div>',
                 unsafe_allow_html=True,
@@ -334,7 +336,7 @@ def main() -> None:
   text-transform: uppercase;
   letter-spacing: 0.06em;
 ">
-  <span style="color:{status_color}">⬤</span>
+  <span style="color:{status_color};font-weight:600;">STATUS</span>
   <span>{status_label}</span>
   <span style="color:#1f2937">|</span>
   <span>v{PIPELINE_VERSION}</span>
@@ -360,7 +362,7 @@ def main() -> None:
         with st.container():
             with st.spinner("Loading forecast data..."):
                 tab_section_header(
-                    "⚡ DAILY FORECAST — Fair-value DA price with uncertainty bounds"
+                    "DAILY FORECAST — Fair-value DA price with uncertainty bounds"
                 )
                 day = _day_slice(wf, date_sel)
                 dunk_risk = float(signal.get("dunkelflaute_risk", 0) or 0)
@@ -370,7 +372,7 @@ def main() -> None:
                 if dunk_risk > 0.5:
                     st.markdown(
                         '<div class="alert-banner alert-dunkelflaute">'
-                        "⚠ DUNKELFLAUTE RISK ELEVATED — Wind+Solar forecast &lt; 10% of load. "
+                        "WARNING: DUNKELFLAUTE RISK ELEVATED — Wind+Solar forecast &lt; 10% of load. "
                         "Historical precedent: Nov 2024 (€820/MWh), Dec 2024 (€900/MWh)"
                         "</div>",
                         unsafe_allow_html=True,
@@ -378,7 +380,7 @@ def main() -> None:
                 if neg_risk > 0.5:
                     st.markdown(
                         '<div class="alert-banner alert-negative">'
-                        "⚠ NEGATIVE PRICE RISK ELEVATED — High renewable penetration / weekend glut setup. "
+                        "WARNING: NEGATIVE PRICE RISK ELEVATED — High renewable penetration / weekend glut setup. "
                         "Watch for prices collapsing toward −€500/MWh."
                         "</div>",
                         unsafe_allow_html=True,
@@ -499,7 +501,7 @@ def main() -> None:
                     _render_last_auction(wf, date_sel)
 
                     section_spacer()
-                    with st.expander("Advanced Analysis ▼", expanded=False):
+                    with st.expander("Advanced Analysis", expanded=False):
                         left, right = st.columns(2)
                         with left:
                             _render_shap_panel(settings)
@@ -518,7 +520,7 @@ def main() -> None:
                             )
                 else:
                     render_placeholder("Run pipeline to generate this data")
-                    with st.expander("Advanced Analysis ▼", expanded=False):
+                    with st.expander("Advanced Analysis", expanded=False):
                         _render_shap_panel(settings)
             render_tab_footer()
 
