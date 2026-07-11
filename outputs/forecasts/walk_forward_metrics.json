@@ -57,5 +57,8 @@
   "extreme_definition": "per-window: price > train p85 OR price < 0",
   "extreme_percentile": 85.0,
   "mean_absolute_signal_error_eur": 25.373288681666654,
-  "n_hours": 8784
+  "n_hours": 8784,
+  "naive_mae": 32.8091,
+  "ridge_mae": 37.91,
+  "ridge_skill_vs_naive_pct": -15.5473
 }

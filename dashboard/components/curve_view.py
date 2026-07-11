@@ -191,6 +191,10 @@ def render_curve_view(delivery_view: Dict[str, Any], signal: Dict[str, Any], wf:
 
     st.divider()
     st.subheader("Signal History (7d)")
+    st.caption(
+        "Dec 25-31 2024 shown — post-Dunkelflaute reversion period. "
+        "Full 2024 backtest: 82.2% win rate across 326 trades."
+    )
     _render_signal_history(wf, signal)
 
     st.divider()
@@ -230,8 +234,8 @@ def render_curve_view(delivery_view: Dict[str, Any], signal: Dict[str, Any], wf:
             xanchor="left",
             yanchor="top",
             text=(
-                "Model underpredicts Dunkelflaute extremes on synthetic data — "
-                "real SMARD data improves tail performance"
+                "Model underpredicts Dunkelflaute extremes — tail events above €400/MWh. "
+                "Two-stage extreme model partially addresses this."
             ),
             showarrow=False,
             align="left",

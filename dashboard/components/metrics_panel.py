@@ -129,20 +129,27 @@ def render_metrics_panel(
             x1="2024-11-08",
             fillcolor="rgba(245,158,11,0.3)",
             line_width=0,
-            annotation_text="Dunkelflaute — prices hit €820/MWh",
-            annotation_position="top left",
-            annotation_font=dict(size=12, color="#f59e0b", family="Inter"),
         )
         fig.add_vrect(
             x0="2024-12-12",
             x1="2024-12-15",
             fillcolor="rgba(245,158,11,0.3)",
             line_width=0,
-            annotation_text="Dunkelflaute — prices hit €900/MWh",
-            annotation_position="top left",
-            annotation_font=dict(size=12, color="#f59e0b", family="Inter"),
         )
-        fig.update_annotations(font=dict(size=12, color="#f59e0b", family="Inter"))
+        fig.add_annotation(
+            x="2024-11-05",
+            y=900,
+            text="<b>Nov DF — €820/MWh</b>",
+            showarrow=False,
+            font=dict(size=12, color="#f59e0b", family="Inter"),
+        )
+        fig.add_annotation(
+            x="2024-12-13",
+            y=900,
+            text="<b>Dec DF — €900/MWh</b>",
+            showarrow=False,
+            font=dict(size=12, color="#f59e0b", family="Inter"),
+        )
         fig.update_layout(
             title=dict(text="Walk-forward Forecast vs Actual", x=0.0, xanchor="left"),
             height=380,
@@ -183,13 +190,35 @@ def render_metrics_panel(
 
     # Metrics comparison with winner highlight
     st.subheader("Model Metrics Comparison")
-    skill_r = metrics.get("skill_vs_ridge_pct")
-    # Approximate naive/ridge MAE from skill
-    naive_mae = mae / (1 - skill_n / 100) if mae and skill_n is not None and skill_n < 100 else None
-    ridge_mae = mae / (1 - skill_r / 100) if mae and skill_r is not None and skill_r < 100 else None
+    # Reconstruct absolute MAEs, then Ridge skill vs naive (NOT XGB-vs-Ridge)
+    naive_mae = None
+    ridge_mae = None
+    if mae is not None and skill_n is not None and skill_n < 100:
+        try:
+            naive_mae = float(mae) / (1.0 - float(skill_n) / 100.0)
+        except ZeroDivisionError:
+            naive_mae = None
+    # Prefer reconstructing ridge MAE from XGB skill-vs-ridge if available
+    skill_r_xgb = metrics.get("skill_vs_ridge_pct")
+    if mae is not None and skill_r_xgb is not None and skill_r_xgb < 100:
+        try:
+            ridge_mae = float(mae) / (1.0 - float(skill_r_xgb) / 100.0)
+        except ZeroDivisionError:
+            ridge_mae = None
+    # Prefer explicit ridge skill vs naive from metrics JSON when present
+    ridge_skill_vs_naive = None
+    if metrics.get("ridge_skill_vs_naive_pct") is not None:
+        ridge_skill_vs_naive = float(metrics["ridge_skill_vs_naive_pct"])
+    if metrics.get("naive_mae") is not None:
+        naive_mae = float(metrics["naive_mae"])
+    if metrics.get("ridge_mae") is not None:
+        ridge_mae = float(metrics["ridge_mae"])
+    if ridge_skill_vs_naive is None and naive_mae and ridge_mae and naive_mae > 0:
+        ridge_skill_vs_naive = 100.0 * (1.0 - ridge_mae / naive_mae)
+
     comp = [
         ("MAE ↓", naive_mae, ridge_mae, mae),
-        ("Skill vs Naive % ↑", 0.0, skill_r, skill_n),
+        ("Skill vs Naive % ↑", 0.0, ridge_skill_vs_naive, skill_n),
         ("Dir. Accuracy % ↑", None, None, direc),
         ("Cov 90% ↑", None, None, 100 * cov if cov is not None else None),
     ]
@@ -208,7 +237,13 @@ def render_metrics_panel(
             if v is None:
                 return "<td>—</td>"
             cls = "win-cell" if name == winner else ""
-            return f'<td class="{cls}">{v:.2f}</td>'
+            style = ""
+            if "Skill" in label and v < 0:
+                style = "color:#ef4444;font-family:JetBrains Mono,monospace;"
+                cls = ""
+            elif style == "" and "Skill" in label:
+                style = "font-family:JetBrains Mono,monospace;"
+            return f'<td class="{cls}" style="{style}">{v:.2f}</td>'
 
         body.append(
             f"<tr><td>{label}</td>{cell('Naive', n)}{cell('Ridge', r)}{cell('XGBoost', x)}</tr>"
@@ -218,7 +253,15 @@ def render_metrics_panel(
         "<th>Metric</th><th>Naive</th><th>Ridge</th><th>XGBoost</th>"
         "</tr></thead><tbody>"
         + "".join(body)
-        + "</tbody></table>",
+        + "</tbody></table>"
+        + (
+            f'<p style="color:#6b7280;font-size:11px;margin-top:8px;">'
+            f"Ridge MAE {ridge_mae:.2f} &gt; Naive MAE {naive_mae:.2f} → "
+            f"Ridge skill vs naive <span style='color:#ef4444;font-family:JetBrains Mono,monospace;'>"
+            f"{ridge_skill_vs_naive:.1f}%</span>.</p>"
+            if ridge_mae and naive_mae and ridge_skill_vs_naive is not None
+            else ""
+        ),
         unsafe_allow_html=True,
     )
 

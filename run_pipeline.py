@@ -224,32 +224,32 @@ def cmd_commentary() -> Dict[str, Any]:
 
     m = {
         "forecast_date": str(last_day.date()),
-        "da_baseload_forecast_eur_mwh": round(float(day["y_pred"].mean()), 1),
+        "da_baseload_forecast_eur_mwh": round(float(day["y_pred"].mean()), 2),
         "da_peak_forecast_eur_mwh": round(
-            float(day.loc[(day.index.hour >= 8) & (day.index.hour < 20), "y_pred"].mean()), 1
+            float(day.loc[(day.index.hour >= 8) & (day.index.hour < 20), "y_pred"].mean()), 2
         ),
-        "conformal_90_low": round(float(day["conformal_90_low"].mean()), 1),
-        "conformal_90_high": round(float(day["conformal_90_high"].mean()), 1),
+        "conformal_90_low": round(float(day["conformal_90_low"].mean()), 2),
+        "conformal_90_high": round(float(day["conformal_90_high"].mean()), 2),
         "conformal_interval_width": round(
-            float(day["conformal_90_high"].mean() - day["conformal_90_low"].mean()), 1
+            float(day["conformal_90_high"].mean() - day["conformal_90_low"].mean()), 2
         ),
-        "residual_load_forecast_mw": 42000,
-        "wind_forecast_mw": 18000,
-        "solar_forecast_mw": 5000,
+        "residual_load_forecast_mw": 42000.0,
+        "wind_forecast_mw": 18000.0,
+        "solar_forecast_mw": 5000.0,
         "renewable_penetration_pct": 40.0,
-        "da_load_forecast_mw": 54000,
+        "da_load_forecast_mw": 54000.0,
         "dominant_regime": int(signal.get("dominant_regime", 2)),
-        "dunkelflaute_risk_score": float(signal.get("dunkelflaute_risk", 0.1)),
-        "negative_price_risk_score": float(signal.get("negative_price_risk", 0.1)),
+        "dunkelflaute_risk_score": round(float(signal.get("dunkelflaute_risk", 0.1) or 0.0), 2),
+        "negative_price_risk_score": round(float(signal.get("negative_price_risk", 0.1) or 0.0), 2),
         "top_shap_feature": "residual_load",
         "top_shap_value": 10.0,
         "second_shap_feature": "price_lag_168h",
         "second_shap_value": -5.0,
         "forecast_vs_same_day_last_week_eur": round(
-            float(day["y_pred"].mean() - day["y_naive"].mean()) if "y_naive" in day else 0.0, 1
+            float(day["y_pred"].mean() - day["y_naive"].mean()) if "y_naive" in day else 0.0, 2
         ),
-        "model_mae_last_30d": round(float(metrics_file.get("MAE", 0)), 1),
-        "model_skill_vs_naive_pct": round(float(metrics_file.get("skill_vs_naive_pct", 0)), 1),
+        "model_mae_last_30d": round(float(metrics_file.get("MAE", 0)), 2),
+        "model_skill_vs_naive_pct": round(float(metrics_file.get("skill_vs_naive_pct", 0)), 2),
         "is_holiday": False,
         "is_weekend": bool(last_day.dayofweek >= 5),
         "is_dst_transition": False,
@@ -263,16 +263,21 @@ def cmd_commentary() -> Dict[str, Any]:
         if last_day in master.index or len(master.loc[last_day : last_day + pd.Timedelta(hours=23)]):
             md = master.loc[last_day : last_day + pd.Timedelta(hours=23)]
             if not md.empty:
-                m["da_load_forecast_mw"] = round(float(md["da_load"].mean()), 0)
-                m["wind_forecast_mw"] = round(float(md["da_wind"].mean()), 0)
-                m["solar_forecast_mw"] = round(float(md["da_solar"].mean()), 0)
+                m["da_load_forecast_mw"] = round(float(md["da_load"].mean()), 2)
+                m["wind_forecast_mw"] = round(float(md["da_wind"].mean()), 2)
+                m["solar_forecast_mw"] = round(float(md["da_solar"].mean()), 2)
                 m["residual_load_forecast_mw"] = round(
-                    float((md["da_load"] - md["da_wind"] - md["da_solar"]).mean()), 0
+                    float((md["da_load"] - md["da_wind"] - md["da_solar"]).mean()), 2
                 )
                 m["renewable_penetration_pct"] = round(
-                    float(((md["da_wind"] + md["da_solar"]) / md["da_load"]).mean() * 100), 1
+                    float(((md["da_wind"] + md["da_solar"]) / md["da_load"]).mean() * 100), 2
                 )
 
+    # Final pass: round every float to 2 d.p. before Gemini
+    m = {
+        k: (round(float(v), 2) if isinstance(v, (int, float)) and not isinstance(v, bool) else v)
+        for k, v in m.items()
+    }
     return MarketCommentator().generate_daily_commentary(m)
 
 

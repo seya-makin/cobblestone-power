@@ -15,6 +15,17 @@ DISCLAIMER = (
     "For illustrative purposes only."
 )
 
+REGIME_LABELS = {
+    "0": "Negative/Glut",
+    "1": "Low",
+    "2": "Normal",
+    "3": "Dunkelflaute",
+    0: "Negative/Glut",
+    1: "Low",
+    2: "Normal",
+    3: "Dunkelflaute",
+}
+
 
 @safe_render("Backtest panel unavailable — run pipeline --mode backtest")
 def render_backtest_panel(stats: Dict[str, Any], figures_dir: Path) -> None:
@@ -46,19 +57,54 @@ def render_backtest_panel(stats: Dict[str, Any], figures_dir: Path) -> None:
         )
     with c4:
         st.markdown(
-            metric_card_html("Sharpe", f"{stats.get('sharpe_ratio', 0):.2f}"),
+            '<div class="metric-card" style="border-color:#f59e0b;">'
+            '<div class="metric-label">SHARPE</div>'
+            f'<div class="metric-value" style="color:#f59e0b;">{float(stats.get("sharpe_ratio", 0)):.2f}</div>'
+            '<div class="metric-subtext" style="color:#f59e0b;text-transform:none;letter-spacing:0;">'
+            "⚠ No transaction costs assumed — not comparable to live trading."
+            "</div></div>",
             unsafe_allow_html=True,
         )
 
     st.subheader("P&L by Regime")
-    st.json(stats.get("by_regime", {}))
+    by_reg = stats.get("by_regime", {}) or {}
+    rows = []
+    for rid in ["0", "1", "2", "3"]:
+        block = by_reg.get(rid) or by_reg.get(int(rid)) or {}
+        if not block:
+            continue
+        pnl = float(block.get("total_pnl", 0) or 0)
+        wr = float(block.get("win_rate", 0) or 0)
+        n = int(block.get("n_trades", 0) or 0)
+        pnl_cls = "cell-low" if pnl >= 0 else "cell-high"
+        rows.append(
+            f"<tr>"
+            f"<td>{rid}</td>"
+            f"<td>{REGIME_LABELS.get(rid, rid)}</td>"
+            f"<td style='font-family:JetBrains Mono,monospace'>{n}</td>"
+            f"<td class='{pnl_cls}' style='font-family:JetBrains Mono,monospace'>{pnl:+.1f}</td>"
+            f"<td style='font-family:JetBrains Mono,monospace'>{100 * wr:.1f}%</td>"
+            f"</tr>"
+        )
+    if rows:
+        st.markdown(
+            '<table class="qa-table"><thead><tr>'
+            "<th>Regime</th><th>Name</th><th>N Trades</th>"
+            "<th>Total P&L EUR/MW</th><th>Win Rate</th>"
+            "</tr></thead><tbody>"
+            + "".join(rows)
+            + "</tbody></table>",
+            unsafe_allow_html=True,
+        )
+    else:
+        render_placeholder("No regime P&L breakdown available")
 
     for name in ["pnl_curve.png", "trade_distribution.png", "regime_pnl_breakdown.png"]:
         path = figures_dir / "forecasts" / name
-        if path.exists():
-            try:
+        try:
+            if path.exists():
                 st.image(str(path), caption=name)
-            except Exception:
-                pass
+        except Exception:
+            pass
 
     st.markdown(f'<p class="disclaimer">{DISCLAIMER}</p>', unsafe_allow_html=True)
