@@ -63,13 +63,11 @@ Response: `[[unix_ms, value], ...]` arrays converted to UTC-indexed hourly Serie
 | 2023 | 52.54 | Transition year |
 | 2024 | **25.37** | Primary benchmark year |
 
-Post-crisis evaluation (2023-2024 training, excluding Ukraine gas crisis): MAE 24.98 EUR/MWh, directional accuracy 84.6% — individual quarterly walk-forward windows in calm periods achieve MAE of 9-18 EUR/MWh; Nov/Dec Dunkelflaute tails dominate the annual average regardless of training window.
-
-Directional accuracy: **82.9%**. Two-stage architecture: binary classifier routes 17.2% of hours to an extreme-event regressor trained with price-proportional sample weights; a dedicated negative-price classifier (scale_pos_weight=18.2, summer recall 91.1%, full-year 88.0%) feeds probability as a feature into the main model.
+Directional accuracy: **82.9%**. Negative-price recall: **87.7%** of the 457 actual negative-price hours correctly flagged as high-risk — directly relevant to renewable cannibalization trading. Two-stage architecture: binary classifier routes 17.2% of hours to an extreme-event regressor trained with price-proportional sample weights; a dedicated negative-price classifier (scale_pos_weight=18.2, summer recall 91.1%, full-year 88.0%) feeds probability as a feature into the main model.
 
 **Validation:** 52-window expanding walk-forward; min train 365 days; step 7 days; test full 2024 (8,784 hours); zero shuffling, zero future leakage.
 
-**Conformal Prediction (O'Connor et al., 2025):** Regime-conditioned split conformal prediction with distribution-free coverage — no Gaussian assumptions. Empirical 90% coverage: **91.0%**.
+**Conformal Prediction (O'Connor et al., 2025):** Regime-conditioned split conformal prediction with distribution-free coverage — no Gaussian assumptions. Empirical 90% coverage: **91.0%**. Full 2024 out-of-sample predictions in submission.csv (8,784 rows): point forecast, 7 quantiles, conformal intervals, regime label, and Dunkelflaute risk score per hour.
 
 ---
 
@@ -89,6 +87,8 @@ All with 80% and 95% conformal prediction intervals.
 Regime 3 (Dunkelflaute, residual load above 55GW and wind below 5GW): LONG prompt peak. Nov 2024 event drove DA prices to €145/MWh — gas peakers earned a disproportionate share of annual wholesale revenue over 111 hours. Regime 0 (renewable glut, penetration above 80% on summer weekends): SHORT prompt baseload, long battery charge/discharge spread.
 
 **Invalidation:** wind revision >20%; TTF move >€3/MWh overnight; French nuclear drop >2,000 MW; DA clearing >2σ from forecast; residual load change >15%; unplanned outage >1,000 MW; regime flip pre-delivery; conformal band expands >50% vs 7-day mean.
+
+Simplified 2024 backtest: 326 trades, 82.2% win rate, +10,272 EUR/MW cumulative P&L (illustrative — no transaction costs).
 
 ---
 
