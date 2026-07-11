@@ -1,30 +1,30 @@
 {
   "alpha": 0.1,
   "nominal_coverage": 0.9,
-  "empirical_coverage": 0.902436247723133,
+  "empirical_coverage": 0.9126821493624773,
   "n": 8784,
-  "mean_width": 105.48879034348904,
+  "mean_width": 125.75985293091198,
   "coverage_scale": 1.05,
   "by_regime": {
     "0": {
-      "empirical_coverage": 0.9516994633273703,
+      "empirical_coverage": 0.924865831842576,
       "n": 559,
-      "mean_width": 126.23902487600103
+      "mean_width": 104.37537553024295
     },
     "1": {
-      "empirical_coverage": 0.9198452183526811,
+      "empirical_coverage": 0.9137645107794361,
       "n": 3618,
-      "mean_width": 68.83186454201599
+      "mean_width": 67.38652784729004
     },
     "2": {
-      "empirical_coverage": 0.8915420665030127,
+      "empirical_coverage": 0.9120731979468869,
       "n": 4481,
-      "mean_width": 128.43063238528117
+      "mean_width": 165.40109619140628
     },
     "3": {
-      "empirical_coverage": 0.5714285714285714,
+      "empirical_coverage": 0.8492063492063492,
       "n": 126,
-      "mean_width": 250.11563365130422
+      "mean_width": 486.9995510995076
     }
   }
 }

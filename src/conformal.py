@@ -29,6 +29,9 @@ from src.utils import write_json
 logger = logging.getLogger(__name__)
 
 MIN_REGIME_CAL_SAMPLES: int = 50
+# Below this count, empirical regime quantiles are unstable (esp. Dunkelflaute).
+# Use volatility-scaled global quantiles instead.
+VOLATILITY_SCALE_MIN_SAMPLES: int = 200
 DEFAULT_LEVELS: List[float] = [0.05, 0.10, 0.25, 0.75, 0.90, 0.95]
 # Finite-sample coverage correction applied on top of the split-conformal quantile
 COVERAGE_CORRECTION_FACTOR: float = 1.05
@@ -64,6 +67,7 @@ class ConformalPredictionWrapper:
         self.global_quantiles: Dict[float, float] = {}
         self.regime_quantiles: Dict[int, Dict[float, float]] = {}
         self.regime_counts: Dict[int, int] = {}
+        self.regime_vol_scaled: Dict[int, bool] = {}
         self.coverage_scale: float = COVERAGE_CORRECTION_FACTOR
         self._cal_residuals: Optional[np.ndarray] = None
         self._cal_y: Optional[pd.Series] = None
@@ -152,10 +156,15 @@ class ConformalPredictionWrapper:
 
         self.regime_quantiles = {}
         self.regime_counts = {}
+        self.regime_vol_scaled: Dict[int, bool] = {}
+        std_global = float(np.std(residuals, ddof=1)) if len(residuals) > 1 else 0.0
+
         for r in range(4):
             mask = aligned["regime"].astype(int) == r
-            self.regime_counts[r] = int(mask.sum())
-            if mask.sum() >= MIN_REGIME_CAL_SAMPLES:
+            n_r = int(mask.sum())
+            self.regime_counts[r] = n_r
+            self.regime_vol_scaled[r] = False
+            if n_r >= MIN_REGIME_CAL_SAMPLES:
                 rr = (aligned.loc[mask, "y"] - aligned.loc[mask, "yhat"]).abs().to_numpy()
                 self.regime_quantiles[r] = {
                     lv: self._conformal_quantile(rr, lv) for lv in levels
@@ -165,9 +174,38 @@ class ConformalPredictionWrapper:
                 logger.info(
                     "Regime %s has %s cal samples (< %s) — using global conformal quantiles",
                     r,
-                    int(mask.sum()),
+                    n_r,
                     MIN_REGIME_CAL_SAMPLES,
                 )
+
+        # Volatility-scaled fallback for low-sample regimes (n < 200):
+        # q_regime = q_global × (std_regime / std_global)
+        for r in range(4):
+            n_r = self.regime_counts.get(r, 0)
+            if n_r <= 0 or n_r >= VOLATILITY_SCALE_MIN_SAMPLES:
+                continue
+            mask = aligned["regime"].astype(int) == r
+            rr = (aligned.loc[mask, "y"] - aligned.loc[mask, "yhat"]).abs().to_numpy()
+            std_regime = float(np.std(rr, ddof=1)) if len(rr) > 1 else float(np.std(rr))
+            if std_global <= 1e-12:
+                vol_scale = 1.0
+            else:
+                vol_scale = std_regime / std_global
+            self.regime_quantiles[r] = {
+                lv: float(self.global_quantiles[lv]) * vol_scale for lv in levels
+            }
+            self.regime_vol_scaled[r] = True
+            logger.info(
+                "Regime %s has %s cal samples (< %s) — volatility-scaled quantiles "
+                "(std_r=%.2f / std_g=%.2f → ×%.3f); q90=%.2f",
+                r,
+                n_r,
+                VOLATILITY_SCALE_MIN_SAMPLES,
+                std_regime,
+                std_global,
+                vol_scale,
+                self.regime_quantiles[r].get(0.90, float("nan")),
+            )
 
         self._calibrated = True
 
@@ -175,10 +213,11 @@ class ConformalPredictionWrapper:
             self._widen_until_calibration_coverage(alpha=0.10, target=target_coverage)
 
         logger.info(
-            "Conformal calibrated — global q90=%.2f | scale=%.3f | regime counts=%s",
+            "Conformal calibrated — global q90=%.2f | scale=%.3f | regime counts=%s | vol_scaled=%s",
             self.global_quantiles.get(0.90, float("nan")) * self.coverage_scale,
             self.coverage_scale,
             self.regime_counts,
+            {k: v for k, v in self.regime_vol_scaled.items() if v},
         )
         return self
 
