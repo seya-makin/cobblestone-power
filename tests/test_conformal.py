@@ -21,3 +21,20 @@ def test_conformal_interval_is_symmetric():
     lower = y_hat - q_hat
     upper = y_hat + q_hat
     assert upper - y_hat == y_hat - lower
+
+def test_volatility_scaled_quantile_widens_for_higher_std():
+    q_global = 50.0
+    std_global = 20.0
+    std_regime = 80.0
+    q_regime = q_global * (std_regime / std_global)
+    assert q_regime == 200.0
+    assert q_regime > q_global
+
+def test_conformal_finite_sample_quantile_rank():
+    residuals = np.arange(1, 101, dtype=float)
+    alpha = 0.10
+    n = len(residuals)
+    k = int(np.ceil((1 - alpha) * (n + 1)))
+    assert k == 91
+    q_hat = residuals[k - 1]
+    assert q_hat == 91.0

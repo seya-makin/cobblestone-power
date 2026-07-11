@@ -26,3 +26,9 @@ def test_solar_zero_at_night():
     night_hours = pd.Series([0, 1, 2, 3, 4, 5, 21, 22, 23])
     is_night2 = (night_hours >= 20) | (night_hours <= 5)
     assert is_night2.all() == True
+
+def test_load_plausible_range_gw():
+    load_mw = pd.Series([25000.0, 55000.0, 72000.0])
+    load_gw = load_mw / 1000.0
+    assert (load_gw >= 20).all()
+    assert (load_gw <= 100).all()

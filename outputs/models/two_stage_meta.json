@@ -1,7 +1,7 @@
 {
-  "n_extreme_train": 3826,
+  "n_extreme_train": 3883,
   "extreme_prob_threshold": 0.6,
-  "extreme_high_eur": 98.0125,
+  "extreme_high_eur": 99.7625,
   "extreme_percentile": 85.0,
   "extreme_low_eur": 0.0,
   "classifier_features": [
@@ -19,5 +19,5 @@
   "negative_price_risk_threshold": 0.3,
   "use_price_transform": false,
   "time_weight_decay": 0.001,
-  "time_weight_end_over_start": 2.4683296496324756
+  "time_weight_end_over_start": 2.494175798467868
 }

@@ -21,3 +21,17 @@ def test_residual_load_formula():
     residual = load - wind - solar
     assert residual.iloc[0] == 35000.0
     assert residual.iloc[1] == 32000.0
+
+def test_price_lag_24h_alignment():
+    prices = pd.Series(range(48), dtype=float)
+    lag_24 = prices.shift(24)
+    assert pd.isna(lag_24.iloc[23])
+    assert lag_24.iloc[24] == 0.0
+    assert lag_24.iloc[47] == 23.0
+
+def test_cyclic_hour_encoding_bounds():
+    hour = pd.Series([0, 6, 12, 18])
+    hour_sin = np.sin(2 * np.pi * hour / 24)
+    hour_cos = np.cos(2 * np.pi * hour / 24)
+    assert (hour_sin >= -1).all() and (hour_sin <= 1).all()
+    assert (hour_cos >= -1).all() and (hour_cos <= 1).all()
