@@ -382,6 +382,28 @@ def cmd_dashboard() -> None:
     )
 
 
+def cmd_api() -> None:
+    """Launch FastAPI forecast server (reads existing outputs only)."""
+    import subprocess
+
+    console.print("Launching FastAPI on http://0.0.0.0:8000 — docs at /docs")
+    subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "uvicorn",
+            "api.main:app",
+            "--host",
+            "0.0.0.0",
+            "--port",
+            "8000",
+            "--reload",
+        ],
+        cwd=str(ROOT),
+        check=False,
+    )
+
+
 def run_full(resume: bool = False, fast: bool = True) -> None:
     """Execute the complete 10-step pipeline with rich terminal output."""
     _banner()
@@ -481,6 +503,7 @@ def main() -> None:
             "commentary",
             "submission",
             "dashboard",
+            "api",
             "qa",
         ],
     )
@@ -526,6 +549,8 @@ def main() -> None:
         cmd_submission()
     elif args.mode == "dashboard":
         cmd_dashboard()
+    elif args.mode == "api":
+        cmd_api()
 
 
 if __name__ == "__main__":

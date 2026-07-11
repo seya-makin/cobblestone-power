@@ -146,7 +146,29 @@ python run_pipeline.py --mode full          # end-to-end (uses synthetic data if
 streamlit run dashboard/app.py              # trader dashboard
 ```
 
-Modes: `ingest | clean | qa | regime | features | validate [--resume] | forecast | backtest | commentary | submission | dashboard`.
+Modes: `ingest | clean | qa | regime | features | validate [--resume] | forecast | backtest | commentary | submission | dashboard | api`.
+
+## REST API
+
+Run the forecast API server:
+
+```bash
+python run_pipeline.py --mode api
+# or directly:
+uvicorn api.main:app --host 0.0.0.0 --port 8000
+```
+
+Endpoints:
+
+```
+GET /health          — system status and model metrics
+GET /forecast/latest — latest hourly DA forecast with conformal intervals
+GET /signal/latest   — current trading signal with conviction and rationale
+GET /curve/latest    — prompt day/week/month delivery period view
+GET /metrics         — full walk-forward validation metrics
+GET /submission      — download submission.csv
+GET /docs            — interactive Swagger API documentation
+```
 
 ## Limitations and Future Work
 

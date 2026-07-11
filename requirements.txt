@@ -22,3 +22,5 @@ holidays==0.50
 shap==0.45.1
 optuna==3.6.1
 mapie==0.8.6
+fastapi==0.111.0
+uvicorn==0.30.1
