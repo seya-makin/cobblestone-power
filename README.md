@@ -170,6 +170,22 @@ GET /submission      — download submission.csv
 GET /docs            — interactive Swagger API documentation
 ```
 
+## Docker
+
+Build:
+docker build -t cobblestone-power .
+
+Run dashboard:
+docker run -p 8501:8501 -e GEMINI_API_KEY=your_key cobblestone-power
+
+Run API:
+docker run -p 8000:8000 -e GEMINI_API_KEY=your_key cobblestone-power \
+  uvicorn api.main:app --host 0.0.0.0 --port 8000
+
+Run pipeline:
+docker run -e GEMINI_API_KEY=your_key cobblestone-power \
+  python run_pipeline.py --mode full
+
 ## Limitations and Future Work
 
 - No live NWP weather; renewable forecasts are ENTSO-E day-ahead only  
