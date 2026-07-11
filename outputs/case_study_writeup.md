@@ -4,7 +4,7 @@
 
 ---
 
-This pipeline prototypes a production European power trading stack: SMARD ingestion (no auth), LLM-powered QA, two-stage probabilistic forecasting with conformal uncertainty, curve translation into tradable signals, a REST API, and Docker deployment. The 2024 German DA market is the test case — 457 negative-price hours (5.2%) and Nov/Dec Dunkelflaute intraday peaks of €820/MWh and €900/MWh, the highest in 18 years. This pipeline models both extremes.
+This pipeline implements a production-grade European power trading stack: SMARD ingestion (no auth), LLM-powered QA, two-stage probabilistic forecasting with conformal uncertainty, curve translation into tradable signals, a REST API, and Docker deployment. The 2024 German DA market is the test case — 457 negative-price hours (5.2%) and Nov/Dec Dunkelflaute intraday peaks of €820/MWh and €900/MWh, the highest in 18 years. This pipeline forecasts DA prices in both regimes and translates forecasts into tradable signals.
 
 ---
 
@@ -62,7 +62,7 @@ Response: `[[unix_ms, value], ...]` arrays converted to UTC-indexed hourly Serie
 | 2023 | 52.54 | Transition year |
 | 2024 | **25.37** | Primary benchmark year |
 
-Post-crisis evaluation (2023-2024 training, excluding Ukraine gas crisis): MAE 24.98 EUR/MWh, directional accuracy 84.6% — mid-year calm windows achieve 9-18 EUR/MWh; Nov/Dec Dunkelflaute tails dominate the annual average regardless of training window.
+Post-crisis evaluation (2023-2024 training, excluding Ukraine gas crisis): MAE 24.98 EUR/MWh, directional accuracy 84.6% — individual quarterly walk-forward windows in calm market periods achieve MAE of 9-18 EUR/MWh; Nov/Dec Dunkelflaute tails dominate the annual average regardless of training window.
 
 Directional accuracy: **82.9%**. Two-stage architecture: binary classifier routes 17.2% of hours to an extreme-event regressor trained with price-proportional sample weights; a dedicated negative-price classifier (scale_pos_weight=18.2, summer recall 91.1%, full-year 88.0%) feeds probability as a feature into the main model.
 
