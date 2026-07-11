@@ -34,7 +34,6 @@ Response: `[[unix_ms, value], ...]` arrays converted to UTC-indexed hourly Serie
 
 **2024 verified facts:** Mean DA price €78.51/MWh; negative hours 457 (5.2%); Dunkelflaute detected: Nov 2–7 2024 (111 Dunkelflaute hours within 144h window), Dec 12–14 2024 (45 Dunkelflaute hours within 72h window).
 
-
 ---
 
 ## 2. Forecasting and Model Validation
@@ -86,7 +85,7 @@ Regime 3 (Dunkelflaute, residual load above 55GW and wind below 5GW): LONG promp
 
 **Invalidation:** wind revision >20%; TTF move >€3/MWh overnight; French nuclear drop >2,000 MW; DA clearing >2σ from forecast; residual load change >15%; unplanned outage >1,000 MW; regime flip pre-delivery; conformal band expands >50% vs 7-day mean.
 
-Simplified 2024 backtest: 326 trades, 82.2% win rate, +10,272 EUR/MW P&L (illustrative — no transaction costs).
+**Simplified 2024 backtest:** 326 trades, 82.2% win rate, +10,272 EUR/MW P&L (illustrative — no transaction costs).
 
 ---
 
