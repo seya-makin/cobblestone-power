@@ -1,0 +1,20 @@
+{
+  "features": [
+    "renewable_penetration",
+    "wind_solar_combined",
+    "is_weekend",
+    "solar_x_summer_weekend",
+    "summer_solar_weekend",
+    "month_in_summer",
+    "hour_of_day",
+    "month",
+    "negative_price_freq_7d",
+    "wind_x_offpeak"
+  ],
+  "scale_pos_weight": 18.23076923076923,
+  "n_negative_train": 575,
+  "n_train": 21686,
+  "negative_share_pct": 2.651480217651941,
+  "risk_threshold": 0.3,
+  "feature_name": "negative_price_probability"
+}

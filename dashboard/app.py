@@ -189,7 +189,7 @@ def main() -> None:
     mae = metrics.get("MAE")
     skill = metrics.get("skill_vs_naive_pct")
     has_forecasts = not wf.empty
-    _, status_label, _ = system_status_dot(settings, has_forecasts)
+    _, status_label, _ = system_status_dot(settings, has_forecasts, metrics)
     steps = pipeline_step_status(settings)
 
     # —— Sidebar ——
@@ -219,19 +219,25 @@ def main() -> None:
         )
 
         cov = metrics.get("conformal_coverage_90_empirical")
+        direc = metrics.get("directional_accuracy_pct")
         if mae is not None:
             st.markdown(
-                sidebar_metric_html("Test MAE", f"{mae:.2f} EUR/MWh"),
+                sidebar_metric_html("MAE", f"{mae:.2f} EUR/MWh"),
                 unsafe_allow_html=True,
             )
         if skill is not None:
             st.markdown(
-                sidebar_metric_html("Skill vs Naive", f"{skill:+.1f}%"),
+                sidebar_metric_html("Skill", f"{skill:+.1f}%"),
                 unsafe_allow_html=True,
             )
         if cov is not None:
             st.markdown(
-                sidebar_metric_html("Coverage 90%", f"{100 * cov:.1f}%"),
+                sidebar_metric_html("Coverage", f"{100 * cov:.1f}%"),
+                unsafe_allow_html=True,
+            )
+        if direc is not None:
+            st.markdown(
+                sidebar_metric_html("Directional", f"{direc:.1f}%"),
                 unsafe_allow_html=True,
             )
         st.markdown(
@@ -252,30 +258,23 @@ def main() -> None:
             )
 
         section_spacer()
-        from src.smard_ingestion import load_data_source
-
-        data_src = load_data_source(settings)
-        src_name = str(data_src.get("source", "") or "")
-        if src_name == "SMARD" or (settings.data_raw / "smard" / "da_price.parquet").exists():
+        # Badge mirrors status-bar MAE-based detection
+        if "LIVE" in status_label or "SMARD" in status_label:
             st.markdown(
                 '<div class="data-mode-badge data-mode-live">'
-                "DATA SOURCE: SMARD</div>",
+                "LIVE DATA — SMARD (smard.de)</div>",
                 unsafe_allow_html=True,
             )
-        elif src_name.startswith("ENTSOE") and "SYNTHETIC" not in src_name:
-            st.markdown(
-                '<div class="data-mode-badge data-mode-live">LIVE DATA — ENTSO-E</div>',
-                unsafe_allow_html=True,
-            )
-        elif settings.entsoe_key_is_placeholder():
+        elif "NEVER" in status_label:
             st.markdown(
                 '<div class="data-mode-badge data-mode-synthetic">'
-                "SYNTHETIC DATA</div>",
+                "PIPELINE NEVER RUN</div>",
                 unsafe_allow_html=True,
             )
         else:
             st.markdown(
-                '<div class="data-mode-badge data-mode-live">LIVE DATA — ENTSO-E</div>',
+                '<div class="data-mode-badge data-mode-synthetic">'
+                "SYNTHETIC DATA</div>",
                 unsafe_allow_html=True,
             )
 
@@ -354,7 +353,7 @@ def main() -> None:
         with st.container():
             with st.spinner("Loading forecast data..."):
                 tab_section_header(
-                    "DAILY FORECAST — Fair-value DA price with uncertainty bounds and key price drivers"
+                    "⚡ DAILY FORECAST — Fair-value DA price with uncertainty bounds"
                 )
                 day = _day_slice(wf, date_sel)
                 dunk_risk = float(signal.get("dunkelflaute_risk", 0) or 0)
@@ -463,7 +462,7 @@ def main() -> None:
                     _render_last_auction(wf, date_sel)
 
                     section_spacer()
-                    with st.expander("Advanced Analysis — click to expand", expanded=False):
+                    with st.expander("Advanced Analysis ▼", expanded=False):
                         left, right = st.columns(2)
                         with left:
                             _render_shap_panel(settings)
@@ -482,7 +481,7 @@ def main() -> None:
                             )
                 else:
                     render_placeholder("Run pipeline to generate this data")
-                    with st.expander("Advanced Analysis — click to expand", expanded=False):
+                    with st.expander("Advanced Analysis ▼", expanded=False):
                         _render_shap_panel(settings)
             render_tab_footer()
 

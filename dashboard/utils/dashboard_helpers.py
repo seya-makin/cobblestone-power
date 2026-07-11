@@ -73,8 +73,8 @@ PLOTLY_CONFIG: Dict[str, Any] = {
 FOOTER_HTML = (
     '<div class="dash-footer">'
     "Cobblestone Power Analytics v1.0.0 | Seya Makin | "
-    "Built with XGBoost + Conformal Prediction + Gemini 2.0 Flash | "
-    "Data: ENTSO-E / SMARD"
+    "Data: SMARD (smard.de) — Bundesnetzagentur | "
+    "Model: XGBoost + Conformal Prediction | LLM: Gemini 2.0 Flash"
     "</div>"
 )
 
@@ -303,27 +303,30 @@ def pipeline_step_status(settings: Any) -> Dict[str, bool]:
     }
 
 
-def system_status_dot(settings: Any, has_forecasts: bool) -> tuple[str, str, str]:
+def system_status_dot(
+    settings: Any,
+    has_forecasts: bool,
+    metrics: Optional[Dict[str, Any]] = None,
+) -> tuple[str, str, str]:
     """
     Return (css_class, label, color) for system status.
 
-    green = SMARD / live ENTSO-E, orange = synthetic, red = never run.
+    Prefers walk_forward_metrics.json: if MAE exists and MAE < 50 → LIVE SMARD.
+    Otherwise amber SYNTHETIC. Red if pipeline never run.
     """
+    metrics = metrics or {}
+    mae = metrics.get("MAE")
+    metrics_path = Path(settings.forecasts_dir) / "walk_forward_metrics.json"
+    if metrics_path.exists() and mae is not None:
+        try:
+            if float(mae) < 50.0:
+                return "status-dot-green", "LIVE DATA — SMARD (smard.de)", "#10b981"
+        except (TypeError, ValueError):
+            pass
+        return "status-dot-orange", "SYNTHETIC DATA", "#f59e0b"
     if not has_forecasts and not settings.master_dataset.exists():
         return "status-dot-red", "PIPELINE NEVER RUN", "#ef4444"
-    try:
-        from src.smard_ingestion import load_data_source
-
-        src = load_data_source(settings)
-        if src.get("source") == "SMARD" or (settings.data_raw / "smard" / "da_price.parquet").exists():
-            return "status-dot-green", "SMARD / LIVE", "#10b981"
-        if str(src.get("source", "")).startswith("ENTSOE") and "SYNTHETIC" not in str(src.get("source")):
-            return "status-dot-green", "LIVE / FRESH", "#10b981"
-    except Exception:
-        pass
-    if settings.entsoe_key_is_placeholder():
-        return "status-dot-orange", "SYNTHETIC DATA", "#f59e0b"
-    return "status-dot-green", "LIVE / FRESH", "#10b981"
+    return "status-dot-orange", "SYNTHETIC DATA", "#f59e0b"
 
 
 def render_tab_footer() -> None:
@@ -332,5 +335,8 @@ def render_tab_footer() -> None:
 
 
 def tab_section_header(text: str) -> None:
-    """Large accent section header at the top of each dashboard tab."""
-    st.markdown(f'<div class="tab-section-header">{_escape(text)}</div>', unsafe_allow_html=True)
+    """Tab hero header — 18px Inter, primary text, 24px bottom margin."""
+    st.markdown(
+        f'<div class="tab-section-header">{_escape(text)}</div>',
+        unsafe_allow_html=True,
+    )

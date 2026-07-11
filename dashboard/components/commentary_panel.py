@@ -11,6 +11,15 @@ import streamlit as st
 from dashboard.utils.dashboard_helpers import render_placeholder, safe_render, tab_section_header
 
 
+def _gemini_is_placeholder() -> bool:
+    try:
+        from config.settings import get_settings
+
+        return bool(get_settings().gemini_key_is_placeholder())
+    except Exception:
+        return True
+
+
 @safe_render("Commentary panel unavailable — run pipeline --mode commentary")
 def render_commentary_panel(
     commentary: Dict[str, Any],
@@ -19,9 +28,24 @@ def render_commentary_panel(
     signal: Dict[str, Any] | None = None,
 ) -> None:
     """Today's commentary, model vs market card, searchable audit log."""
-    tab_section_header("MARKET COMMENTARY — AI-generated daily analyst note from pipeline metrics")
-    if not commentary:
-        render_placeholder("Run pipeline to generate this data")
+    tab_section_header("💬 MARKET COMMENTARY — AI-generated analyst note (Gemini 2.0 Flash)")
+
+    has_text = bool((commentary or {}).get("commentary"))
+    if not has_text:
+        msg = (
+            "Commentary requires GEMINI_API_KEY — add key to .env and run "
+            "python run_pipeline.py --mode commentary"
+            if _gemini_is_placeholder()
+            else "Run pipeline to generate this data"
+        )
+        st.markdown(
+            f'<div class="placeholder-card">'
+            f'<div class="placeholder-icon">◇</div>'
+            f'<div class="placeholder-title">{msg}</div>'
+            f'<div class="placeholder-sub">Gemini 2.0 Flash · anti-hallucination guard enabled</div>'
+            f"</div>",
+            unsafe_allow_html=True,
+        )
         return
 
     st.divider()
@@ -73,10 +97,10 @@ def render_commentary_panel(
             f'<div class="compare-card">'
             f'<div class="compare-side"><div class="label">Model fair value (baseload)</div>'
             f'<div class="value">{float(model_bl):.1f}</div>'
-            f'<div style="color:#6b7280;font-size:12px;">{delta}</div></div>'
+            f'<div style="color:#6b7280;font-size:11px;">{delta}</div></div>'
             f'<div class="compare-side"><div class="label">Market / naive imply</div>'
             f'<div class="value">{f"{naive_proxy:.1f}" if naive_proxy is not None else "—"}</div>'
-            f'<div style="color:#6b7280;font-size:12px;">Seasonal naive (lag-168)</div></div>'
+            f'<div style="color:#6b7280;font-size:11px;">Seasonal naive (lag-168)</div></div>'
             f"</div>",
             unsafe_allow_html=True,
         )
@@ -99,26 +123,15 @@ def render_commentary_panel(
             continue
         try:
             records.append(json.loads(x))
-        except json.JSONDecodeError:
+        except Exception:
             continue
+    if not records:
+        render_placeholder("No commentary audit log yet")
+        return
+    st.dataframe(pd_safe(records), use_container_width=True)
 
-    q = st.text_input("Search audit log", "", key="commentary_audit_search")
-    date_filter = st.text_input("Filter by date (YYYY-MM-DD)", "", key="commentary_audit_date")
-    filtered = records
-    if q:
-        filtered = [r for r in filtered if q.lower() in json.dumps(r).lower()]
-    if date_filter:
-        filtered = [r for r in filtered if date_filter in str(r.get("timestamp", ""))]
 
-    st.dataframe(
-        [
-            {
-                "timestamp": r.get("timestamp"),
-                "words": r.get("word_count"),
-                "hallucination": r.get("contains_hallucination_flag"),
-                "ms": r.get("generation_time_ms"),
-            }
-            for r in filtered[-50:]
-        ],
-        use_container_width=True,
-    )
+def pd_safe(records: List[Dict[str, Any]]):
+    import pandas as pd
+
+    return pd.DataFrame(records)

@@ -1,0 +1,23 @@
+{
+  "n_extreme_train": 3826,
+  "extreme_prob_threshold": 0.6,
+  "extreme_high_eur": 98.0125,
+  "extreme_percentile": 85.0,
+  "extreme_low_eur": 0.0,
+  "classifier_features": [
+    "dunkelflaute_day_index",
+    "dunkelflaute_severity",
+    "renewable_penetration",
+    "residual_load",
+    "wind_ramp_rate",
+    "solar_cannibal_risk",
+    "is_weekend",
+    "month"
+  ],
+  "extreme_model_fitted": true,
+  "negative_price_feature": "negative_price_probability",
+  "negative_price_risk_threshold": 0.3,
+  "use_price_transform": false,
+  "time_weight_decay": 0.001,
+  "time_weight_end_over_start": 2.4683296496324756
+}

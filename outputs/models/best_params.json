@@ -1,0 +1,16 @@
+{
+  "best_params": {
+    "n_estimators": 609,
+    "max_depth": 4,
+    "learning_rate": 0.014410035429381402,
+    "subsample": 0.6225979319367615,
+    "colsample_bytree": 0.651223602926669,
+    "min_child_weight": 4,
+    "reg_alpha": 0.14739959282559756,
+    "reg_lambda": 1.8278293459982204
+  },
+  "best_mae": 19.495138806839144,
+  "n_trials": 50,
+  "n_folds": 4,
+  "search": "walk_forward_mae"
+}

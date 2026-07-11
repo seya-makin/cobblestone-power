@@ -1,15 +1,18 @@
-# Secrets
+# Secrets / local env
 .env
-
-# Data & model artefacts
-data/raw/
-data/processed/
-outputs/models/
-
-# Python
+.venv/
 __pycache__/
 *.pyc
-.venv/
-
-# macOS
 .DS_Store
+.gh-config/
+
+# Large raw / processed panels (regenerable)
+data/raw/
+data/processed/
+
+# Streamlit secrets
+.streamlit/secrets.toml
+
+# Keep outputs evidence on GitHub (figures, QA, logs, forecasts, models)
+# Do NOT exclude: outputs/figures/, outputs/qa_report/, outputs/logs/,
+# outputs/forecasts/, outputs/models/

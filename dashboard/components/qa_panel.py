@@ -21,7 +21,7 @@ from dashboard.utils.dashboard_helpers import (
 @safe_render("QA panel unavailable — run pipeline --mode qa")
 def render_qa_panel(qa_summary: Dict[str, Any], qa_dir: Path) -> None:
     """Quality gauge, provenance, coverage, LLM rules with CSV export."""
-    tab_section_header("DATA QUALITY — Automated QA with LLM-generated validation rules")
+    tab_section_header("✅ DATA QUALITY — LLM-powered validation with 20 physics-grounded rules")
     if not qa_summary:
         render_placeholder("Run pipeline to generate this data")
         return
@@ -33,7 +33,7 @@ def render_qa_panel(qa_summary: Dict[str, Any], qa_dir: Path) -> None:
         f'<div class="metric-card">'
         f'<div class="metric-label">Data Provenance</div>'
         f'<div style="font-size:13px;color:#f9fafb;line-height:1.6;margin-top:6px;font-weight:300;">'
-        f"<b>Source:</b> ENTSO-E Transparency / SMARD (or synthetic offline panel)<br>"
+        f"<b>Source:</b> SMARD (smard.de) — Bundesnetzagentur / ENTSO-E fallback<br>"
         f"<b>Date range:</b> {dr.get('start', '—')} → {dr.get('end', '—')}<br>"
         f"<b>Total hours:</b> {qa_summary.get('total_hours', '—'):,}<br>"
         f"<b>Pipeline version:</b> {qa_summary.get('pipeline_version', '—')}"
@@ -116,7 +116,22 @@ def render_qa_panel(qa_summary: Dict[str, Any], qa_dir: Path) -> None:
 
     st.divider()
     st.subheader("DST Transitions")
-    st.json(qa_summary.get("dst_transitions", {}))
+    dst = qa_summary.get("dst_transitions", {}) or {}
+    if dst:
+        dst_rows = "".join(
+            f"<tr><td>{_escape_qa(k)}</td><td style='font-family:JetBrains Mono,monospace'>{_escape_qa(str(v))}</td></tr>"
+            for k, v in dst.items()
+        )
+        st.markdown(
+            '<table class="qa-table"><thead><tr><th>Check</th><th>Result</th></tr></thead>'
+            f"<tbody>{dst_rows}</tbody></table>",
+            unsafe_allow_html=True,
+        )
+    else:
+        st.markdown(
+            '<div class="metric-subtext">No DST transition anomalies recorded</div>',
+            unsafe_allow_html=True,
+        )
 
     st.divider()
     rules_path = qa_dir / "llm_qa_rules.json"
@@ -178,6 +193,28 @@ def render_qa_panel(qa_summary: Dict[str, Any], qa_dir: Path) -> None:
         st.divider()
         st.subheader("Conformal Coverage by Regime")
         try:
-            st.json(json.loads(cov_path.read_text()))
+            cov_data = json.loads(cov_path.read_text())
+            if isinstance(cov_data, dict):
+                rows = "".join(
+                    f"<tr><td>{_escape_qa(str(k))}</td>"
+                    f"<td style='font-family:JetBrains Mono,monospace'>{_escape_qa(str(v))}</td></tr>"
+                    for k, v in cov_data.items()
+                )
+                st.markdown(
+                    '<table class="qa-table"><thead><tr><th>Regime / Metric</th><th>Value</th></tr></thead>'
+                    f"<tbody>{rows}</tbody></table>",
+                    unsafe_allow_html=True,
+                )
+            else:
+                st.write(cov_data)
         except Exception:
             render_placeholder("Conformal coverage JSON unreadable")
+
+
+def _escape_qa(text: str) -> str:
+    return (
+        text.replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace('"', "&quot;")
+    )

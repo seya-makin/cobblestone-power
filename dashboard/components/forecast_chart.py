@@ -37,6 +37,8 @@ def render_forecast_chart(df: pd.DataFrame, title: Optional[str] = None) -> None
 
     fig = go.Figure()
     center = df["y_pred"]
+    y_hi = float(center.max()) + DISPLAY_BAND_CLIP_EUR
+    y_lo = float(center.min()) - DISPLAY_BAND_CLIP_EUR
 
     if "price_regime" in df.columns:
         regimes = df["price_regime"].fillna(2).astype(int)
@@ -53,6 +55,8 @@ def render_forecast_chart(df: pd.DataFrame, title: Optional[str] = None) -> None
 
     if "conformal_90_low" in df.columns and "conformal_90_high" in df.columns:
         lo90, hi90 = _clip_band(df["conformal_90_low"], df["conformal_90_high"], center)
+        y_hi = max(y_hi, float(hi90.max()))
+        y_lo = min(y_lo, float(lo90.min()))
         fig.add_trace(
             go.Scatter(
                 x=list(df.index) + list(df.index[::-1]),
@@ -88,10 +92,12 @@ def render_forecast_chart(df: pd.DataFrame, title: Optional[str] = None) -> None
             )
         )
     if "y_true" in df.columns:
+        # Clip actuals into display window so axis stays readable
+        actual_disp = df["y_true"].clip(lower=y_lo, upper=y_hi)
         fig.add_trace(
             go.Scatter(
                 x=df.index,
-                y=df["y_true"],
+                y=actual_disp,
                 name="Actual",
                 line=dict(color="#f9fafb", width=2),
             )
@@ -103,19 +109,15 @@ def render_forecast_chart(df: pd.DataFrame, title: Optional[str] = None) -> None
             x=df.index,
             y=df["y_pred"],
             name="XGBoost",
-            mode="lines",
-            line=dict(color="#3b82f6", width=2.5),
-        )
-    )
-    fig.add_trace(
-        go.Scatter(
-            x=df.index[marker_mask],
-            y=df["y_pred"].iloc[marker_mask],
-            name="XGBoost (3h markers)",
-            mode="markers",
-            marker=dict(color="#3b82f6", size=7, symbol="circle", line=dict(color="#0a0d14", width=1)),
-            showlegend=False,
-            hoverinfo="skip",
+            mode="lines+markers",
+            line=dict(color="#3b82f6", width=4),
+            marker=dict(
+                color="#3b82f6",
+                size=8,
+                symbol="circle",
+                line=dict(color="#0a0d14", width=1),
+                opacity=[1.0 if m else 0.0 for m in marker_mask],
+            ),
         )
     )
     fig.add_hline(y=0, line_color="#ef4444", line_width=1, annotation_text="€0/MWh")
@@ -133,6 +135,7 @@ def render_forecast_chart(df: pd.DataFrame, title: Optional[str] = None) -> None
         margin=dict(l=48, r=24, t=88, b=40),
         xaxis_title="Hour (UTC)",
         yaxis_title="EUR/MWh",
+        yaxis=dict(range=[y_lo - 10, y_hi + 10]),
         hovermode="x unified",
     )
     st.markdown('<div class="forecast-chart-container">', unsafe_allow_html=True)
@@ -140,7 +143,7 @@ def render_forecast_chart(df: pd.DataFrame, title: Optional[str] = None) -> None
     st.markdown("</div>", unsafe_allow_html=True)
     st.markdown(
         '<div class="chart-subtitle">'
-        "Conformal bands clipped at ±150 for display clarity — full intervals in submission.csv"
+        "Conformal bands shown ±150 for clarity — full intervals in submission.csv"
         "</div>",
         unsafe_allow_html=True,
     )

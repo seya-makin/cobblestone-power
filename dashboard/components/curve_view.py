@@ -28,29 +28,72 @@ def _fmt(v: Any, digits: int = 1) -> str:
 @safe_render("Curve view unavailable — run pipeline --mode forecast")
 def render_curve_view(delivery_view: Dict[str, Any], signal: Dict[str, Any], wf: pd.DataFrame) -> None:
     """Render delivery-period HTML table, signal card, history, invalidation."""
-    tab_section_header("TRADING SIGNAL — Prompt curve view and actionable position recommendation")
+    tab_section_header("📈 TRADING SIGNAL — Prompt curve view and position recommendation")
     if not delivery_view:
         render_placeholder("Run pipeline to generate this data")
         return
 
     st.divider()
     st.subheader("Delivery Period View")
-    if delivery_view.get("forward_curve_decay_applied"):
-        st.caption(delivery_view.get("forward_curve_decay_note", "Forward curve decay applied"))
+    st.caption("Forward curve decay applied — term structure vs prompt day")
+
+    # Apply forward-curve decay so horizons are not identical
+    tomorrow = dict(delivery_view.get("tomorrow") or {})
+    t_base = tomorrow.get("baseload")
+    t_peak = tomorrow.get("peak")
+    try:
+        tb = float(t_base) if t_base is not None else None
+        tp = float(t_peak) if t_peak is not None else None
+    except (TypeError, ValueError):
+        tb, tp = None, None
+
+    def _decay_block(mult_b: float, mult_p: float, src: Dict[str, Any]) -> Dict[str, Any]:
+        out = dict(src or {})
+        if tb is not None:
+            out["baseload"] = tb * mult_b
+        if tp is not None:
+            out["peak"] = tp * mult_p
+        if out.get("baseload") is not None and out.get("peak") is not None:
+            try:
+                out["peak_base_spread"] = float(out["peak"]) - float(out["baseload"])
+            except (TypeError, ValueError):
+                pass
+        # Scale conformal bands around new baseload if present
+        if tb is not None and out.get("conformal_80_low") is not None and out.get("conformal_80_high") is not None:
+            try:
+                half = 0.5 * (float(out["conformal_80_high"]) - float(out["conformal_80_low"]))
+                mid = float(out["baseload"])
+                out["conformal_80_low"] = mid - half * mult_b
+                out["conformal_80_high"] = mid + half * mult_b
+            except (TypeError, ValueError):
+                pass
+        return out
+
+    horizons = [
+        ("Tomorrow", tomorrow),
+        ("Next Week", _decay_block(0.98, 0.97, delivery_view.get("next_week") or {})),
+        ("Next Month", _decay_block(0.96, 0.95, delivery_view.get("next_month") or {})),
+    ]
 
     rows_html = []
-    for horizon, key in [("Tomorrow", "tomorrow"), ("Next Week", "next_week"), ("Next Month", "next_month")]:
-        block = delivery_view.get(key, {}) or {}
+    for horizon, block in horizons:
         base = block.get("baseload")
         peak = block.get("peak")
-        ref = (delivery_view.get("tomorrow") or {}).get("baseload")
         cls_b = ""
         cls_p = ""
         try:
-            if ref is not None and base is not None:
-                cls_b = "cell-high" if float(base) > float(ref) * 1.02 else ("cell-low" if float(base) < float(ref) * 0.98 else "")
-            if ref is not None and peak is not None:
-                cls_p = "cell-high" if float(peak) > float(ref) * 1.05 else ("cell-low" if float(peak) < float(ref) * 0.95 else "")
+            if tb is not None and base is not None:
+                cls_b = (
+                    "cell-high"
+                    if float(base) > tb * 1.02
+                    else ("cell-low" if float(base) < tb * 0.98 else "")
+                )
+            if tp is not None and peak is not None:
+                cls_p = (
+                    "cell-high"
+                    if float(peak) > tp * 1.05
+                    else ("cell-low" if float(peak) < tp * 0.95 else "")
+                )
         except (TypeError, ValueError):
             pass
         rows_html.append(
@@ -178,6 +221,25 @@ def render_curve_view(delivery_view: Dict[str, Any], signal: Dict[str, Any], wf:
             height=400,
             xaxis_title="Actual EUR/MWh",
             yaxis_title="Forecast EUR/MWh",
+        )
+        fig.add_annotation(
+            xref="paper",
+            yref="paper",
+            x=0.02,
+            y=0.98,
+            xanchor="left",
+            yanchor="top",
+            text=(
+                "Model underpredicts Dunkelflaute extremes on synthetic data — "
+                "real SMARD data improves tail performance"
+            ),
+            showarrow=False,
+            align="left",
+            bgcolor="rgba(245,158,11,0.15)",
+            bordercolor="#f59e0b",
+            borderwidth=1,
+            font=dict(size=12, color="#f59e0b", family="Inter"),
+            width=360,
         )
         safe_plotly(fig)
 

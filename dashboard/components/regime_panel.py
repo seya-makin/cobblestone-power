@@ -40,7 +40,7 @@ DUNKEL_EVENTS = [
 @safe_render("Regime panel unavailable — run pipeline --mode regime")
 def render_regime_panel(regime_df: pd.DataFrame, figures_dir: Path) -> None:
     """Full regime analysis with Dunkelflaute cards and interactive filter."""
-    tab_section_header("MARKET REGIME — Price regime detection including Dunkelflaute early warning")
+    tab_section_header("🔄 MARKET REGIME — Price regime detection and Dunkelflaute analysis")
     if regime_df is None or regime_df.empty:
         render_placeholder("Run pipeline to generate this data")
         return
@@ -54,6 +54,12 @@ def render_regime_panel(regime_df: pd.DataFrame, figures_dir: Path) -> None:
         plot_df = regime_df[regime_df["price_regime"] == rid]
 
     st.subheader("Regime Timeline (2022–2024)")
+    st.markdown(
+        '<div class="chart-subtitle" style="margin-bottom:12px;">'
+        "Nov 2024: €820/MWh peak | Dec 2024: €900/MWh peak — highest in 18 years"
+        "</div>",
+        unsafe_allow_html=True,
+    )
     if "da_price" in plot_df.columns:
         step = max(1, len(plot_df) // 8000)
         p = plot_df.iloc[::step]
@@ -70,24 +76,24 @@ def render_regime_panel(regime_df: pd.DataFrame, figures_dir: Path) -> None:
         fig.add_vrect(
             x0="2024-11-02",
             x1="2024-11-08",
-            fillcolor="rgba(245,158,11,0.18)",
+            fillcolor="rgba(245,158,11,0.3)",
             line_width=0,
-            annotation_text="Nov DF",
+            annotation_text="<b>Nov DF</b>",
+            annotation_position="top left",
             annotation_font=dict(size=14, color="#f59e0b", family="Inter, sans-serif"),
-            annotation_font_size=14,
         )
         fig.add_vrect(
             x0="2024-12-12",
             x1="2024-12-15",
-            fillcolor="rgba(245,158,11,0.18)",
+            fillcolor="rgba(245,158,11,0.3)",
             line_width=0,
-            annotation_text="Dec DF",
+            annotation_text="<b>Dec DF</b>",
+            annotation_position="top left",
             annotation_font=dict(size=14, color="#f59e0b", family="Inter, sans-serif"),
-            annotation_font_size=14,
         )
-        # Force annotation style (Plotly vrect annotation_font can be flaky)
-        fig.update_annotations(font=dict(size=14, color="#f59e0b", family="Inter"), font_size=14)
+        fig.update_annotations(font=dict(size=14, color="#f59e0b", family="Inter", weight="bold"))
         fig.update_layout(
+            title=dict(text="Regime Timeline (2022–2024)", x=0.0, xanchor="left"),
             height=360,
             xaxis=dict(rangeslider=dict(visible=True), type="date"),
             yaxis_title="EUR/MWh",
@@ -96,7 +102,7 @@ def render_regime_panel(regime_df: pd.DataFrame, figures_dir: Path) -> None:
         safe_plotly(fig)
         st.markdown(
             '<div class="chart-subtitle">'
-            "Nov 2024: prices hit €820/MWh | Dec 2024: prices hit €900/MWh — highest in 18 years"
+            "Nov 2024: €820/MWh peak | Dec 2024: €900/MWh peak — highest in 18 years"
             "</div>",
             unsafe_allow_html=True,
         )

@@ -1,0 +1,37 @@
+{
+  "q05": {
+    "conservative": 0.5000000000000008,
+    "balanced": 0.49999999999999917,
+    "aggressive": 1.1102230246251568e-16
+  },
+  "q10": {
+    "conservative": 0.007047579832122521,
+    "balanced": 0.007047579832119452,
+    "aggressive": 0.985904840335758
+  },
+  "q25": {
+    "conservative": 0.0,
+    "balanced": 2.7755575615628914e-17,
+    "aggressive": 1.0
+  },
+  "q50": {
+    "conservative": 0.11899093955652466,
+    "balanced": 0.11899093955652355,
+    "aggressive": 0.7620181208869519
+  },
+  "q75": {
+    "conservative": 0.0,
+    "balanced": 0.0,
+    "aggressive": 1.0
+  },
+  "q90": {
+    "conservative": 0.18209741606203975,
+    "balanced": 0.18209741606204038,
+    "aggressive": 0.6358051678759199
+  },
+  "q95": {
+    "conservative": 0.5000000000000016,
+    "balanced": 0.49999999999999845,
+    "aggressive": 1.3877787807814457e-17
+  }
+}
