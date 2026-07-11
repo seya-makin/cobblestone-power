@@ -54,7 +54,7 @@ Response: `[[unix_ms, value], ...]` arrays converted to UTC-indexed hourly Serie
 
 *Ridge underperforms naive because L2 penalty shrinks price_lag_168h toward zero — it serves as a linear interpretability benchmark only.*
 
-**MAE by year (walk-forward, 2022-2024):**
+**MAE by year (walk-forward 2022–2024):**
 
 | Year | MAE | Context |
 |---|---|---|
@@ -69,6 +69,7 @@ Directional accuracy: **82.9%**. Two-stage architecture: binary classifier route
 **Conformal Prediction (O'Connor et al., 2025):** Regime-conditioned split conformal prediction with distribution-free coverage — no Gaussian assumptions. Empirical 90% coverage: **91.0%**.
 
 Full 2024 out-of-sample predictions in submission.csv (8,784 rows): point forecast, 7 quantiles, conformal intervals, regime label, and Dunkelflaute risk score per hour.
+
 ---
 
 ## 3. Prompt Curve Translation
@@ -84,7 +85,7 @@ All with 80% and 95% conformal prediction intervals.
 
 **Signal:** LONG if fair-value estimate (FV) > reference + 0.5 × CP80_width; SHORT if FV < reference − 0.5 × CP80_width; NEUTRAL otherwise. HIGH conviction if CP80 width < 80% of 7-day mean.
 
-Regime 3 (Dunkelflaute, residual load above 55GW and wind below 5GW): LONG prompt peak. Nov 2024 event drove DA prices to €145/MWh — gas peakers earned a disproportionate share of annual wholesale revenue in days. Regime 0 (renewable glut, penetration above 80% on summer weekends): SHORT prompt baseload, long battery charge/discharge spread.
+Regime 3 (Dunkelflaute, residual load above 55GW and wind below 5GW): LONG prompt peak. Nov 2024 event drove DA prices to €145/MWh — gas peakers earned a disproportionate share of annual wholesale revenue over 111 hours. Regime 0 (renewable glut, penetration above 80% on summer weekends): SHORT prompt baseload, long battery charge/discharge spread.
 
 **Invalidation:** wind revision >20%; TTF move >€3/MWh overnight; French nuclear drop >2,000 MW; DA clearing >2σ from forecast; residual load change >15%; unplanned outage >1,000 MW; regime flip pre-delivery; conformal band expands >50% vs 7-day mean.
 
@@ -94,12 +95,12 @@ Regime 3 (Dunkelflaute, residual load above 55GW and wind below 5GW): LONG promp
 
 Three Gemini 2.0 Flash integrations — all programmatic, logged to JSONL, auditable.
 
-Component 1 — LLM Data QA: Gemini receives schema plus 10 sample rows plus statistics and proposes 20 electricity-market-specific validation rules executed programmatically as Python boolean conditions. Component 2 — Market Commentary: 150–180 word Bloomberg-style note generated from 24 pipeline metrics only, with anti-hallucination guard cross-checking every number within 0.5 tolerance. Component 3 — Ingestion Config: field documentation converted to structured JSON ingestion config, eliminating manual field mapping hardcoding. All prompts, responses, and outputs logged to JSONL under outputs/logs/.
+Component 1 — LLM Data QA: Gemini receives schema plus 10 sample rows plus statistics and proposes 20 electricity-market-specific validation rules executed programmatically as Python boolean conditions. Component 2 — Market Commentary: 150–180 word Bloomberg-style note generated from 24 pipeline metrics only, with anti-hallucination guard cross-checking every number at ±0.5 tolerance. Component 3 — Ingestion Config: field documentation converted to structured JSON ingestion config, eliminating manual field mapping hardcoding. All prompts, responses, and outputs logged to JSONL under outputs/logs/.
 
 | Component | Logged | Hallucination Check | On Failure |
 |---|---|---|---|
 | QA Rules | Yes — JSONL | N/A | Log + continue |
-| Commentary | Yes — JSONL | Yes — within 0.5 tolerance | Flag + log |
+| Commentary | Yes — JSONL | Yes — ±0.5 tolerance | Flag + log |
 | Config Gen | Yes — JSONL | N/A | Fallback defaults |
 
 **References:** O'Connor et al. (2025) Energy and AI; Marcjasz et al. (2023) Energy Economics; Weron (2014) IJF; Wood Mackenzie (2025); Timera Energy (2025); FfE (2026).
