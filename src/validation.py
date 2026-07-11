@@ -34,11 +34,15 @@ from src.conformal import (
     ConformalPredictionWrapper,
 )
 from src.model import (
+    EVAL_MODE_FULL_PERIOD,
+    EVAL_MODE_POST_CRISIS,
     EXTREME_PRICE_HIGH_EUR,
     EXTREME_PRICE_LOW_EUR,
     EXTREME_PRICE_PERCENTILE,
     NEGATIVE_PRICE_FEATURE_NAME,
     NEGATIVE_PRICE_RISK_THRESHOLD,
+    POST_CRISIS_MIN_TRAIN_DAYS,
+    POST_CRISIS_TRAIN_START,
     QuantileRegressionAveraging,
     RidgeBaseline,
     SeasonalNaiveBaseline,
@@ -48,6 +52,8 @@ from src.model import (
     inverse_transform_price,
     is_extreme_price,
     pinball_loss,
+    resolve_train_start,
+    training_history_mask,
     transform_price,
 )
 import src.model as _model_mod
@@ -64,6 +70,9 @@ FORECAST_WINDOW_H: int = 24 * STEP_DAYS  # 168h per weekly refit
 CALIBRATION_DAYS: int = 90
 # Faster defaults for offline/demo runs; override via constructor
 FAST_N_ESTIMATORS: int = 200
+
+POST_CRISIS_RESULTS_NAME: str = "walk_forward_results_post_crisis.parquet"
+POST_CRISIS_SPLITS_DIRNAME: str = "walk_forward_splits_post_crisis"
 
 
 class WalkForwardValidator:
@@ -103,6 +112,10 @@ class WalkForwardValidator:
         test_start: Optional[pd.Timestamp] = None,
         test_end: Optional[pd.Timestamp] = None,
         min_train_days: Optional[int] = None,
+        eval_mode: str = EVAL_MODE_FULL_PERIOD,
+        train_start: Optional[pd.Timestamp] = None,
+        write_metrics: bool = True,
+        produce_figures_flag: bool = True,
     ) -> pd.DataFrame:
         """
         Execute walk-forward over the configured (or overridden) test window.
@@ -115,6 +128,10 @@ class WalkForwardValidator:
             tune: Run Optuna once on first window (expensive).
             test_start / test_end: Optional overrides of settings dates.
             min_train_days: Optional override of MIN_TRAIN_DAYS.
+            eval_mode: ``full_period`` (2022+) or ``post_crisis`` (2023+ train).
+            train_start: Optional explicit training-history floor (UTC).
+            write_metrics: Persist metrics JSON (full_period overwrites primary).
+            produce_figures_flag: Write validation figures (disabled for post_crisis).
 
         Returns:
             Concatenated results DataFrame.
@@ -125,12 +142,30 @@ class WalkForwardValidator:
                 return t.tz_localize("UTC")
             return t.tz_convert("UTC")
 
+        mode = (eval_mode or EVAL_MODE_FULL_PERIOD).strip().lower()
+        if mode not in {EVAL_MODE_FULL_PERIOD, EVAL_MODE_POST_CRISIS}:
+            raise ValueError(f"Unknown eval_mode={eval_mode!r}")
+
+        train_floor = (
+            _as_utc(train_start)
+            if train_start is not None
+            else resolve_train_start(mode)
+        )
+        if train_floor is not None:
+            train_floor = _as_utc(train_floor)
+
         test_start = _as_utc(test_start or self.settings.test_start)
         if test_end is None:
             test_end = _as_utc(self.settings.end_date) + pd.Timedelta(hours=23)
         else:
             test_end = _as_utc(test_end)
-        min_train = int(min_train_days if min_train_days is not None else MIN_TRAIN_DAYS)
+
+        if min_train_days is not None:
+            min_train = int(min_train_days)
+        elif mode == EVAL_MODE_POST_CRISIS:
+            min_train = POST_CRISIS_MIN_TRAIN_DAYS
+        else:
+            min_train = MIN_TRAIN_DAYS
 
         # Align
         common = feature_df.index.intersection(target_series.index)
@@ -142,26 +177,57 @@ class WalkForwardValidator:
             else pd.Series(2, index=common, name="price_regime")
         )
 
+        splits_dir = self.settings.walk_forward_splits
+        results_name = "walk_forward_results.parquet"
+        if mode == EVAL_MODE_POST_CRISIS:
+            splits_dir = self.settings.data_processed / POST_CRISIS_SPLITS_DIRNAME
+            splits_dir.mkdir(parents=True, exist_ok=True)
+            results_name = POST_CRISIS_RESULTS_NAME
+            # Post-crisis figures must not overwrite the full-period set
+            produce_figures_flag = False
+
+        logger.info(
+            "Walk-forward mode=%s train_start=%s min_train_days=%s test=%s→%s",
+            mode,
+            train_floor.date() if train_floor is not None else "earliest",
+            min_train,
+            test_start.date(),
+            test_end.date(),
+        )
+
         windows = self._build_windows(test_start, test_end)
         results: List[pd.DataFrame] = []
         tuned = False
 
         for i, (train_end, forecast_start, forecast_end) in enumerate(windows):
-            out_path = self.settings.walk_forward_splits / f"window_{i:03d}.parquet"
+            out_path = splits_dir / f"window_{i:03d}.parquet"
             if resume and out_path.exists():
                 logger.info("Resume: loading window %s", i)
                 results.append(pd.read_parquet(out_path))
                 continue
 
-            train_mask = X.index < forecast_start
-            # Ensure min train length
-            if (forecast_start - X.index.min()).days < min_train:
-                logger.info("Skip window %s — insufficient train history (<%sd)", i, min_train)
+            hist_mask = training_history_mask(
+                X.index,
+                forecast_start,
+                eval_mode=mode,
+                train_start=train_floor,
+            )
+            if not hist_mask.any():
+                logger.info("Skip window %s — empty train history", i)
+                continue
+            train_span_days = (forecast_start - X.index[hist_mask].min()).days
+            if train_span_days < min_train:
+                logger.info(
+                    "Skip window %s — insufficient train history (%sd < %sd)",
+                    i,
+                    train_span_days,
+                    min_train,
+                )
                 continue
 
-            X_train = X.loc[train_mask]
-            y_train = y.loc[train_mask]
-            r_train = regime.loc[train_mask]
+            X_train = X.loc[hist_mask]
+            y_train = y.loc[hist_mask]
+            r_train = regime.loc[hist_mask]
 
             # Calibration = last 90 days of training
             cal_start = forecast_start - pd.Timedelta(days=CALIBRATION_DAYS)
@@ -300,9 +366,10 @@ class WalkForwardValidator:
                 if col not in qdf_single.columns:
                     qdf_single[col] = qdf[col]
 
-            # SHAP on test day (first window sample only periodically)
+            # SHAP on test day (first window sample only periodically).
+            # Skip in post_crisis mode so we do not overwrite full-period SHAP figures/models narrative.
             shap_imp: Dict[str, float] = {}
-            if i % 4 == 0:
+            if mode == EVAL_MODE_FULL_PERIOD and i % 4 == 0:
                 try:
                     shap_imp = xgb.explain(X_test_aug, n_samples=min(24, len(X_test_aug)))
                     self.importance_history.append(shap_imp)
@@ -355,14 +422,141 @@ class WalkForwardValidator:
         all_res = pd.concat(results).sort_index()
         all_res = all_res[~all_res.index.duplicated(keep="last")]
         all_res = self._enforce_conformal_coverage(all_res)
-        save_parquet(all_res, self.settings.forecasts_dir / "walk_forward_results.parquet")
+        save_parquet(all_res, self.settings.forecasts_dir / results_name)
         metrics = self.compute_metrics(all_res)
-        write_json(self.settings.forecasts_dir / "walk_forward_metrics.json", metrics)
-        try:
-            self.produce_figures(all_res, metrics)
-        except Exception as exc:
-            logger.warning("produce_figures failed (metrics still saved): %s", exc)
+        metrics["eval_mode"] = mode
+        metrics["train_start"] = (
+            str(train_floor.date()) if train_floor is not None else "earliest"
+        )
+        if write_metrics and mode == EVAL_MODE_FULL_PERIOD:
+            metrics["mae_full_period"] = metrics.get("MAE")
+            write_json(self.settings.forecasts_dir / "walk_forward_metrics.json", metrics)
+        elif write_metrics and mode == EVAL_MODE_POST_CRISIS:
+            write_json(
+                self.settings.forecasts_dir / "walk_forward_metrics_post_crisis.json",
+                metrics,
+            )
+        if produce_figures_flag:
+            try:
+                self.produce_figures(all_res, metrics)
+            except Exception as exc:
+                logger.warning("produce_figures failed (metrics still saved): %s", exc)
         return all_res
+
+    def merge_dual_metrics(
+        self,
+        full_metrics: Optional[Dict[str, Any]] = None,
+        post_metrics: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        """
+        Merge full-period and post-crisis metric suites into walk_forward_metrics.json.
+
+        Keeps existing full-period headline fields for backward compatibility and
+        adds ``mae_full_period``, ``mae_post_crisis``, and a ``post_crisis`` block.
+        """
+        import json as _json
+
+        metrics_path = self.settings.forecasts_dir / "walk_forward_metrics.json"
+        post_path = self.settings.forecasts_dir / "walk_forward_metrics_post_crisis.json"
+
+        if full_metrics is None:
+            if not metrics_path.exists():
+                raise FileNotFoundError(f"Missing full-period metrics: {metrics_path}")
+            full_metrics = _json.loads(metrics_path.read_text())
+        if post_metrics is None:
+            if not post_path.exists():
+                raise FileNotFoundError(f"Missing post-crisis metrics: {post_path}")
+            post_metrics = _json.loads(post_path.read_text())
+
+        merged = dict(full_metrics)
+        mae_full = float(full_metrics.get("MAE", full_metrics.get("mae_full_period")))
+        mae_post = float(post_metrics["MAE"])
+        merged["mae_full_period"] = mae_full
+        merged["mae_post_crisis"] = mae_post
+        merged["MAE"] = mae_full  # primary headline remains full-period
+        merged["eval_mode"] = EVAL_MODE_FULL_PERIOD
+        merged["post_crisis"] = {
+            "MAE": mae_post,
+            "RMSE": post_metrics.get("RMSE"),
+            "directional_accuracy_pct": post_metrics.get("directional_accuracy_pct"),
+            "negative_price_recall": post_metrics.get("negative_price_recall"),
+            "conformal_coverage_90_empirical": post_metrics.get(
+                "conformal_coverage_90_empirical"
+            ),
+            "skill_vs_naive_pct": post_metrics.get("skill_vs_naive_pct"),
+            "n_hours": post_metrics.get("n_hours"),
+            "train_start": str(POST_CRISIS_TRAIN_START.date()),
+            "eval_mode": EVAL_MODE_POST_CRISIS,
+            "rationale": (
+                "2022 Ukraine gas crisis is a structural break — training from "
+                "2023-01-01 removes crisis distribution shift from the 2024 MAE."
+            ),
+        }
+        merged["eval_modes"] = {
+            EVAL_MODE_FULL_PERIOD: {
+                "train_start": "2022-01-01",
+                "MAE": mae_full,
+                "directional_accuracy_pct": full_metrics.get("directional_accuracy_pct"),
+                "negative_price_recall": full_metrics.get("negative_price_recall"),
+                "conformal_coverage_90_empirical": full_metrics.get(
+                    "conformal_coverage_90_empirical"
+                ),
+            },
+            EVAL_MODE_POST_CRISIS: {
+                "train_start": str(POST_CRISIS_TRAIN_START.date()),
+                "MAE": mae_post,
+                "directional_accuracy_pct": post_metrics.get("directional_accuracy_pct"),
+                "negative_price_recall": post_metrics.get("negative_price_recall"),
+                "conformal_coverage_90_empirical": post_metrics.get(
+                    "conformal_coverage_90_empirical"
+                ),
+            },
+        }
+        write_json(metrics_path, merged)
+        logger.info(
+            "Dual metrics merged — mae_full_period=%.2f mae_post_crisis=%.2f",
+            mae_full,
+            mae_post,
+        )
+        return merged
+
+    def run_post_crisis(
+        self,
+        feature_df: pd.DataFrame,
+        target_series: pd.Series,
+        regime_series: Optional[pd.Series] = None,
+        resume: bool = False,
+        merge: bool = True,
+    ) -> Tuple[pd.DataFrame, Dict[str, Any]]:
+        """
+        Post-crisis walk-forward (train floor 2023-01-01) on full 2024 test year.
+
+        Returns:
+            (results DataFrame, merged metrics dict when merge=True else post metrics).
+        """
+        results = self.run(
+            feature_df,
+            target_series,
+            regime_series,
+            resume=resume,
+            tune=False,
+            eval_mode=EVAL_MODE_POST_CRISIS,
+            train_start=POST_CRISIS_TRAIN_START,
+            min_train_days=POST_CRISIS_MIN_TRAIN_DAYS,
+            write_metrics=True,
+            produce_figures_flag=False,
+        )
+        if merge:
+            metrics = self.merge_dual_metrics()
+        else:
+            import json as _json
+
+            metrics = _json.loads(
+                (
+                    self.settings.forecasts_dir / "walk_forward_metrics_post_crisis.json"
+                ).read_text()
+            )
+        return results, metrics
 
     def _enforce_conformal_coverage(self, results_df: pd.DataFrame) -> pd.DataFrame:
         """

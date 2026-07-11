@@ -312,7 +312,11 @@ def main() -> None:
     # —— Top status bar ——
     mae_disp = float(mae) if mae is not None else float("nan")
     skill_disp = float(skill) if skill is not None else float("nan")
+    mae_full = metrics.get("mae_full_period", mae)
+    mae_post = metrics.get("mae_post_crisis")
     mae_txt = f"{mae_disp:.2f}" if mae is not None else "—"
+    if mae_full is not None and mae_post is not None:
+        mae_txt = f"{float(mae_full):.2f} full / {float(mae_post):.2f} post-crisis"
     skill_txt = f"{skill_disp:+.1f}%" if skill is not None else "—"
     # Status indicator colour: amber for synthetic, green for live, red never-run
     if "SYNTHETIC" in status_label:

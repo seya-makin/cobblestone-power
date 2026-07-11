@@ -1,0 +1,706 @@
+/Users/seyamakin/cobblestone-power/run_pipeline.py:500: UserWarning: ENTSOE_API_KEY is placeholder — skipping ingestion. Add your key to .env when received from transparency.entsoe.eu. All other pipeline steps will run normally.
+  settings.validate_all()
+2026-07-12 02:05:54,825 | WARNING | config.settings | ENTSOE_API_KEY is placeholder — skipping ingestion. Add your key to .env when received from transparency.entsoe.eu. All other pipeline steps will run normally.
+/Users/seyamakin/cobblestone-power/run_pipeline.py:500: UserWarning: GEMINI_API_KEY is placeholder — LLM modules will use fallback rules. Get a free key at aistudio.google.com.
+  settings.validate_all()
+2026-07-12 02:05:54,825 | WARNING | config.settings | GEMINI_API_KEY is placeholder — LLM modules will use fallback rules. Get a free key at aistudio.google.com.
+2026-07-12 02:05:54,825 | INFO | config.settings | Configuration validated | version=1.0.0
+2026-07-12 02:05:54,826 | INFO | cobblestone.pipeline | Config: {'pipeline_version': '1.0.0', 'start_date': '2022-01-01', 'end_date': '2024-12-31', 'test_start': '2024-01-01', 'market': 'DE_LU', 'bidding_zone': '10Y1001A1001A82H', 'log_level': 'INFO', 'dashboard_port': 8501, 'entsoe_api_key_set': False, 'gemini_api_key_set': False, 'gemini_model': 'gemini-2.0-flash', 'project_root': '/Users/seyamakin/cobblestone-power', 'xgb_params': {'n_estimators': 1200, 'max_depth': 6, 'learning_rate': 0.04, 'subsample': 0.8, 'colsample_bytree': 0.75, 'min_child_weight': 6, 'reg_alpha': 0.15, 'reg_lambda': 1.2, 'objective': 'reg:squarederror', 'tree_method': 'hist', 'early_stopping_rounds': 60, 'eval_metric': ['rmse', 'mae'], 'random_state': 42}}
+2026-07-12 02:05:57,507 | INFO | src.validation | Walk-forward mode=post_crisis train_start=2023-01-01 min_train_days=365 test=2024-01-01→2024-12-31
+2026-07-12 02:05:57,537 | INFO | src.model | Ridge coefficients: {'residual_load': 44.17760755451419, 'hour_sin': -0.10985961015302655, 'hour_cos': 0.7975422296974397, 'dow_sin': -1.7659230688832424, 'dow_cos': 0.766875807580078, 'month_sin': 2.1885765640897343, 'month_cos': 3.604488273463037, 'price_lag_168h': 4.064552425165965, 'renewable_penetration': 5.242658572231754}
+2026-07-12 02:05:57,537 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:05:57,684 | INFO | src.model | Negative-price classifier fitted — neg_hours=165 (2.8%) scale_pos_weight=18.23
+2026-07-12 02:06:00,037 | INFO | src.model | Two-stage fit — extreme hours=1056 (17.8%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=140.5 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.28 (rate=0.0010/day)
+2026-07-12 02:06:00,123 | INFO | src.model | Two-stage predict — 603/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=217 (P>0.30) | floor_boost=105
+2026-07-12 02:06:00,604 | INFO | src.conformal | Calibration coverage OK: 92.0% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:06:00,604 | INFO | src.conformal | Conformal calibrated — global q90=50.37 | scale=1.050 | regime counts={0: 118, 1: 979, 2: 960, 3: 103}
+2026-07-12 02:06:00,671 | INFO | src.model | Two-stage predict — 54/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=14 (P>0.30) | floor_boost=0
+2026-07-12 02:06:17,956 | INFO | src.model | QRA base models fitted — 7 quantiles × 3 variants on 6600 rows
+2026-07-12 02:06:18,055 | INFO | src.model | QRA weights q=0.05 — cons=0.329 bal=0.329 agg=0.341 | cal_pinball=1.8101
+2026-07-12 02:06:18,144 | INFO | src.model | QRA weights q=0.10 — cons=0.500 bal=0.500 agg=0.000 | cal_pinball=3.1172
+2026-07-12 02:06:18,231 | INFO | src.model | QRA weights q=0.25 — cons=0.500 bal=0.500 agg=0.000 | cal_pinball=6.5542
+2026-07-12 02:06:18,314 | INFO | src.model | QRA weights q=0.50 — cons=0.500 bal=0.500 agg=0.000 | cal_pinball=8.2415
+2026-07-12 02:06:18,399 | INFO | src.model | QRA weights q=0.75 — cons=0.000 bal=0.000 agg=1.000 | cal_pinball=8.8176
+2026-07-12 02:06:18,481 | INFO | src.model | QRA weights q=0.90 — cons=0.000 bal=0.000 agg=1.000 | cal_pinball=5.1397
+2026-07-12 02:06:18,588 | INFO | src.model | QRA weights q=0.95 — cons=0.031 bal=0.031 agg=0.937 | cal_pinball=3.1950
+2026-07-12 02:06:20,206 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-12 02:06:20,590 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_regime_probability_0.png
+2026-07-12 02:06:20,890 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_regime_probability_2.png
+2026-07-12 02:06:21,178 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_gas_plus_lignite_mw.png
+2026-07-12 02:06:21,455 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_residual_load.png
+2026-07-12 02:06:21,729 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_gas_x_residual_load.png
+2026-07-12 02:06:21,753 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_000.parquet (168 rows)
+2026-07-12 02:06:21,754 | INFO | src.validation | Window 1/53 done — MAE=28.47
+2026-07-12 02:06:21,789 | INFO | src.model | Ridge coefficients: {'residual_load': 44.638464995010764, 'hour_sin': -0.06547353187080131, 'hour_cos': 0.875447824782013, 'dow_sin': -1.8028822340742632, 'dow_cos': 0.7067594568702996, 'month_sin': 2.647112296044653, 'month_cos': 3.159317584308078, 'price_lag_168h': 4.02888130651553, 'renewable_penetration': 5.418806567584048}
+2026-07-12 02:06:21,790 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:06:22,055 | INFO | src.model | Negative-price classifier fitted — neg_hours=165 (2.7%) scale_pos_weight=18.23
+2026-07-12 02:06:23,638 | INFO | src.model | Two-stage fit — extreme hours=1079 (17.7%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=140.4 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.29 (rate=0.0010/day)
+2026-07-12 02:06:23,738 | INFO | src.model | Two-stage predict — 660/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=204 (P>0.30) | floor_boost=83
+2026-07-12 02:06:24,147 | INFO | src.conformal | Calibration coverage OK: 92.9% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:06:24,147 | INFO | src.conformal | Conformal calibrated — global q90=191.71 | scale=1.050 | regime counts={0: 124, 1: 963, 2: 970, 3: 103}
+2026-07-12 02:06:24,238 | INFO | src.model | Two-stage predict — 114/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=0 (P>0.30) | floor_boost=0
+2026-07-12 02:06:24,921 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_001.parquet (168 rows)
+2026-07-12 02:06:24,922 | INFO | src.validation | Window 2/53 done — MAE=127.20
+2026-07-12 02:06:24,945 | INFO | src.model | Ridge coefficients: {'residual_load': 44.78178420367434, 'hour_sin': -0.12015047552734785, 'hour_cos': 0.8289889872080373, 'dow_sin': -1.7810718812378876, 'dow_cos': 0.7525529412627311, 'month_sin': 2.8269425787784717, 'month_cos': 3.006341137704805, 'price_lag_168h': 4.246146479789569, 'renewable_penetration': 5.184989284641275}
+2026-07-12 02:06:24,946 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:06:25,090 | INFO | src.model | Negative-price classifier fitted — neg_hours=165 (2.6%) scale_pos_weight=18.23
+2026-07-12 02:06:28,779 | INFO | src.model | Two-stage fit — extreme hours=1102 (17.7%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=140.4 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.30 (rate=0.0010/day)
+2026-07-12 02:06:28,907 | INFO | src.model | Two-stage predict — 711/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=149 (P>0.30) | floor_boost=97
+2026-07-12 02:06:29,395 | INFO | src.conformal | Calibration coverage OK: 92.5% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:06:29,395 | INFO | src.conformal | Conformal calibrated — global q90=62.55 | scale=1.050 | regime counts={0: 103, 1: 931, 2: 996, 3: 130}
+2026-07-12 02:06:29,474 | INFO | src.model | Two-stage predict — 100/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=0 (P>0.30) | floor_boost=0
+2026-07-12 02:06:30,132 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_002.parquet (168 rows)
+2026-07-12 02:06:30,133 | INFO | src.validation | Window 3/53 done — MAE=55.26
+2026-07-12 02:06:30,156 | INFO | src.model | Ridge coefficients: {'residual_load': 44.12864925213854, 'hour_sin': -0.14166407225040778, 'hour_cos': 0.5961982649143863, 'dow_sin': -1.8376056044125695, 'dow_cos': 0.6455036300920716, 'month_sin': 3.2142886312739005, 'month_cos': 2.7827885672091788, 'price_lag_168h': 4.36614685831297, 'renewable_penetration': 4.5816364438312}
+2026-07-12 02:06:30,156 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:06:30,405 | INFO | src.model | Negative-price classifier fitted — neg_hours=183 (2.9%) scale_pos_weight=18.23
+2026-07-12 02:06:33,531 | INFO | src.model | Two-stage fit — extreme hours=1141 (17.8%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=140.1 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.31 (rate=0.0010/day)
+2026-07-12 02:06:33,635 | INFO | src.model | Two-stage predict — 903/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=202 (P>0.30) | floor_boost=149
+2026-07-12 02:06:34,083 | INFO | src.conformal | Calibration coverage OK: 92.4% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:06:34,084 | INFO | src.conformal | Conformal calibrated — global q90=73.98 | scale=1.050 | regime counts={0: 103, 1: 910, 2: 1006, 3: 141}
+2026-07-12 02:06:34,160 | INFO | src.model | Two-stage predict — 34/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=0 (P>0.30) | floor_boost=0
+2026-07-12 02:06:34,846 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_003.parquet (168 rows)
+2026-07-12 02:06:34,847 | INFO | src.validation | Window 4/53 done — MAE=32.16
+2026-07-12 02:06:34,870 | INFO | src.model | Ridge coefficients: {'residual_load': 43.08592793494929, 'hour_sin': -0.18669297546044647, 'hour_cos': 0.32647410669057486, 'dow_sin': -1.6519512804384375, 'dow_cos': 0.6221134802567332, 'month_sin': 3.756885005736242, 'month_cos': 2.5209986521459657, 'price_lag_168h': 4.428578950237368, 'renewable_penetration': 3.4779561790127884}
+2026-07-12 02:06:34,871 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:06:35,034 | INFO | src.model | Negative-price classifier fitted — neg_hours=187 (2.9%) scale_pos_weight=18.23
+2026-07-12 02:06:37,145 | INFO | src.model | Two-stage fit — extreme hours=1169 (17.9%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=140.1 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.31 (rate=0.0010/day)
+2026-07-12 02:06:37,246 | INFO | src.model | Two-stage predict — 880/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=216 (P>0.30) | floor_boost=153
+2026-07-12 02:06:37,693 | INFO | src.conformal | Calibration coverage OK: 92.7% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:06:37,693 | INFO | src.conformal | Conformal calibrated — global q90=80.76 | scale=1.050 | regime counts={0: 99, 1: 985, 2: 935, 3: 141}
+2026-07-12 02:06:37,773 | INFO | src.model | Two-stage predict — 48/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=3 (P>0.30) | floor_boost=0
+2026-07-12 02:06:39,487 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-12 02:06:39,786 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_regime_probability_0.png
+2026-07-12 02:06:40,073 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_thermal_gap.png
+2026-07-12 02:06:40,367 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_residual_load.png
+2026-07-12 02:06:40,652 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_regime_probability_2.png
+2026-07-12 02:06:40,948 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_gas_plus_lignite_mw.png
+2026-07-12 02:06:40,961 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_004.parquet (168 rows)
+2026-07-12 02:06:40,961 | INFO | src.validation | Window 5/53 done — MAE=35.76
+2026-07-12 02:06:40,979 | INFO | src.model | Ridge coefficients: {'residual_load': 43.44864238899973, 'hour_sin': -0.1422185881764074, 'hour_cos': 0.21110514116766227, 'dow_sin': -1.6421102383931536, 'dow_cos': 0.8842418529586563, 'month_sin': 4.0275445042220195, 'month_cos': 1.9147605106707455, 'price_lag_168h': 4.404183614058338, 'renewable_penetration': 3.495544829609438}
+2026-07-12 02:06:40,980 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:06:41,099 | INFO | src.model | Negative-price classifier fitted — neg_hours=197 (2.9%) scale_pos_weight=18.23
+2026-07-12 02:06:43,268 | INFO | src.model | Two-stage fit — extreme hours=1202 (18.0%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=139.9 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.32 (rate=0.0010/day)
+2026-07-12 02:06:43,373 | INFO | src.model | Two-stage predict — 803/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=140 (P>0.30) | floor_boost=74
+2026-07-12 02:06:43,817 | INFO | src.conformal | Calibration coverage OK: 93.1% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:06:43,817 | INFO | src.conformal | Conformal calibrated — global q90=77.83 | scale=1.050 | regime counts={0: 103, 1: 933, 2: 983, 3: 141}
+2026-07-12 02:06:43,899 | INFO | src.model | Two-stage predict — 56/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=7 (P>0.30) | floor_boost=1
+2026-07-12 02:06:44,622 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_005.parquet (168 rows)
+2026-07-12 02:06:44,623 | INFO | src.validation | Window 6/53 done — MAE=47.26
+2026-07-12 02:06:44,649 | INFO | src.model | Ridge coefficients: {'residual_load': 42.819699590156745, 'hour_sin': -0.12703687577767034, 'hour_cos': 0.32791995099823124, 'dow_sin': -1.38940901190296, 'dow_cos': 0.8114724401712544, 'month_sin': 4.113227769286768, 'month_cos': 1.7086133921611844, 'price_lag_168h': 4.675660355832596, 'renewable_penetration': 3.422689136005106}
+2026-07-12 02:06:44,649 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:06:44,815 | INFO | src.model | Negative-price classifier fitted — neg_hours=199 (2.9%) scale_pos_weight=18.23
+2026-07-12 02:06:47,838 | INFO | src.model | Two-stage fit — extreme hours=1226 (17.9%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=139.6 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.33 (rate=0.0010/day)
+2026-07-12 02:06:47,936 | INFO | src.model | Two-stage predict — 751/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=145 (P>0.30) | floor_boost=75
+2026-07-12 02:06:48,392 | INFO | src.conformal | Calibration coverage OK: 93.4% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:06:48,392 | INFO | src.conformal | Conformal calibrated — global q90=81.62 | scale=1.050 | regime counts={0: 107, 1: 944, 2: 968, 3: 141}
+2026-07-12 02:06:48,473 | INFO | src.model | Two-stage predict — 57/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=0 (P>0.30) | floor_boost=0
+2026-07-12 02:06:49,174 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_006.parquet (168 rows)
+2026-07-12 02:06:49,175 | INFO | src.validation | Window 7/53 done — MAE=53.18
+2026-07-12 02:06:49,199 | INFO | src.model | Ridge coefficients: {'residual_load': 41.73804816771222, 'hour_sin': -0.18709769518583166, 'hour_cos': 0.19345602780984472, 'dow_sin': -1.1277790156870748, 'dow_cos': 0.8894635491041234, 'month_sin': 4.391280758397013, 'month_cos': 1.3644503366194896, 'price_lag_168h': 4.830804980947081, 'renewable_penetration': 2.520860645976452}
+2026-07-12 02:06:49,200 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:06:49,372 | INFO | src.model | Negative-price classifier fitted — neg_hours=217 (3.1%) scale_pos_weight=18.23
+2026-07-12 02:06:51,617 | INFO | src.model | Two-stage fit — extreme hours=1267 (18.1%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=139.5 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.34 (rate=0.0010/day)
+2026-07-12 02:06:51,717 | INFO | src.model | Two-stage predict — 856/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=193 (P>0.30) | floor_boost=110
+2026-07-12 02:06:52,164 | INFO | src.conformal | Calibration coverage OK: 93.6% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:06:52,164 | INFO | src.conformal | Conformal calibrated — global q90=78.28 | scale=1.050 | regime counts={0: 104, 1: 955, 2: 963, 3: 138}
+2026-07-12 02:06:52,250 | INFO | src.model | Two-stage predict — 38/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=0 (P>0.30) | floor_boost=0
+2026-07-12 02:06:52,961 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_007.parquet (168 rows)
+2026-07-12 02:06:52,962 | INFO | src.validation | Window 8/53 done — MAE=39.24
+2026-07-12 02:06:52,986 | INFO | src.model | Ridge coefficients: {'residual_load': 40.52116177753298, 'hour_sin': -0.18785166428740863, 'hour_cos': -0.0014035557497297476, 'dow_sin': -1.1571767524171428, 'dow_cos': 0.6605286044867947, 'month_sin': 4.615413709813707, 'month_cos': 1.1181372797384617, 'price_lag_168h': 5.069705379498211, 'renewable_penetration': 1.5457870104953717}
+2026-07-12 02:06:52,987 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:06:53,159 | INFO | src.model | Negative-price classifier fitted — neg_hours=217 (3.0%) scale_pos_weight=18.23
+2026-07-12 02:06:55,360 | INFO | src.model | Two-stage fit — extreme hours=1290 (18.0%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=139.4 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.35 (rate=0.0010/day)
+2026-07-12 02:06:55,457 | INFO | src.model | Two-stage predict — 843/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=180 (P>0.30) | floor_boost=105
+2026-07-12 02:06:55,904 | INFO | src.conformal | Calibration coverage OK: 93.8% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:06:55,904 | INFO | src.conformal | Conformal calibrated — global q90=76.80 | scale=1.050 | regime counts={0: 104, 1: 986, 2: 937, 3: 133}
+2026-07-12 02:06:55,985 | INFO | src.model | Two-stage predict — 72/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=0 (P>0.30) | floor_boost=0
+2026-07-12 02:06:57,717 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-12 02:06:58,028 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_regime_probability_0.png
+2026-07-12 02:06:58,402 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_regime_probability_1.png
+2026-07-12 02:06:58,711 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_residual_load.png
+2026-07-12 02:06:59,030 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_thermal_gap.png
+2026-07-12 02:06:59,364 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_regime_probability_2.png
+2026-07-12 02:06:59,377 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_008.parquet (168 rows)
+2026-07-12 02:06:59,377 | INFO | src.validation | Window 9/53 done — MAE=61.07
+2026-07-12 02:06:59,396 | INFO | src.model | Ridge coefficients: {'residual_load': 39.6910748025902, 'hour_sin': -0.3000379914115201, 'hour_cos': -0.26857288309004634, 'dow_sin': -0.7047210740632016, 'dow_cos': 0.49410849005096824, 'month_sin': 4.675482992045909, 'month_cos': 0.5889350199301454, 'price_lag_168h': 5.356231407781255, 'renewable_penetration': 0.7071974905239663}
+2026-07-12 02:06:59,396 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:06:59,523 | INFO | src.model | Negative-price classifier fitted — neg_hours=225 (3.1%) scale_pos_weight=18.23
+2026-07-12 02:07:03,197 | INFO | src.model | Two-stage fit — extreme hours=1320 (18.1%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=139.4 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.36 (rate=0.0010/day)
+2026-07-12 02:07:03,300 | INFO | src.model | Two-stage predict — 816/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=186 (P>0.30) | floor_boost=120
+2026-07-12 02:07:03,767 | INFO | src.conformal | Calibration coverage OK: 93.0% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:07:03,768 | INFO | src.conformal | Conformal calibrated — global q90=77.27 | scale=1.050 | regime counts={0: 104, 1: 1026, 2: 929, 3: 101}
+2026-07-12 02:07:03,851 | INFO | src.model | Two-stage predict — 72/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=14 (P>0.30) | floor_boost=5
+2026-07-12 02:07:04,589 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_009.parquet (168 rows)
+2026-07-12 02:07:04,590 | INFO | src.validation | Window 10/53 done — MAE=44.35
+2026-07-12 02:07:04,616 | INFO | src.model | Ridge coefficients: {'residual_load': 37.8743167257668, 'hour_sin': -0.4060876926020704, 'hour_cos': -0.6219109143030452, 'dow_sin': -0.4872703330063482, 'dow_cos': 0.663270642333239, 'month_sin': 4.806293915470261, 'month_cos': 0.1016588571448641, 'price_lag_168h': 5.0104801562528305, 'renewable_penetration': -0.9964939763100471}
+2026-07-12 02:07:04,617 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:07:04,804 | INFO | src.model | Negative-price classifier fitted — neg_hours=225 (3.0%) scale_pos_weight=18.23
+2026-07-12 02:07:06,200 | INFO | src.model | Two-stage fit — extreme hours=1343 (18.0%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=138.9 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.36 (rate=0.0010/day)
+2026-07-12 02:07:06,296 | INFO | src.model | Two-stage predict — 835/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=142 (P>0.30) | floor_boost=78
+2026-07-12 02:07:06,742 | INFO | src.conformal | Calibration coverage OK: 93.3% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:07:06,742 | INFO | src.conformal | Conformal calibrated — global q90=82.22 | scale=1.050 | regime counts={0: 111, 1: 1026, 2: 945, 3: 78}
+2026-07-12 02:07:06,820 | INFO | src.model | Two-stage predict — 47/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=0 (P>0.30) | floor_boost=0
+2026-07-12 02:07:07,641 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_010.parquet (168 rows)
+2026-07-12 02:07:07,642 | INFO | src.validation | Window 11/53 done — MAE=45.92
+2026-07-12 02:07:07,665 | INFO | src.model | Ridge coefficients: {'residual_load': 36.928860871360556, 'hour_sin': -0.4691452287017654, 'hour_cos': -0.5875785846855369, 'dow_sin': -0.5704075133810887, 'dow_cos': 0.8412429657726372, 'month_sin': 4.782897389062601, 'month_cos': -0.6231909668406481, 'price_lag_168h': 5.1263643719476155, 'renewable_penetration': -1.5153861449975337}
+2026-07-12 02:07:07,666 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:07:07,831 | INFO | src.model | Negative-price classifier fitted — neg_hours=225 (3.0%) scale_pos_weight=18.23
+2026-07-12 02:07:09,154 | INFO | src.model | Two-stage fit — extreme hours=1366 (18.0%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=138.3 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.37 (rate=0.0010/day)
+2026-07-12 02:07:09,249 | INFO | src.model | Two-stage predict — 803/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=148 (P>0.30) | floor_boost=59
+2026-07-12 02:07:09,698 | INFO | src.conformal | Calibration coverage OK: 93.6% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:07:09,698 | INFO | src.conformal | Conformal calibrated — global q90=79.78 | scale=1.050 | regime counts={0: 111, 1: 1018, 2: 971, 3: 60}
+2026-07-12 02:07:09,779 | INFO | src.model | Two-stage predict — 61/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=13 (P>0.30) | floor_boost=6
+2026-07-12 02:07:10,500 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_011.parquet (168 rows)
+2026-07-12 02:07:10,501 | INFO | src.validation | Window 12/53 done — MAE=43.93
+2026-07-12 02:07:10,528 | INFO | src.model | Ridge coefficients: {'residual_load': 38.32651993141056, 'hour_sin': -0.3824687228184138, 'hour_cos': -0.306534627944206, 'dow_sin': -0.6895471520089669, 'dow_cos': 0.8466024965438775, 'month_sin': 4.70066168400043, 'month_cos': -1.1605275545768796, 'price_lag_168h': 5.014768361992503, 'renewable_penetration': -1.028627959156142}
+2026-07-12 02:07:10,528 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:07:10,698 | INFO | src.model | Negative-price classifier fitted — neg_hours=228 (2.9%) scale_pos_weight=18.23
+2026-07-12 02:07:13,949 | INFO | src.model | Two-stage fit — extreme hours=1391 (17.9%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=138.0 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.38 (rate=0.0010/day)
+2026-07-12 02:07:14,059 | INFO | src.model | Two-stage predict — 839/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=125 (P>0.30) | floor_boost=44
+2026-07-12 02:07:14,528 | INFO | src.conformal | Calibration coverage OK: 93.7% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:07:14,528 | INFO | src.conformal | Conformal calibrated — global q90=79.82 | scale=1.050 | regime counts={0: 75, 1: 967, 2: 1050, 3: 68}
+2026-07-12 02:07:14,614 | INFO | src.model | Two-stage predict — 18/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=8 (P>0.30) | floor_boost=0
+2026-07-12 02:07:16,265 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-12 02:07:16,592 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_regime_probability_0.png
+2026-07-12 02:07:16,891 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_thermal_gap.png
+2026-07-12 02:07:17,210 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_regime_probability_2.png
+2026-07-12 02:07:17,525 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_residual_load.png
+2026-07-12 02:07:17,852 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_gas_x_residual_load.png
+2026-07-12 02:07:17,866 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_012.parquet (168 rows)
+2026-07-12 02:07:17,866 | INFO | src.validation | Window 13/53 done — MAE=21.97
+2026-07-12 02:07:17,887 | INFO | src.model | Ridge coefficients: {'residual_load': 39.73598643350067, 'hour_sin': -0.318874620922281, 'hour_cos': -0.044590590188413826, 'dow_sin': -0.8556753640287164, 'dow_cos': 0.835935507129498, 'month_sin': 4.559282772908263, 'month_cos': -1.5474270632426517, 'price_lag_168h': 5.285612574489376, 'renewable_penetration': -0.2569821102584324}
+2026-07-12 02:07:17,887 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:07:18,041 | INFO | src.model | Negative-price classifier fitted — neg_hours=228 (2.9%) scale_pos_weight=18.23
+2026-07-12 02:07:21,836 | INFO | src.model | Two-stage fit — extreme hours=1414 (17.9%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=137.7 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.39 (rate=0.0010/day)
+2026-07-12 02:07:21,961 | INFO | src.model | Two-stage predict — 824/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=68 (P>0.30) | floor_boost=20
+2026-07-12 02:07:21,967 | INFO | src.conformal | Regime 0 has 39 cal samples (< 50) — using global conformal quantiles
+2026-07-12 02:07:22,458 | INFO | src.conformal | Calibration coverage OK: 93.3% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:07:22,458 | INFO | src.conformal | Conformal calibrated — global q90=78.64 | scale=1.050 | regime counts={0: 39, 1: 949, 2: 1103, 3: 69}
+2026-07-12 02:07:22,546 | INFO | src.model | Two-stage predict — 26/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=37 (P>0.30) | floor_boost=18
+2026-07-12 02:07:45,673 | INFO | src.model | QRA base models fitted — 7 quantiles × 3 variants on 8784 rows
+2026-07-12 02:07:45,776 | INFO | src.model | QRA weights q=0.05 — cons=0.500 bal=0.500 agg=0.000 | cal_pinball=2.2027
+2026-07-12 02:07:45,877 | INFO | src.model | QRA weights q=0.10 — cons=0.500 bal=0.500 agg=0.000 | cal_pinball=4.7970
+2026-07-12 02:07:45,974 | INFO | src.model | QRA weights q=0.25 — cons=0.000 bal=0.000 agg=1.000 | cal_pinball=9.1065
+2026-07-12 02:07:46,069 | INFO | src.model | QRA weights q=0.50 — cons=0.000 bal=0.000 agg=1.000 | cal_pinball=11.5406
+2026-07-12 02:07:46,167 | INFO | src.model | QRA weights q=0.75 — cons=0.000 bal=0.000 agg=1.000 | cal_pinball=9.6412
+2026-07-12 02:07:46,264 | INFO | src.model | QRA weights q=0.90 — cons=0.000 bal=0.000 agg=1.000 | cal_pinball=5.3851
+2026-07-12 02:07:46,364 | INFO | src.model | QRA weights q=0.95 — cons=0.000 bal=0.000 agg=1.000 | cal_pinball=3.2424
+2026-07-12 02:07:47,053 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_013.parquet (168 rows)
+2026-07-12 02:07:47,054 | INFO | src.validation | Window 14/53 done — MAE=16.86
+2026-07-12 02:07:47,080 | INFO | src.model | Ridge coefficients: {'residual_load': 39.02330563870016, 'hour_sin': -0.2099427043464348, 'hour_cos': -0.1346762414285768, 'dow_sin': -0.7773936520996526, 'dow_cos': 0.7598080540261929, 'month_sin': 4.435604427911756, 'month_cos': -1.635539123750836, 'price_lag_168h': 5.679618124197526, 'renewable_penetration': -0.6536664075320716}
+2026-07-12 02:07:47,081 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:07:47,297 | INFO | src.model | Negative-price classifier fitted — neg_hours=228 (2.8%) scale_pos_weight=18.23
+2026-07-12 02:07:50,362 | INFO | src.model | Two-stage fit — extreme hours=1437 (17.8%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=138.5 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.40 (rate=0.0010/day)
+2026-07-12 02:07:50,462 | INFO | src.model | Two-stage predict — 765/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=109 (P>0.30) | floor_boost=41
+2026-07-12 02:07:50,911 | INFO | src.conformal | Calibration coverage OK: 93.8% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:07:50,911 | INFO | src.conformal | Conformal calibrated — global q90=80.30 | scale=1.050 | regime counts={0: 64, 1: 975, 2: 1052, 3: 69}
+2026-07-12 02:07:50,999 | INFO | src.model | Two-stage predict — 30/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=30 (P>0.30) | floor_boost=13
+2026-07-12 02:07:51,877 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_014.parquet (168 rows)
+2026-07-12 02:07:51,878 | INFO | src.validation | Window 15/53 done — MAE=24.18
+2026-07-12 02:07:51,903 | INFO | src.model | Ridge coefficients: {'residual_load': 35.752468274016465, 'hour_sin': -0.18701916746551941, 'hour_cos': -0.7560761044209834, 'dow_sin': -0.6192732965116811, 'dow_cos': 0.8890689465831955, 'month_sin': 4.118948521563738, 'month_cos': -1.7796698914857512, 'price_lag_168h': 6.557524323489727, 'renewable_penetration': -3.1938733783877997}
+2026-07-12 02:07:51,903 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:07:52,079 | INFO | src.model | Negative-price classifier fitted — neg_hours=228 (2.8%) scale_pos_weight=18.23
+2026-07-12 02:07:54,014 | INFO | src.model | Two-stage fit — extreme hours=1459 (17.8%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=138.3 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.41 (rate=0.0010/day)
+2026-07-12 02:07:54,118 | INFO | src.model | Two-stage predict — 682/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=139 (P>0.30) | floor_boost=62
+2026-07-12 02:07:54,127 | INFO | src.conformal | Regime 3 has 39 cal samples (< 50) — using global conformal quantiles
+2026-07-12 02:07:54,585 | INFO | src.conformal | Calibration coverage OK: 93.0% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:07:54,586 | INFO | src.conformal | Conformal calibrated — global q90=79.28 | scale=1.050 | regime counts={0: 86, 1: 1012, 2: 1023, 3: 39}
+2026-07-12 02:07:54,669 | INFO | src.model | Two-stage predict — 23/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=5 (P>0.30) | floor_boost=0
+2026-07-12 02:07:55,403 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_015.parquet (168 rows)
+2026-07-12 02:07:55,404 | INFO | src.validation | Window 16/53 done — MAE=20.73
+2026-07-12 02:07:55,430 | INFO | src.model | Ridge coefficients: {'residual_load': 33.1579895783285, 'hour_sin': -0.1801373287953635, 'hour_cos': -1.267474537024599, 'dow_sin': -0.5474473281674347, 'dow_cos': 1.0092063728259517, 'month_sin': 3.882719301443218, 'month_cos': -1.9543470604564512, 'price_lag_168h': 6.792856975897053, 'renewable_penetration': -5.414071128785823}
+2026-07-12 02:07:55,431 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:07:55,603 | INFO | src.model | Negative-price classifier fitted — neg_hours=228 (2.7%) scale_pos_weight=18.23
+2026-07-12 02:07:57,712 | INFO | src.model | Two-stage fit — extreme hours=1481 (17.7%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=138.0 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.42 (rate=0.0010/day)
+2026-07-12 02:07:57,810 | INFO | src.model | Two-stage predict — 625/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=141 (P>0.30) | floor_boost=49
+2026-07-12 02:07:57,818 | INFO | src.conformal | Regime 3 has 24 cal samples (< 50) — using global conformal quantiles
+2026-07-12 02:07:58,261 | INFO | src.conformal | Calibration coverage OK: 93.1% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:07:58,261 | INFO | src.conformal | Conformal calibrated — global q90=78.47 | scale=1.050 | regime counts={0: 87, 1: 1034, 2: 1015, 3: 24}
+2026-07-12 02:07:58,345 | INFO | src.model | Two-stage predict — 53/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=17 (P>0.30) | floor_boost=12
+2026-07-12 02:07:59,978 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-12 02:08:00,302 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_regime_probability_2.png
+2026-07-12 02:08:00,619 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_thermal_gap.png
+2026-07-12 02:08:00,918 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_residual_load.png
+2026-07-12 02:08:01,220 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_regime_probability_1.png
+2026-07-12 02:08:01,525 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_regime_probability_0.png
+2026-07-12 02:08:01,540 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_016.parquet (168 rows)
+2026-07-12 02:08:01,541 | INFO | src.validation | Window 17/53 done — MAE=23.95
+2026-07-12 02:08:01,559 | INFO | src.model | Ridge coefficients: {'residual_load': 32.9478902655522, 'hour_sin': -0.08962252558577469, 'hour_cos': -1.2485076888329847, 'dow_sin': -0.5468127009948242, 'dow_cos': 1.0009491215794253, 'month_sin': 3.6566890661496076, 'month_cos': -2.2786981637501724, 'price_lag_168h': 6.948183463293292, 'renewable_penetration': -5.46100353221367}
+2026-07-12 02:08:01,562 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:08:02,229 | INFO | src.model | Negative-price classifier fitted — neg_hours=228 (2.7%) scale_pos_weight=18.23
+2026-07-12 02:08:04,542 | INFO | src.model | Two-stage fit — extreme hours=1505 (17.7%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=137.5 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.43 (rate=0.0010/day)
+2026-07-12 02:08:04,649 | INFO | src.model | Two-stage predict — 633/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=156 (P>0.30) | floor_boost=66
+2026-07-12 02:08:04,658 | INFO | src.conformal | Regime 3 has 25 cal samples (< 50) — using global conformal quantiles
+2026-07-12 02:08:05,127 | INFO | src.conformal | Calibration coverage OK: 92.7% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:08:05,127 | INFO | src.conformal | Conformal calibrated — global q90=77.47 | scale=1.050 | regime counts={0: 97, 1: 956, 2: 1082, 3: 25}
+2026-07-12 02:08:05,212 | INFO | src.model | Two-stage predict — 27/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=32 (P>0.30) | floor_boost=17
+2026-07-12 02:08:05,951 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_017.parquet (168 rows)
+2026-07-12 02:08:05,951 | INFO | src.validation | Window 18/53 done — MAE=19.21
+2026-07-12 02:08:05,978 | INFO | src.model | Ridge coefficients: {'residual_load': 32.5668363391478, 'hour_sin': -0.07802956400695044, 'hour_cos': -1.2723234210769567, 'dow_sin': -0.5892977920571645, 'dow_cos': 1.009268030848935, 'month_sin': 3.416760129213736, 'month_cos': -2.3994563894344347, 'price_lag_168h': 7.180843341067443, 'renewable_penetration': -5.904724070882474}
+2026-07-12 02:08:05,980 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:08:06,157 | INFO | src.model | Negative-price classifier fitted — neg_hours=285 (3.3%) scale_pos_weight=18.23
+2026-07-12 02:08:08,208 | INFO | src.model | Two-stage fit — extreme hours=1584 (18.3%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=137.0 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.43 (rate=0.0010/day)
+2026-07-12 02:08:08,304 | INFO | src.model | Two-stage predict — 613/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=181 (P>0.30) | floor_boost=71
+2026-07-12 02:08:08,312 | INFO | src.conformal | Regime 3 has 25 cal samples (< 50) — using global conformal quantiles
+2026-07-12 02:08:08,866 | INFO | src.conformal | Calibration coverage OK: 93.1% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:08:08,866 | INFO | src.conformal | Conformal calibrated — global q90=74.73 | scale=1.050 | regime counts={0: 107, 1: 946, 2: 1082, 3: 25}
+2026-07-12 02:08:08,948 | INFO | src.model | Two-stage predict — 41/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=21 (P>0.30) | floor_boost=14
+2026-07-12 02:08:09,689 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_018.parquet (168 rows)
+2026-07-12 02:08:09,689 | INFO | src.validation | Window 19/53 done — MAE=22.06
+2026-07-12 02:08:09,717 | INFO | src.model | Ridge coefficients: {'residual_load': 31.415684017357457, 'hour_sin': 0.013887903777958486, 'hour_cos': -1.3116912802295224, 'dow_sin': -0.47672338047284496, 'dow_cos': 1.0962325646821511, 'month_sin': 2.9078941456586187, 'month_cos': -2.455000888843268, 'price_lag_168h': 7.878825803007743, 'renewable_penetration': -6.425970558620254}
+2026-07-12 02:08:09,718 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:08:09,907 | INFO | src.model | Negative-price classifier fitted — neg_hours=310 (3.5%) scale_pos_weight=18.23
+2026-07-12 02:08:11,734 | INFO | src.model | Two-stage fit — extreme hours=1632 (18.5%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=70.6 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.44 (rate=0.0010/day)
+2026-07-12 02:08:11,833 | INFO | src.model | Two-stage predict — 584/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=180 (P>0.30) | floor_boost=97
+2026-07-12 02:08:11,842 | INFO | src.conformal | Regime 3 has 25 cal samples (< 50) — using global conformal quantiles
+2026-07-12 02:08:12,280 | INFO | src.conformal | Calibration coverage OK: 93.0% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:08:12,280 | INFO | src.conformal | Conformal calibrated — global q90=73.88 | scale=1.050 | regime counts={0: 128, 1: 927, 2: 1080, 3: 25}
+2026-07-12 02:08:12,362 | INFO | src.model | Two-stage predict — 22/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=27 (P>0.30) | floor_boost=22
+2026-07-12 02:08:13,084 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_019.parquet (168 rows)
+2026-07-12 02:08:13,085 | INFO | src.validation | Window 20/53 done — MAE=18.87
+2026-07-12 02:08:13,111 | INFO | src.model | Ridge coefficients: {'residual_load': 31.061085415129753, 'hour_sin': 0.11479173787044655, 'hour_cos': -1.1963776214728077, 'dow_sin': -0.5299437470480052, 'dow_cos': 1.1722933802039206, 'month_sin': 2.286447637530016, 'month_cos': -2.6899968508434675, 'price_lag_168h': 8.219997700530076, 'renewable_penetration': -6.265104963669794}
+2026-07-12 02:08:13,112 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:08:13,291 | INFO | src.model | Negative-price classifier fitted — neg_hours=311 (3.5%) scale_pos_weight=18.23
+2026-07-12 02:08:15,711 | INFO | src.model | Two-stage fit — extreme hours=1656 (18.5%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=102.4 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.45 (rate=0.0010/day)
+2026-07-12 02:08:15,818 | INFO | src.model | Two-stage predict — 562/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=218 (P>0.30) | floor_boost=117
+2026-07-12 02:08:15,827 | INFO | src.conformal | Regime 3 has 25 cal samples (< 50) — using global conformal quantiles
+2026-07-12 02:08:16,276 | INFO | src.conformal | Calibration coverage OK: 91.9% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:08:16,277 | INFO | src.conformal | Conformal calibrated — global q90=56.16 | scale=1.050 | regime counts={0: 162, 1: 963, 2: 1010, 3: 25}
+2026-07-12 02:08:16,361 | INFO | src.model | Two-stage predict — 17/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=12 (P>0.30) | floor_boost=7
+2026-07-12 02:08:18,351 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-12 02:08:18,683 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_regime_probability_2.png
+2026-07-12 02:08:19,019 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_residual_load.png
+2026-07-12 02:08:19,320 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_years_since_ukraine_war.png
+2026-07-12 02:08:19,636 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_gas_plus_lignite_mw.png
+2026-07-12 02:08:20,279 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_gas_x_residual_load.png
+2026-07-12 02:08:20,307 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_020.parquet (168 rows)
+2026-07-12 02:08:20,308 | INFO | src.validation | Window 21/53 done — MAE=10.29
+2026-07-12 02:08:20,344 | INFO | src.model | Ridge coefficients: {'residual_load': 30.452094545659165, 'hour_sin': 0.18206607964667185, 'hour_cos': -1.2360039332054293, 'dow_sin': -0.5259009692920348, 'dow_cos': 1.0192997583938885, 'month_sin': 1.7889187681545342, 'month_cos': -2.8181608340979047, 'price_lag_168h': 8.56167745851605, 'renewable_penetration': -6.4899001619083805}
+2026-07-12 02:08:20,344 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:08:20,698 | INFO | src.model | Negative-price classifier fitted — neg_hours=311 (3.4%) scale_pos_weight=18.23
+2026-07-12 02:08:24,276 | INFO | src.model | Two-stage fit — extreme hours=1679 (18.4%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=110.9 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.46 (rate=0.0010/day)
+2026-07-12 02:08:24,384 | INFO | src.model | Two-stage predict — 521/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=223 (P>0.30) | floor_boost=123
+2026-07-12 02:08:24,394 | INFO | src.conformal | Regime 3 has 25 cal samples (< 50) — using global conformal quantiles
+2026-07-12 02:08:24,857 | INFO | src.conformal | Calibration coverage OK: 91.2% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:08:24,857 | INFO | src.conformal | Conformal calibrated — global q90=52.59 | scale=1.050 | regime counts={0: 173, 1: 959, 2: 1003, 3: 25}
+2026-07-12 02:08:24,939 | INFO | src.model | Two-stage predict — 10/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=3 (P>0.30) | floor_boost=1
+2026-07-12 02:08:25,634 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_021.parquet (168 rows)
+2026-07-12 02:08:25,635 | INFO | src.validation | Window 22/53 done — MAE=13.92
+2026-07-12 02:08:25,663 | INFO | src.model | Ridge coefficients: {'residual_load': 28.554839883559797, 'hour_sin': 0.20195632870215952, 'hour_cos': -1.478911050070168, 'dow_sin': -0.5672952012108674, 'dow_cos': 0.8154215878951419, 'month_sin': 1.1104797194501013, 'month_cos': -2.5970927128796006, 'price_lag_168h': 9.406554887260993, 'renewable_penetration': -7.497535892397882}
+2026-07-12 02:08:25,664 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:08:25,857 | INFO | src.model | Negative-price classifier fitted — neg_hours=311 (3.4%) scale_pos_weight=18.23
+2026-07-12 02:08:29,530 | INFO | src.model | Two-stage fit — extreme hours=1701 (18.4%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=110.4 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.47 (rate=0.0010/day)
+2026-07-12 02:08:29,635 | INFO | src.model | Two-stage predict — 463/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=232 (P>0.30) | floor_boost=124
+2026-07-12 02:08:29,644 | INFO | src.conformal | Regime 3 has 19 cal samples (< 50) — using global conformal quantiles
+2026-07-12 02:08:30,096 | INFO | src.conformal | Calibration coverage OK: 91.0% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:08:30,097 | INFO | src.conformal | Conformal calibrated — global q90=43.25 | scale=1.050 | regime counts={0: 180, 1: 997, 2: 964, 3: 19}
+2026-07-12 02:08:30,181 | INFO | src.model | Two-stage predict — 35/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=18 (P>0.30) | floor_boost=16
+2026-07-12 02:08:30,905 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_022.parquet (168 rows)
+2026-07-12 02:08:30,906 | INFO | src.validation | Window 23/53 done — MAE=16.21
+2026-07-12 02:08:30,933 | INFO | src.model | Ridge coefficients: {'residual_load': 27.367984679855937, 'hour_sin': 0.21452240486049462, 'hour_cos': -1.6616257225604127, 'dow_sin': -0.711207300896312, 'dow_cos': 0.7460019233544736, 'month_sin': 0.6121756883181069, 'month_cos': -2.277059700066924, 'price_lag_168h': 9.810573678040296, 'renewable_penetration': -8.309745214062309}
+2026-07-12 02:08:30,935 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:08:31,128 | INFO | src.model | Negative-price classifier fitted — neg_hours=316 (3.4%) scale_pos_weight=18.23
+2026-07-12 02:08:35,269 | INFO | src.model | Two-stage fit — extreme hours=1729 (18.4%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=106.1 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.48 (rate=0.0010/day)
+2026-07-12 02:08:35,383 | INFO | src.model | Two-stage predict — 424/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=230 (P>0.30) | floor_boost=128
+2026-07-12 02:08:35,393 | INFO | src.conformal | Regime 3 has 14 cal samples (< 50) — using global conformal quantiles
+2026-07-12 02:08:35,864 | INFO | src.conformal | Calibration coverage OK: 91.0% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:08:35,864 | INFO | src.conformal | Conformal calibrated — global q90=35.39 | scale=1.050 | regime counts={0: 191, 1: 1006, 2: 949, 3: 14}
+2026-07-12 02:08:35,949 | INFO | src.model | Two-stage predict — 30/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=28 (P>0.30) | floor_boost=21
+2026-07-12 02:08:36,855 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_023.parquet (168 rows)
+2026-07-12 02:08:36,856 | INFO | src.validation | Window 24/53 done — MAE=18.73
+2026-07-12 02:08:36,882 | INFO | src.model | Ridge coefficients: {'residual_load': 26.47656483440107, 'hour_sin': 0.2123894845105933, 'hour_cos': -1.7799661627112997, 'dow_sin': -0.8359174777506377, 'dow_cos': 0.6473932017986964, 'month_sin': 0.05381950230707242, 'month_cos': -2.0208977067124354, 'price_lag_168h': 10.198916868808794, 'renewable_penetration': -8.687008742425398}
+2026-07-12 02:08:36,883 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:08:37,055 | INFO | src.model | Negative-price classifier fitted — neg_hours=316 (3.3%) scale_pos_weight=18.23
+2026-07-12 02:08:40,410 | INFO | src.model | Two-stage fit — extreme hours=1752 (18.3%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=103.1 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.49 (rate=0.0010/day)
+2026-07-12 02:08:40,513 | INFO | src.model | Two-stage predict — 385/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=253 (P>0.30) | floor_boost=151
+2026-07-12 02:08:40,521 | INFO | src.conformal | Regime 3 has 8 cal samples (< 50) — using global conformal quantiles
+2026-07-12 02:08:40,970 | INFO | src.conformal | Calibration coverage OK: 91.2% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:08:40,971 | INFO | src.conformal | Conformal calibrated — global q90=31.45 | scale=1.050 | regime counts={0: 213, 1: 1040, 2: 899, 3: 8}
+2026-07-12 02:08:41,055 | INFO | src.model | Two-stage predict — 29/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=12 (P>0.30) | floor_boost=7
+2026-07-12 02:08:42,605 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-12 02:08:42,948 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_years_since_ukraine_war.png
+2026-07-12 02:08:43,230 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_regime_probability_2.png
+2026-07-12 02:08:43,535 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_thermal_gap.png
+2026-07-12 02:08:43,859 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_residual_load.png
+2026-07-12 02:08:44,162 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_regime_probability_1.png
+2026-07-12 02:08:44,175 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_024.parquet (168 rows)
+2026-07-12 02:08:44,175 | INFO | src.validation | Window 25/53 done — MAE=11.59
+2026-07-12 02:08:44,202 | INFO | src.model | Ridge coefficients: {'residual_load': 26.4511726430598, 'hour_sin': 0.21211315104045989, 'hour_cos': -1.740993812279553, 'dow_sin': -0.9800236233442747, 'dow_cos': 0.6651204020881386, 'month_sin': -0.38972981641907567, 'month_cos': -1.921241835877037, 'price_lag_168h': 10.418966608869377, 'renewable_penetration': -8.525425823879415}
+2026-07-12 02:08:44,203 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:08:44,374 | INFO | src.model | Negative-price classifier fitted — neg_hours=320 (3.3%) scale_pos_weight=18.23
+2026-07-12 02:08:47,660 | INFO | src.model | Two-stage fit — extreme hours=1778 (18.3%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=100.1 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.50 (rate=0.0010/day)
+2026-07-12 02:08:47,767 | INFO | src.model | Two-stage predict — 356/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=246 (P>0.30) | floor_boost=148
+2026-07-12 02:08:47,777 | INFO | src.conformal | Regime 3 has 1 cal samples (< 50) — using global conformal quantiles
+2026-07-12 02:08:48,253 | INFO | src.conformal | Calibration coverage OK: 91.3% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:08:48,253 | INFO | src.conformal | Conformal calibrated — global q90=29.56 | scale=1.050 | regime counts={0: 212, 1: 1036, 2: 911, 3: 1}
+2026-07-12 02:08:48,342 | INFO | src.model | Two-stage predict — 29/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=17 (P>0.30) | floor_boost=9
+2026-07-12 02:08:49,070 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_025.parquet (168 rows)
+2026-07-12 02:08:49,070 | INFO | src.validation | Window 26/53 done — MAE=14.17
+2026-07-12 02:08:49,099 | INFO | src.model | Ridge coefficients: {'residual_load': 27.233177764293284, 'hour_sin': 0.255518392326336, 'hour_cos': -1.5455417247237448, 'dow_sin': -1.1823775583902496, 'dow_cos': 0.6575817430878679, 'month_sin': -0.789941632822371, 'month_cos': -1.911246441697103, 'price_lag_168h': 10.43041443516451, 'renewable_penetration': -7.7566292657857625}
+2026-07-12 02:08:49,101 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:08:49,275 | INFO | src.model | Negative-price classifier fitted — neg_hours=320 (3.2%) scale_pos_weight=18.23
+2026-07-12 02:08:52,972 | INFO | src.model | Two-stage fit — extreme hours=1801 (18.2%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=98.1 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.51 (rate=0.0010/day)
+2026-07-12 02:08:53,081 | INFO | src.model | Two-stage predict — 366/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=260 (P>0.30) | floor_boost=159
+2026-07-12 02:08:53,091 | INFO | src.conformal | Regime 3 has 1 cal samples (< 50) — using global conformal quantiles
+2026-07-12 02:08:53,561 | INFO | src.conformal | Calibration coverage OK: 91.3% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:08:53,561 | INFO | src.conformal | Conformal calibrated — global q90=30.42 | scale=1.050 | regime counts={0: 228, 1: 978, 2: 953, 3: 1}
+2026-07-12 02:08:53,651 | INFO | src.model | Two-stage predict — 30/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=31 (P>0.30) | floor_boost=25
+2026-07-12 02:09:19,458 | INFO | src.model | QRA base models fitted — 7 quantiles × 3 variants on 10968 rows
+2026-07-12 02:09:19,555 | INFO | src.model | QRA weights q=0.05 — cons=0.328 bal=0.328 agg=0.343 | cal_pinball=2.4668
+2026-07-12 02:09:19,650 | INFO | src.model | QRA weights q=0.10 — cons=0.500 bal=0.500 agg=0.000 | cal_pinball=3.8359
+2026-07-12 02:09:19,745 | INFO | src.model | QRA weights q=0.25 — cons=0.500 bal=0.500 agg=0.000 | cal_pinball=6.9455
+2026-07-12 02:09:19,842 | INFO | src.model | QRA weights q=0.50 — cons=0.000 bal=0.000 agg=1.000 | cal_pinball=8.0313
+2026-07-12 02:09:19,936 | INFO | src.model | QRA weights q=0.75 — cons=0.000 bal=0.000 agg=1.000 | cal_pinball=7.3184
+2026-07-12 02:09:20,029 | INFO | src.model | QRA weights q=0.90 — cons=0.000 bal=0.000 agg=1.000 | cal_pinball=4.7362
+2026-07-12 02:09:20,122 | INFO | src.model | QRA weights q=0.95 — cons=0.000 bal=0.000 agg=1.000 | cal_pinball=2.9833
+2026-07-12 02:09:20,797 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_026.parquet (168 rows)
+2026-07-12 02:09:20,798 | INFO | src.validation | Window 27/53 done — MAE=18.45
+2026-07-12 02:09:20,824 | INFO | src.model | Ridge coefficients: {'residual_load': 27.102557435991088, 'hour_sin': 0.2720420225647919, 'hour_cos': -1.5912998489150565, 'dow_sin': -1.1396210714678676, 'dow_cos': 0.6152085898515803, 'month_sin': -0.9168609548589903, 'month_cos': -1.7486994063565655, 'price_lag_168h': 10.493763778112564, 'renewable_penetration': -8.024653869226498}
+2026-07-12 02:09:20,825 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:09:21,015 | INFO | src.model | Negative-price classifier fitted — neg_hours=320 (3.2%) scale_pos_weight=18.23
+2026-07-12 02:09:24,692 | INFO | src.model | Two-stage fit — extreme hours=1823 (18.2%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=95.5 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.52 (rate=0.0010/day)
+2026-07-12 02:09:24,794 | INFO | src.model | Two-stage predict — 368/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=249 (P>0.30) | floor_boost=165
+2026-07-12 02:09:24,802 | INFO | src.conformal | Regime 3 has 1 cal samples (< 50) — using global conformal quantiles
+2026-07-12 02:09:25,250 | INFO | src.conformal | Calibration coverage OK: 91.3% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:09:25,250 | INFO | src.conformal | Conformal calibrated — global q90=33.20 | scale=1.050 | regime counts={0: 240, 1: 944, 2: 975, 3: 1}
+2026-07-12 02:09:25,445 | INFO | src.model | Two-stage predict — 31/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=18 (P>0.30) | floor_boost=14
+2026-07-12 02:09:26,176 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_027.parquet (168 rows)
+2026-07-12 02:09:26,177 | INFO | src.validation | Window 28/53 done — MAE=12.79
+2026-07-12 02:09:26,203 | INFO | src.model | Ridge coefficients: {'residual_load': 26.99848101255912, 'hour_sin': 0.2822067561681174, 'hour_cos': -1.6700580331853405, 'dow_sin': -1.1220447340891486, 'dow_cos': 0.6888273256115293, 'month_sin': -1.098090025148342, 'month_cos': -1.539898955446311, 'price_lag_168h': 10.65671087315595, 'renewable_penetration': -8.312873989033834}
+2026-07-12 02:09:26,204 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:09:26,392 | INFO | src.model | Negative-price classifier fitted — neg_hours=320 (3.1%) scale_pos_weight=18.23
+2026-07-12 02:09:29,292 | INFO | src.model | Two-stage fit — extreme hours=1846 (18.1%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=94.4 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.53 (rate=0.0010/day)
+2026-07-12 02:09:29,396 | INFO | src.model | Two-stage predict — 377/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=239 (P>0.30) | floor_boost=166
+2026-07-12 02:09:29,404 | INFO | src.conformal | Regime 3 has 1 cal samples (< 50) — using global conformal quantiles
+2026-07-12 02:09:29,852 | INFO | src.conformal | Calibration coverage OK: 91.4% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:09:29,852 | INFO | src.conformal | Conformal calibrated — global q90=32.29 | scale=1.050 | regime counts={0: 235, 1: 917, 2: 1007, 3: 1}
+2026-07-12 02:09:29,941 | INFO | src.model | Two-stage predict — 32/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=20 (P>0.30) | floor_boost=14
+2026-07-12 02:09:31,522 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-12 02:09:31,976 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_years_since_ukraine_war.png
+2026-07-12 02:09:32,272 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_regime_probability_2.png
+2026-07-12 02:09:32,607 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_gas_x_residual_load.png
+2026-07-12 02:09:32,889 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_residual_load.png
+2026-07-12 02:09:33,224 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_actual_lignite_generation_mw.png
+2026-07-12 02:09:33,240 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_028.parquet (168 rows)
+2026-07-12 02:09:33,240 | INFO | src.validation | Window 29/53 done — MAE=13.95
+2026-07-12 02:09:33,266 | INFO | src.model | Ridge coefficients: {'residual_load': 26.85299960795877, 'hour_sin': 0.3068157041580732, 'hour_cos': -1.6806912809151027, 'dow_sin': -1.1313658236790463, 'dow_cos': 0.6530671403117364, 'month_sin': -1.2209220609036213, 'month_cos': -1.4184492256532104, 'price_lag_168h': 10.807934475727697, 'renewable_penetration': -8.278904578019588}
+2026-07-12 02:09:33,267 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:09:33,524 | INFO | src.model | Negative-price classifier fitted — neg_hours=320 (3.1%) scale_pos_weight=18.23
+2026-07-12 02:09:36,996 | INFO | src.model | Two-stage fit — extreme hours=1869 (18.1%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=93.4 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.54 (rate=0.0010/day)
+2026-07-12 02:09:37,111 | INFO | src.model | Two-stage predict — 375/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=254 (P>0.30) | floor_boost=174
+2026-07-12 02:09:37,119 | INFO | src.conformal | Regime 3 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-12 02:09:37,734 | INFO | src.conformal | Calibration coverage OK: 91.1% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:09:37,735 | INFO | src.conformal | Conformal calibrated — global q90=33.14 | scale=1.050 | regime counts={0: 250, 1: 917, 2: 993, 3: 0}
+2026-07-12 02:09:37,816 | INFO | src.model | Two-stage predict — 23/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=11 (P>0.30) | floor_boost=8
+2026-07-12 02:09:38,528 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_029.parquet (168 rows)
+2026-07-12 02:09:38,529 | INFO | src.validation | Window 30/53 done — MAE=11.59
+2026-07-12 02:09:38,558 | INFO | src.model | Ridge coefficients: {'residual_load': 26.689807100289404, 'hour_sin': 0.3022848499622165, 'hour_cos': -1.727786016853184, 'dow_sin': -1.1442468700935824, 'dow_cos': 0.6440672747663737, 'month_sin': -1.4399439349502237, 'month_cos': -1.1894508188553663, 'price_lag_168h': 10.858865218821148, 'renewable_penetration': -8.391853129026412}
+2026-07-12 02:09:38,558 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:09:38,728 | INFO | src.model | Negative-price classifier fitted — neg_hours=327 (3.1%) scale_pos_weight=18.23
+2026-07-12 02:09:42,067 | INFO | src.model | Two-stage fit — extreme hours=1899 (18.1%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=92.6 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.55 (rate=0.0010/day)
+2026-07-12 02:09:42,177 | INFO | src.model | Two-stage predict — 345/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=251 (P>0.30) | floor_boost=175
+2026-07-12 02:09:42,185 | INFO | src.conformal | Regime 3 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-12 02:09:42,651 | INFO | src.conformal | Calibration coverage OK: 91.0% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:09:42,651 | INFO | src.conformal | Conformal calibrated — global q90=32.82 | scale=1.050 | regime counts={0: 246, 1: 939, 2: 975, 3: 0}
+2026-07-12 02:09:42,736 | INFO | src.model | Two-stage predict — 35/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=16 (P>0.30) | floor_boost=8
+2026-07-12 02:09:43,595 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_030.parquet (168 rows)
+2026-07-12 02:09:43,595 | INFO | src.validation | Window 31/53 done — MAE=11.28
+2026-07-12 02:09:43,628 | INFO | src.model | Ridge coefficients: {'residual_load': 26.73045821686625, 'hour_sin': 0.3153734771024474, 'hour_cos': -1.7238669292183544, 'dow_sin': -1.2250438764181917, 'dow_cos': 0.6256164807122759, 'month_sin': -1.5215445241886238, 'month_cos': -0.9573244489857645, 'price_lag_168h': 10.821775878761217, 'renewable_penetration': -8.557932261711345}
+2026-07-12 02:09:43,629 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:09:43,808 | INFO | src.model | Negative-price classifier fitted — neg_hours=327 (3.1%) scale_pos_weight=18.23
+2026-07-12 02:09:48,078 | INFO | src.model | Two-stage fit — extreme hours=1921 (18.1%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=92.0 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.56 (rate=0.0010/day)
+2026-07-12 02:09:48,194 | INFO | src.model | Two-stage predict — 355/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=231 (P>0.30) | floor_boost=162
+2026-07-12 02:09:48,203 | INFO | src.conformal | Regime 3 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-12 02:09:48,666 | INFO | src.conformal | Calibration coverage OK: 91.2% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:09:48,667 | INFO | src.conformal | Conformal calibrated — global q90=32.67 | scale=1.050 | regime counts={0: 241, 1: 907, 2: 1012, 3: 0}
+2026-07-12 02:09:48,757 | INFO | src.model | Two-stage predict — 43/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=25 (P>0.30) | floor_boost=18
+2026-07-12 02:09:49,478 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_031.parquet (168 rows)
+2026-07-12 02:09:49,479 | INFO | src.validation | Window 32/53 done — MAE=14.24
+2026-07-12 02:09:49,510 | INFO | src.model | Ridge coefficients: {'residual_load': 26.784273097141792, 'hour_sin': 0.2793857518347783, 'hour_cos': -1.7246674700937417, 'dow_sin': -1.1530042945274663, 'dow_cos': 0.5656910054140203, 'month_sin': -1.613572462730395, 'month_cos': -0.6470462086900957, 'price_lag_168h': 10.904933309710758, 'renewable_penetration': -8.67053238286341}
+2026-07-12 02:09:49,511 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:09:49,707 | INFO | src.model | Negative-price classifier fitted — neg_hours=332 (3.1%) scale_pos_weight=18.23
+2026-07-12 02:09:52,993 | INFO | src.model | Two-stage fit — extreme hours=1949 (18.1%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=92.1 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.57 (rate=0.0010/day)
+2026-07-12 02:09:53,098 | INFO | src.model | Two-stage predict — 364/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=237 (P>0.30) | floor_boost=169
+2026-07-12 02:09:53,107 | INFO | src.conformal | Regime 3 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-12 02:09:53,566 | INFO | src.conformal | Calibration coverage OK: 91.2% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:09:53,566 | INFO | src.conformal | Conformal calibrated — global q90=32.64 | scale=1.050 | regime counts={0: 236, 1: 916, 2: 1008, 3: 0}
+2026-07-12 02:09:53,650 | INFO | src.model | Two-stage predict — 23/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=4 (P>0.30) | floor_boost=0
+2026-07-12 02:09:55,225 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-12 02:09:55,574 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_years_since_ukraine_war.png
+2026-07-12 02:09:55,929 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_regime_probability_2.png
+2026-07-12 02:09:56,224 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_gas_x_residual_load.png
+2026-07-12 02:09:56,506 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_residual_load.png
+2026-07-12 02:09:56,807 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_actual_lignite_generation_mw.png
+2026-07-12 02:09:56,821 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_032.parquet (168 rows)
+2026-07-12 02:09:56,822 | INFO | src.validation | Window 33/53 done — MAE=16.86
+2026-07-12 02:09:56,846 | INFO | src.model | Ridge coefficients: {'residual_load': 26.791463104410276, 'hour_sin': 0.30418018056440477, 'hour_cos': -1.7177432327555242, 'dow_sin': -1.1830303093916643, 'dow_cos': 0.531380323441882, 'month_sin': -1.622303831790801, 'month_cos': -0.5712392344721722, 'price_lag_168h': 10.968734050187576, 'renewable_penetration': -8.802002327293323}
+2026-07-12 02:09:56,847 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:09:57,003 | INFO | src.model | Negative-price classifier fitted — neg_hours=332 (3.0%) scale_pos_weight=18.23
+2026-07-12 02:10:00,338 | INFO | src.model | Two-stage fit — extreme hours=1972 (18.0%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=91.7 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.58 (rate=0.0010/day)
+2026-07-12 02:10:00,449 | INFO | src.model | Two-stage predict — 357/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=211 (P>0.30) | floor_boost=142
+2026-07-12 02:10:00,458 | INFO | src.conformal | Regime 3 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-12 02:10:00,921 | INFO | src.conformal | Calibration coverage OK: 91.2% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:10:00,921 | INFO | src.conformal | Conformal calibrated — global q90=32.08 | scale=1.050 | regime counts={0: 205, 1: 859, 2: 1096, 3: 0}
+2026-07-12 02:10:01,011 | INFO | src.model | Two-stage predict — 45/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=47 (P>0.30) | floor_boost=35
+2026-07-12 02:10:01,834 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_033.parquet (168 rows)
+2026-07-12 02:10:01,835 | INFO | src.validation | Window 34/53 done — MAE=14.99
+2026-07-12 02:10:01,875 | INFO | src.model | Ridge coefficients: {'residual_load': 26.986000337836874, 'hour_sin': 0.26168876782339145, 'hour_cos': -1.6947407374896708, 'dow_sin': -1.1040417824341853, 'dow_cos': 0.5517264387831752, 'month_sin': -1.6136264534620965, 'month_cos': -0.6787049604828691, 'price_lag_168h': 10.899278218682483, 'renewable_penetration': -8.540895401921798}
+2026-07-12 02:10:01,877 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:10:02,317 | INFO | src.model | Negative-price classifier fitted — neg_hours=346 (3.1%) scale_pos_weight=18.23
+2026-07-12 02:10:06,021 | INFO | src.model | Two-stage fit — extreme hours=2008 (18.1%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=91.1 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.59 (rate=0.0010/day)
+2026-07-12 02:10:06,130 | INFO | src.model | Two-stage predict — 385/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=255 (P>0.30) | floor_boost=177
+2026-07-12 02:10:06,140 | INFO | src.conformal | Regime 3 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-12 02:10:06,721 | INFO | src.conformal | Calibration coverage OK: 91.2% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:10:06,721 | INFO | src.conformal | Conformal calibrated — global q90=31.54 | scale=1.050 | regime counts={0: 241, 1: 856, 2: 1063, 3: 0}
+2026-07-12 02:10:06,808 | INFO | src.model | Two-stage predict — 37/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=15 (P>0.30) | floor_boost=11
+2026-07-12 02:10:07,658 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_034.parquet (168 rows)
+2026-07-12 02:10:07,659 | INFO | src.validation | Window 35/53 done — MAE=17.24
+2026-07-12 02:10:07,693 | INFO | src.model | Ridge coefficients: {'residual_load': 26.950952140023713, 'hour_sin': 0.24074743561152592, 'hour_cos': -1.7007680751391043, 'dow_sin': -1.001323152699273, 'dow_cos': 0.5991297139667006, 'month_sin': -1.5981210222303674, 'month_cos': -0.5469865715087805, 'price_lag_168h': 10.922397300993334, 'renewable_penetration': -8.449659896768475}
+2026-07-12 02:10:07,694 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:10:07,890 | INFO | src.model | Negative-price classifier fitted — neg_hours=355 (3.2%) scale_pos_weight=18.23
+2026-07-12 02:10:11,595 | INFO | src.model | Two-stage fit — extreme hours=2040 (18.2%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=91.1 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.60 (rate=0.0010/day)
+2026-07-12 02:10:11,704 | INFO | src.model | Two-stage predict — 408/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=270 (P>0.30) | floor_boost=188
+2026-07-12 02:10:11,714 | INFO | src.conformal | Regime 3 has 0 cal samples (< 50) — using global conformal quantiles
+2026-07-12 02:10:12,179 | INFO | src.conformal | Calibration coverage OK: 91.7% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:10:12,179 | INFO | src.conformal | Conformal calibrated — global q90=28.38 | scale=1.050 | regime counts={0: 246, 1: 839, 2: 1075, 3: 0}
+2026-07-12 02:10:12,265 | INFO | src.model | Two-stage predict — 34/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=16 (P>0.30) | floor_boost=9
+2026-07-12 02:10:12,995 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_035.parquet (168 rows)
+2026-07-12 02:10:12,996 | INFO | src.validation | Window 36/53 done — MAE=20.72
+2026-07-12 02:10:13,027 | INFO | src.model | Ridge coefficients: {'residual_load': 27.154735330232523, 'hour_sin': 0.2287005390897121, 'hour_cos': -1.6823995637464517, 'dow_sin': -0.9995559893113837, 'dow_cos': 0.6559350233645334, 'month_sin': -1.5888622711156717, 'month_cos': -0.5409843913991487, 'price_lag_168h': 10.953497114130135, 'renewable_penetration': -8.294549886182718}
+2026-07-12 02:10:13,027 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:10:13,218 | INFO | src.model | Negative-price classifier fitted — neg_hours=370 (3.3%) scale_pos_weight=18.23
+2026-07-12 02:10:17,530 | INFO | src.model | Two-stage fit — extreme hours=2078 (18.3%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=91.5 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.61 (rate=0.0010/day)
+2026-07-12 02:10:17,645 | INFO | src.model | Two-stage predict — 426/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=272 (P>0.30) | floor_boost=180
+2026-07-12 02:10:17,653 | INFO | src.conformal | Regime 3 has 3 cal samples (< 50) — using global conformal quantiles
+2026-07-12 02:10:18,117 | INFO | src.conformal | Calibration coverage OK: 91.5% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:10:18,117 | INFO | src.conformal | Conformal calibrated — global q90=26.86 | scale=1.050 | regime counts={0: 238, 1: 825, 2: 1094, 3: 3}
+2026-07-12 02:10:18,208 | INFO | src.model | Two-stage predict — 19/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=16 (P>0.30) | floor_boost=3
+2026-07-12 02:10:19,798 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-12 02:10:20,109 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_years_since_ukraine_war.png
+2026-07-12 02:10:20,425 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_regime_probability_2.png
+2026-07-12 02:10:20,726 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_regime_probability_1.png
+2026-07-12 02:10:21,016 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_residual_load.png
+2026-07-12 02:10:21,337 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_actual_lignite_generation_mw.png
+2026-07-12 02:10:21,349 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_036.parquet (168 rows)
+2026-07-12 02:10:21,350 | INFO | src.validation | Window 37/53 done — MAE=11.56
+2026-07-12 02:10:21,376 | INFO | src.model | Ridge coefficients: {'residual_load': 26.947806957261513, 'hour_sin': 0.22124821030708952, 'hour_cos': -1.827928505392916, 'dow_sin': -0.8750957042624361, 'dow_cos': 0.6463673574385079, 'month_sin': -1.5270168242849635, 'month_cos': -0.34984311369255955, 'price_lag_168h': 11.018753322681688, 'renewable_penetration': -8.597038282365594}
+2026-07-12 02:10:21,377 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:10:21,540 | INFO | src.model | Negative-price classifier fitted — neg_hours=371 (3.2%) scale_pos_weight=18.23
+2026-07-12 02:10:25,342 | INFO | src.model | Two-stage fit — extreme hours=2101 (18.2%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=91.9 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.62 (rate=0.0010/day)
+2026-07-12 02:10:25,454 | INFO | src.model | Two-stage predict — 410/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=267 (P>0.30) | floor_boost=163
+2026-07-12 02:10:25,464 | INFO | src.conformal | Regime 3 has 3 cal samples (< 50) — using global conformal quantiles
+2026-07-12 02:10:25,928 | INFO | src.conformal | Calibration coverage OK: 91.4% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:10:25,928 | INFO | src.conformal | Conformal calibrated — global q90=26.43 | scale=1.050 | regime counts={0: 227, 1: 819, 2: 1111, 3: 3}
+2026-07-12 02:10:26,014 | INFO | src.model | Two-stage predict — 19/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=23 (P>0.30) | floor_boost=15
+2026-07-12 02:10:26,754 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_037.parquet (168 rows)
+2026-07-12 02:10:26,755 | INFO | src.validation | Window 38/53 done — MAE=12.92
+2026-07-12 02:10:26,793 | INFO | src.model | Ridge coefficients: {'residual_load': 26.95868966668595, 'hour_sin': 0.18814884388500375, 'hour_cos': -1.8426766420591916, 'dow_sin': -0.9370809485843197, 'dow_cos': 0.6450923832575376, 'month_sin': -1.4968045200607076, 'month_cos': -0.23852926025001583, 'price_lag_168h': 11.085997547357202, 'renewable_penetration': -8.47589980452464}
+2026-07-12 02:10:26,794 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:10:26,978 | INFO | src.model | Negative-price classifier fitted — neg_hours=390 (3.3%) scale_pos_weight=18.23
+2026-07-12 02:10:30,478 | INFO | src.model | Two-stage fit — extreme hours=2143 (18.3%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=92.1 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.63 (rate=0.0010/day)
+2026-07-12 02:10:30,583 | INFO | src.model | Two-stage predict — 395/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=274 (P>0.30) | floor_boost=167
+2026-07-12 02:10:30,593 | INFO | src.conformal | Regime 3 has 3 cal samples (< 50) — using global conformal quantiles
+2026-07-12 02:10:31,061 | INFO | src.conformal | Calibration coverage OK: 91.2% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:10:31,062 | INFO | src.conformal | Conformal calibrated — global q90=26.85 | scale=1.050 | regime counts={0: 229, 1: 850, 2: 1078, 3: 3}
+2026-07-12 02:10:31,264 | INFO | src.model | Two-stage predict — 27/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=26 (P>0.30) | floor_boost=11
+2026-07-12 02:10:32,149 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_038.parquet (168 rows)
+2026-07-12 02:10:32,150 | INFO | src.validation | Window 39/53 done — MAE=12.54
+2026-07-12 02:10:32,185 | INFO | src.model | Ridge coefficients: {'residual_load': 26.840910332617394, 'hour_sin': 0.188051665414226, 'hour_cos': -1.8823335488158717, 'dow_sin': -0.8770941036924785, 'dow_cos': 0.6328142223347455, 'month_sin': -1.4445642416332354, 'month_cos': -0.09444027260218235, 'price_lag_168h': 11.06421701963285, 'renewable_penetration': -8.576329168498228}
+2026-07-12 02:10:32,185 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:10:32,468 | INFO | src.model | Negative-price classifier fitted — neg_hours=398 (3.4%) scale_pos_weight=18.23
+2026-07-12 02:10:36,285 | INFO | src.model | Two-stage fit — extreme hours=2174 (18.4%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=92.5 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.64 (rate=0.0010/day)
+2026-07-12 02:10:36,395 | INFO | src.model | Two-stage predict — 404/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=276 (P>0.30) | floor_boost=171
+2026-07-12 02:10:36,405 | INFO | src.conformal | Regime 3 has 3 cal samples (< 50) — using global conformal quantiles
+2026-07-12 02:10:37,033 | INFO | src.conformal | Calibration coverage OK: 91.5% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:10:37,033 | INFO | src.conformal | Conformal calibrated — global q90=26.90 | scale=1.050 | regime counts={0: 232, 1: 885, 2: 1040, 3: 3}
+2026-07-12 02:10:37,120 | INFO | src.model | Two-stage predict — 8/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=5 (P>0.30) | floor_boost=0
+2026-07-12 02:11:05,427 | INFO | src.model | QRA base models fitted — 7 quantiles × 3 variants on 13152 rows
+2026-07-12 02:11:05,524 | INFO | src.model | QRA weights q=0.05 — cons=0.323 bal=0.323 agg=0.353 | cal_pinball=2.0837
+2026-07-12 02:11:05,624 | INFO | src.model | QRA weights q=0.10 — cons=0.411 bal=0.411 agg=0.178 | cal_pinball=3.2385
+2026-07-12 02:11:05,818 | INFO | src.model | QRA weights q=0.25 — cons=0.385 bal=0.385 agg=0.231 | cal_pinball=5.6758
+2026-07-12 02:11:05,943 | INFO | src.model | QRA weights q=0.50 — cons=0.000 bal=0.000 agg=1.000 | cal_pinball=6.7381
+2026-07-12 02:11:06,043 | INFO | src.model | QRA weights q=0.75 — cons=0.000 bal=0.000 agg=1.000 | cal_pinball=6.6581
+2026-07-12 02:11:06,140 | INFO | src.model | QRA weights q=0.90 — cons=0.000 bal=0.000 agg=1.000 | cal_pinball=4.6545
+2026-07-12 02:11:06,240 | INFO | src.model | QRA weights q=0.95 — cons=0.266 bal=0.266 agg=0.468 | cal_pinball=3.2946
+2026-07-12 02:11:06,899 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_039.parquet (168 rows)
+2026-07-12 02:11:06,900 | INFO | src.validation | Window 40/53 done — MAE=13.81
+2026-07-12 02:11:06,930 | INFO | src.model | Ridge coefficients: {'residual_load': 26.241898200734827, 'hour_sin': 0.18280607080799247, 'hour_cos': -2.2069745243138907, 'dow_sin': -0.772105486683178, 'dow_cos': 0.7106453561915599, 'month_sin': -1.1505120858265423, 'month_cos': 0.2903514182594016, 'price_lag_168h': 11.03215160368583, 'renewable_penetration': -9.406609417233454}
+2026-07-12 02:11:06,932 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:11:07,137 | INFO | src.model | Negative-price classifier fitted — neg_hours=427 (3.6%) scale_pos_weight=18.23
+2026-07-12 02:11:11,109 | INFO | src.model | Two-stage fit — extreme hours=2226 (18.6%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=93.0 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.65 (rate=0.0010/day)
+2026-07-12 02:11:11,220 | INFO | src.model | Two-stage predict — 377/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=247 (P>0.30) | floor_boost=148
+2026-07-12 02:11:11,230 | INFO | src.conformal | Regime 3 has 3 cal samples (< 50) — using global conformal quantiles
+2026-07-12 02:11:11,692 | INFO | src.conformal | Calibration coverage OK: 91.5% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:11:11,692 | INFO | src.conformal | Conformal calibrated — global q90=26.31 | scale=1.050 | regime counts={0: 194, 1: 906, 2: 1057, 3: 3}
+2026-07-12 02:11:11,778 | INFO | src.model | Two-stage predict — 29/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=17 (P>0.30) | floor_boost=15
+2026-07-12 02:11:13,362 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-12 02:11:13,683 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_years_since_ukraine_war.png
+2026-07-12 02:11:13,991 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_regime_probability_2.png
+2026-07-12 02:11:14,310 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_actual_lignite_generation_mw.png
+2026-07-12 02:11:14,616 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_regime_probability_1.png
+2026-07-12 02:11:15,048 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_residual_load.png
+2026-07-12 02:11:15,067 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_040.parquet (168 rows)
+2026-07-12 02:11:15,068 | INFO | src.validation | Window 41/53 done — MAE=12.50
+2026-07-12 02:11:15,093 | INFO | src.model | Ridge coefficients: {'residual_load': 26.181734433080845, 'hour_sin': 0.18803376798914978, 'hour_cos': -2.296919999500458, 'dow_sin': -0.782438049690695, 'dow_cos': 0.6647582571528439, 'month_sin': -1.0568494551146428, 'month_cos': 0.3965028202691456, 'price_lag_168h': 11.1239601975386, 'renewable_penetration': -9.512596798724854}
+2026-07-12 02:11:15,095 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:11:15,284 | INFO | src.model | Negative-price classifier fitted — neg_hours=454 (3.7%) scale_pos_weight=18.23
+2026-07-12 02:11:18,874 | INFO | src.model | Two-stage fit — extreme hours=2275 (18.7%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=92.9 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.66 (rate=0.0010/day)
+2026-07-12 02:11:18,982 | INFO | src.model | Two-stage predict — 376/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=258 (P>0.30) | floor_boost=147
+2026-07-12 02:11:18,992 | INFO | src.conformal | Regime 3 has 3 cal samples (< 50) — using global conformal quantiles
+2026-07-12 02:11:19,480 | INFO | src.conformal | Calibration coverage OK: 91.1% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:11:19,480 | INFO | src.conformal | Conformal calibrated — global q90=24.78 | scale=1.050 | regime counts={0: 192, 1: 919, 2: 1046, 3: 3}
+2026-07-12 02:11:19,681 | INFO | src.model | Two-stage predict — 31/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=7 (P>0.30) | floor_boost=2
+2026-07-12 02:11:20,396 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_041.parquet (168 rows)
+2026-07-12 02:11:20,397 | INFO | src.validation | Window 42/53 done — MAE=15.84
+2026-07-12 02:11:20,427 | INFO | src.model | Ridge coefficients: {'residual_load': 26.21481723041481, 'hour_sin': 0.18048317579034567, 'hour_cos': -2.307121374355051, 'dow_sin': -0.8426405112538602, 'dow_cos': 0.6904247536199196, 'month_sin': -0.9985628433194784, 'month_cos': 0.45475723259764866, 'price_lag_168h': 11.144878687517439, 'renewable_penetration': -9.47231667877414}
+2026-07-12 02:11:20,429 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:11:20,623 | INFO | src.model | Negative-price classifier fitted — neg_hours=460 (3.7%) scale_pos_weight=18.23
+2026-07-12 02:11:24,984 | INFO | src.model | Two-stage fit — extreme hours=2304 (18.7%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=94.2 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.67 (rate=0.0010/day)
+2026-07-12 02:11:25,097 | INFO | src.model | Two-stage predict — 366/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=246 (P>0.30) | floor_boost=137
+2026-07-12 02:11:25,107 | INFO | src.conformal | Regime 3 has 6 cal samples (< 50) — using global conformal quantiles
+2026-07-12 02:11:25,568 | INFO | src.conformal | Calibration coverage OK: 90.7% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:11:25,568 | INFO | src.conformal | Conformal calibrated — global q90=26.78 | scale=1.050 | regime counts={0: 184, 1: 911, 2: 1059, 3: 6}
+2026-07-12 02:11:25,650 | INFO | src.model | Two-stage predict — 34/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=0 (P>0.30) | floor_boost=0
+2026-07-12 02:11:26,370 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_042.parquet (168 rows)
+2026-07-12 02:11:26,371 | INFO | src.validation | Window 43/53 done — MAE=11.77
+2026-07-12 02:11:26,405 | INFO | src.model | Ridge coefficients: {'residual_load': 26.368840730616892, 'hour_sin': 0.20699594317129907, 'hour_cos': -2.2800085818372113, 'dow_sin': -0.8530793555215197, 'dow_cos': 0.7138573264283568, 'month_sin': -0.9010284313137179, 'month_cos': 0.5474843341030631, 'price_lag_168h': 11.132865296692222, 'renewable_penetration': -9.281321536807095}
+2026-07-12 02:11:26,406 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:11:26,596 | INFO | src.model | Negative-price classifier fitted — neg_hours=460 (3.7%) scale_pos_weight=18.23
+2026-07-12 02:11:30,205 | INFO | src.model | Two-stage fit — extreme hours=2325 (18.7%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=95.0 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.68 (rate=0.0010/day)
+2026-07-12 02:11:30,316 | INFO | src.model | Two-stage predict — 383/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=223 (P>0.30) | floor_boost=124
+2026-07-12 02:11:30,326 | INFO | src.conformal | Regime 3 has 9 cal samples (< 50) — using global conformal quantiles
+2026-07-12 02:11:30,796 | INFO | src.conformal | Calibration coverage OK: 90.7% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:11:30,796 | INFO | src.conformal | Conformal calibrated — global q90=26.81 | scale=1.050 | regime counts={0: 171, 1: 878, 2: 1102, 3: 9}
+2026-07-12 02:11:30,882 | INFO | src.model | Two-stage predict — 39/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=0 (P>0.30) | floor_boost=0
+2026-07-12 02:11:31,745 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_043.parquet (168 rows)
+2026-07-12 02:11:31,746 | INFO | src.validation | Window 44/53 done — MAE=11.70
+2026-07-12 02:11:31,789 | INFO | src.model | Ridge coefficients: {'residual_load': 26.536017910459254, 'hour_sin': 0.18061840708286453, 'hour_cos': -2.239522856436599, 'dow_sin': -0.8853978255651332, 'dow_cos': 0.7794723879696128, 'month_sin': -0.7918625070753863, 'month_cos': 0.5726177753787054, 'price_lag_168h': 11.133909822451821, 'renewable_penetration': -9.039433224398152}
+2026-07-12 02:11:31,790 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:11:32,178 | INFO | src.model | Negative-price classifier fitted — neg_hours=473 (3.8%) scale_pos_weight=18.23
+2026-07-12 02:11:35,406 | INFO | src.model | Two-stage fit — extreme hours=2362 (18.8%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=96.2 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.69 (rate=0.0010/day)
+2026-07-12 02:11:35,512 | INFO | src.model | Two-stage predict — 387/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=217 (P>0.30) | floor_boost=119
+2026-07-12 02:11:35,523 | INFO | src.conformal | Regime 3 has 13 cal samples (< 50) — using global conformal quantiles
+2026-07-12 02:11:36,128 | INFO | src.conformal | Calibration coverage OK: 90.7% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:11:36,128 | INFO | src.conformal | Conformal calibrated — global q90=26.76 | scale=1.050 | regime counts={0: 163, 1: 854, 2: 1130, 3: 13}
+2026-07-12 02:11:36,218 | INFO | src.model | Two-stage predict — 66/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=0 (P>0.30) | floor_boost=0
+2026-07-12 02:11:37,865 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-12 02:11:38,195 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_regime_probability_2.png
+2026-07-12 02:11:38,495 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_residual_load.png
+2026-07-12 02:11:38,786 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_gas_x_residual_load.png
+2026-07-12 02:11:39,094 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_regime_probability_0.png
+2026-07-12 02:11:39,404 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_thermal_gap.png
+2026-07-12 02:11:39,539 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_044.parquet (168 rows)
+2026-07-12 02:11:39,539 | INFO | src.validation | Window 45/53 done — MAE=29.50
+2026-07-12 02:11:39,572 | INFO | src.model | Ridge coefficients: {'residual_load': 26.61449295206591, 'hour_sin': 0.15022321709726363, 'hour_cos': -2.223573843488924, 'dow_sin': -0.9184339262506029, 'dow_cos': 0.828203642737116, 'month_sin': -0.6748860885828635, 'month_cos': 0.5943122360468128, 'price_lag_168h': 11.16178503840501, 'renewable_penetration': -9.073963386626666}
+2026-07-12 02:11:39,572 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:11:39,762 | INFO | src.model | Negative-price classifier fitted — neg_hours=483 (3.8%) scale_pos_weight=18.23
+2026-07-12 02:11:42,370 | INFO | src.model | Two-stage fit — extreme hours=2395 (18.8%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=97.1 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.70 (rate=0.0010/day)
+2026-07-12 02:11:42,482 | INFO | src.model | Two-stage predict — 412/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=190 (P>0.30) | floor_boost=102
+2026-07-12 02:11:42,971 | INFO | src.conformal | Calibration coverage OK: 91.6% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:11:42,971 | INFO | src.conformal | Conformal calibrated — global q90=27.47 | scale=1.050 | regime counts={0: 142, 1: 788, 2: 1174, 3: 56}
+2026-07-12 02:11:43,057 | INFO | src.model | Two-stage predict — 58/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=0 (P>0.30) | floor_boost=0
+2026-07-12 02:11:43,801 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_045.parquet (168 rows)
+2026-07-12 02:11:43,802 | INFO | src.validation | Window 46/53 done — MAE=13.01
+2026-07-12 02:11:43,875 | INFO | src.model | Ridge coefficients: {'residual_load': 26.842012698728347, 'hour_sin': 0.13362851587533428, 'hour_cos': -2.2126833582725016, 'dow_sin': -0.9455433696043857, 'dow_cos': 0.824454531249825, 'month_sin': -0.75949266497155, 'month_cos': 0.5327149229228182, 'price_lag_168h': 11.129389588356743, 'renewable_penetration': -8.809078276541948}
+2026-07-12 02:11:43,876 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:11:44,289 | INFO | src.model | Negative-price classifier fitted — neg_hours=503 (3.9%) scale_pos_weight=18.23
+2026-07-12 02:11:47,787 | INFO | src.model | Two-stage fit — extreme hours=2438 (18.9%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=97.9 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.71 (rate=0.0010/day)
+2026-07-12 02:11:47,900 | INFO | src.model | Two-stage predict — 446/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=190 (P>0.30) | floor_boost=104
+2026-07-12 02:11:48,395 | INFO | src.conformal | Calibration coverage OK: 91.1% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:11:48,395 | INFO | src.conformal | Conformal calibrated — global q90=26.96 | scale=1.050 | regime counts={0: 141, 1: 779, 2: 1155, 3: 85}
+2026-07-12 02:11:48,483 | INFO | src.model | Two-stage predict — 20/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=17 (P>0.30) | floor_boost=15
+2026-07-12 02:11:49,214 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_046.parquet (168 rows)
+2026-07-12 02:11:49,214 | INFO | src.validation | Window 47/53 done — MAE=18.33
+2026-07-12 02:11:49,246 | INFO | src.model | Ridge coefficients: {'residual_load': 26.813044877210938, 'hour_sin': 0.14696452498224646, 'hour_cos': -2.295082478821695, 'dow_sin': -0.9083858019414466, 'dow_cos': 0.8226935415881216, 'month_sin': -0.6252024957720195, 'month_cos': 0.5951765648197322, 'price_lag_168h': 11.06697674159542, 'renewable_penetration': -9.128496075260898}
+2026-07-12 02:11:49,247 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:11:49,469 | INFO | src.model | Negative-price classifier fitted — neg_hours=513 (3.9%) scale_pos_weight=18.23
+2026-07-12 02:11:53,986 | INFO | src.model | Two-stage fit — extreme hours=2470 (18.9%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=99.0 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.72 (rate=0.0010/day)
+2026-07-12 02:11:54,099 | INFO | src.model | Two-stage predict — 425/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=158 (P>0.30) | floor_boost=83
+2026-07-12 02:11:54,578 | INFO | src.conformal | Calibration coverage OK: 91.4% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:11:54,578 | INFO | src.conformal | Conformal calibrated — global q90=27.30 | scale=1.050 | regime counts={0: 105, 1: 765, 2: 1205, 3: 85}
+2026-07-12 02:11:54,682 | INFO | src.model | Two-stage predict — 22/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=9 (P>0.30) | floor_boost=3
+2026-07-12 02:11:55,451 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_047.parquet (168 rows)
+2026-07-12 02:11:55,452 | INFO | src.validation | Window 48/53 done — MAE=9.45
+2026-07-12 02:11:55,484 | INFO | src.model | Ridge coefficients: {'residual_load': 27.28111336792716, 'hour_sin': 0.10412658676858823, 'hour_cos': -2.2360830253378796, 'dow_sin': -0.9717810236678381, 'dow_cos': 0.7991852217589652, 'month_sin': -0.9082118818581904, 'month_cos': 0.5111039678794438, 'price_lag_168h': 10.92412478910019, 'renewable_penetration': -8.708535547861242}
+2026-07-12 02:11:55,486 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:11:55,692 | INFO | src.model | Negative-price classifier fitted — neg_hours=524 (4.0%) scale_pos_weight=18.23
+2026-07-12 02:11:59,787 | INFO | src.model | Two-stage fit — extreme hours=2504 (19.0%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=99.9 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.73 (rate=0.0010/day)
+2026-07-12 02:11:59,899 | INFO | src.model | Two-stage predict — 415/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=146 (P>0.30) | floor_boost=74
+2026-07-12 02:12:00,374 | INFO | src.conformal | Calibration coverage OK: 91.6% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:12:00,375 | INFO | src.conformal | Conformal calibrated — global q90=25.95 | scale=1.050 | regime counts={0: 98, 1: 750, 2: 1223, 3: 89}
+2026-07-12 02:12:00,464 | INFO | src.model | Two-stage predict — 10/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=0 (P>0.30) | floor_boost=0
+2026-07-12 02:12:02,066 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-12 02:12:02,377 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_years_since_ukraine_war.png
+2026-07-12 02:12:02,731 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_regime_probability_0.png
+2026-07-12 02:12:03,026 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_residual_load.png
+2026-07-12 02:12:03,338 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_regime_probability_2.png
+2026-07-12 02:12:03,665 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_gas_x_residual_load.png
+2026-07-12 02:12:03,679 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_048.parquet (168 rows)
+2026-07-12 02:12:03,680 | INFO | src.validation | Window 49/53 done — MAE=18.59
+2026-07-12 02:12:03,707 | INFO | src.model | Ridge coefficients: {'residual_load': 27.609552192027692, 'hour_sin': 0.05623498385631525, 'hour_cos': -2.2145777791359613, 'dow_sin': -0.9375672752977887, 'dow_cos': 0.8384377896185026, 'month_sin': -1.0229233815543677, 'month_cos': 0.46456900669241785, 'price_lag_168h': 11.058788428334275, 'renewable_penetration': -8.419587933504172}
+2026-07-12 02:12:03,709 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:12:03,889 | INFO | src.model | Negative-price classifier fitted — neg_hours=560 (4.2%) scale_pos_weight=18.23
+2026-07-12 02:12:06,775 | INFO | src.model | Two-stage fit — extreme hours=2563 (19.2%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=99.8 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.74 (rate=0.0010/day)
+2026-07-12 02:12:06,992 | INFO | src.model | Two-stage predict — 382/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=126 (P>0.30) | floor_boost=66
+2026-07-12 02:12:07,474 | INFO | src.conformal | Calibration coverage OK: 91.4% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:12:07,474 | INFO | src.conformal | Conformal calibrated — global q90=28.34 | scale=1.050 | regime counts={0: 88, 1: 732, 2: 1238, 3: 102}
+2026-07-12 02:12:07,559 | INFO | src.model | Two-stage predict — 43/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=4 (P>0.30) | floor_boost=2
+2026-07-12 02:12:08,457 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_049.parquet (168 rows)
+2026-07-12 02:12:08,458 | INFO | src.validation | Window 50/53 done — MAE=64.34
+2026-07-12 02:12:08,490 | INFO | src.model | Ridge coefficients: {'residual_load': 27.845621467904618, 'hour_sin': 0.028936784394551125, 'hour_cos': -2.169597329701221, 'dow_sin': -0.9721126191326296, 'dow_cos': 0.7865972556448313, 'month_sin': -0.8813736572715385, 'month_cos': 0.4143423983901088, 'price_lag_168h': 10.84385968160526, 'renewable_penetration': -8.282629575243089}
+2026-07-12 02:12:08,491 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:12:08,678 | INFO | src.model | Negative-price classifier fitted — neg_hours=579 (4.3%) scale_pos_weight=18.23
+2026-07-12 02:12:11,270 | INFO | src.model | Two-stage fit — extreme hours=2603 (19.3%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=99.9 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.75 (rate=0.0010/day)
+2026-07-12 02:12:11,378 | INFO | src.model | Two-stage predict — 402/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=116 (P>0.30) | floor_boost=62
+2026-07-12 02:12:11,857 | INFO | src.conformal | Calibration coverage OK: 91.3% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:12:11,857 | INFO | src.conformal | Conformal calibrated — global q90=30.69 | scale=1.050 | regime counts={0: 77, 1: 702, 2: 1232, 3: 149}
+2026-07-12 02:12:11,946 | INFO | src.model | Two-stage predict — 20/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=28 (P>0.30) | floor_boost=17
+2026-07-12 02:12:12,703 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_050.parquet (168 rows)
+2026-07-12 02:12:12,704 | INFO | src.validation | Window 51/53 done — MAE=19.47
+2026-07-12 02:12:12,744 | INFO | src.model | Ridge coefficients: {'residual_load': 28.033316499438214, 'hour_sin': 0.010115648722061148, 'hour_cos': -2.102363976848496, 'dow_sin': -1.0104378755619174, 'dow_cos': 0.7938371827614298, 'month_sin': -0.9446311852167701, 'month_cos': 0.3937908218691048, 'price_lag_168h': 10.78103851277511, 'renewable_penetration': -8.121007307775269}
+2026-07-12 02:12:12,745 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:12:12,945 | INFO | src.model | Negative-price classifier fitted — neg_hours=588 (4.3%) scale_pos_weight=18.23
+2026-07-12 02:12:15,743 | INFO | src.model | Two-stage fit — extreme hours=2636 (19.3%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=100.0 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.77 (rate=0.0010/day)
+2026-07-12 02:12:15,848 | INFO | src.model | Two-stage predict — 396/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=116 (P>0.30) | floor_boost=60
+2026-07-12 02:12:16,392 | INFO | src.conformal | Calibration coverage OK: 90.9% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:12:16,393 | INFO | src.conformal | Conformal calibrated — global q90=31.26 | scale=1.050 | regime counts={0: 72, 1: 758, 2: 1181, 3: 149}
+2026-07-12 02:12:16,546 | INFO | src.model | Two-stage predict — 0/168 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=0 (P>0.30) | floor_boost=0
+2026-07-12 02:12:17,325 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_051.parquet (168 rows)
+2026-07-12 02:12:17,326 | INFO | src.validation | Window 52/53 done — MAE=9.77
+2026-07-12 02:12:17,394 | INFO | src.model | Ridge coefficients: {'residual_load': 27.661995799377184, 'hour_sin': -0.0011804340073794085, 'hour_cos': -2.2924301443153916, 'dow_sin': -0.8771198663764155, 'dow_cos': 0.7047673696754528, 'month_sin': -0.6531941596908718, 'month_cos': 0.40657857335910824, 'price_lag_168h': 10.679102567158646, 'renewable_penetration': -8.658431140381186}
+2026-07-12 02:12:17,395 | INFO | src.validation | Loaded Optuna best_params → {'n_estimators': 609, 'max_depth': 4, 'learning_rate': 0.014410035429381402, 'subsample': 0.6225979319367615, 'colsample_bytree': 0.651223602926669, 'min_child_weight': 4, 'reg_alpha': 0.14739959282559756, 'reg_lambda': 1.8278293459982204}
+2026-07-12 02:12:17,888 | INFO | src.model | Negative-price classifier fitted — neg_hours=598 (4.3%) scale_pos_weight=18.23
+2026-07-12 02:12:20,533 | INFO | src.model | Two-stage fit — extreme hours=2669 (19.3%) | classifier saved | extreme_regressor=True | neg_price_feature=negative_price_probability | extreme_threshold=100.2 EUR (p85) | route_prob>0.60 | price_transform=False | time_weight_end/start=1.78 (rate=0.0010/day)
+2026-07-12 02:12:20,640 | INFO | src.model | Two-stage predict — 385/2160 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=85 (P>0.30) | floor_boost=54
+2026-07-12 02:12:21,119 | INFO | src.conformal | Calibration coverage OK: 91.7% ≥ 90% (scale=1.050, iter=0)
+2026-07-12 02:12:21,120 | INFO | src.conformal | Conformal calibrated — global q90=29.91 | scale=1.050 | regime counts={0: 50, 1: 695, 2: 1264, 3: 151}
+2026-07-12 02:12:21,206 | INFO | src.model | Two-stage predict — 1/48 hours routed to extreme model (threshold=0.60) | HIGH neg-price risk hours=4 (P>0.30) | floor_boost=0
+2026-07-12 02:12:53,474 | INFO | src.model | QRA base models fitted — 7 quantiles × 3 variants on 15336 rows
+2026-07-12 02:12:53,577 | INFO | src.model | QRA weights q=0.05 — cons=0.000 bal=0.000 agg=1.000 | cal_pinball=2.9595
+2026-07-12 02:12:53,670 | INFO | src.model | QRA weights q=0.10 — cons=0.500 bal=0.500 agg=0.000 | cal_pinball=5.1578
+2026-07-12 02:12:53,779 | INFO | src.model | QRA weights q=0.25 — cons=0.279 bal=0.279 agg=0.442 | cal_pinball=8.1420
+2026-07-12 02:12:53,876 | INFO | src.model | QRA weights q=0.50 — cons=0.000 bal=0.000 agg=1.000 | cal_pinball=10.3092
+2026-07-12 02:12:53,975 | INFO | src.model | QRA weights q=0.75 — cons=0.000 bal=0.000 agg=1.000 | cal_pinball=10.2658
+2026-07-12 02:12:54,069 | INFO | src.model | QRA weights q=0.90 — cons=0.000 bal=0.000 agg=1.000 | cal_pinball=7.9096
+2026-07-12 02:12:54,201 | INFO | src.model | QRA weights q=0.95 — cons=0.177 bal=0.177 agg=0.646 | cal_pinball=6.2841
+2026-07-12 02:12:55,692 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_summary.png
+2026-07-12 02:12:56,044 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_years_since_ukraine_war.png
+2026-07-12 02:12:56,352 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_regime_probability_2.png
+2026-07-12 02:12:56,679 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_actual_lignite_generation_mw.png
+2026-07-12 02:12:56,970 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_gas_x_residual_load.png
+2026-07-12 02:12:57,281 | INFO | src.utils | Saved figure → /Users/seyamakin/cobblestone-power/outputs/figures/validation/shap_dependence_regime_probability_0.png
+2026-07-12 02:12:57,294 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/data/processed/walk_forward_splits_post_crisis/window_052.parquet (48 rows)
+2026-07-12 02:12:57,294 | INFO | src.validation | Window 53/53 done — MAE=8.16
+2026-07-12 02:12:57,338 | INFO | src.conformal | Empirical coverage 89.3% < 90% — widening intervals ×1.05 (scale=1.050)
+2026-07-12 02:12:57,340 | INFO | src.conformal | Post-hoc widen reached coverage 91.2% after 1 ×1.05 steps (total scale=1.050)
+2026-07-12 02:12:57,348 | INFO | src.conformal | Conformal coverage assertion PASS: 91.2% ≥ 90%
+2026-07-12 02:12:57,360 | INFO | src.conformal | Conformal coverage empirical=91.2% (nominal 90%)
+2026-07-12 02:12:57,360 | INFO | src.validation | Conformal 90% coverage enforced: empirical=91.2% (target ≥ 90%)
+2026-07-12 02:12:57,392 | INFO | src.utils | Saved parquet → /Users/seyamakin/cobblestone-power/outputs/forecasts/walk_forward_results_post_crisis.parquet (8784 rows)
+2026-07-12 02:12:57,424 | INFO | src.validation | Walk-forward metrics: MAE=24.98 skill_naive=+23.9% cov90=91.2% | mae_extreme=21.52 (n=2735) mae_normal=26.55 (n=6049) | neg_recall=87.3% (n=457)
+2026-07-12 02:12:57,424 | INFO | src.validation | QRA pinball q10 — before=5.0590 after=5.0579 improvement=+0.0%
+2026-07-12 02:12:57,424 | INFO | src.validation | QRA pinball q50 — before=11.0177 after=10.9447 improvement=+0.7%
+2026-07-12 02:12:57,425 | INFO | src.validation | QRA pinball q90 — before=6.4912 after=6.4429 improvement=+0.7%
+2026-07-12 02:12:57,444 | INFO | src.validation | Dual metrics merged — mae_full_period=25.37 mae_post_crisis=24.98
+2026-07-12 02:12:57,444 | INFO | cobblestone.pipeline | Post-crisis MAE=24.98 | full-period MAE=25.37 | dir=84.6% | neg_recall=87.3% | cov90=91.2%

@@ -106,6 +106,69 @@ USE_PRICE_TRANSFORM: bool = False
 # post-crisis (2023/24) samples vs early-2022 crisis hours.
 TIME_WEIGHT_DECAY: float = 0.001
 
+# Dual-model evaluation strategy
+# -----------------------------
+# full_period: expanding train from earliest history (2022+). Includes the
+#   Ukraine gas-crisis regime — structurally different price levels/volatility.
+# post_crisis: expanding train from 2023-01-01 only. Removes crisis distribution
+#   shift so 2024 MAE is comparable to published calm-market XGB benchmarks.
+EVAL_MODE_FULL_PERIOD: str = "full_period"
+EVAL_MODE_POST_CRISIS: str = "post_crisis"
+POST_CRISIS_TRAIN_START: pd.Timestamp = pd.Timestamp("2023-01-01", tz="UTC")
+POST_CRISIS_MIN_TRAIN_DAYS: int = 365
+
+
+def resolve_train_start(eval_mode: str = EVAL_MODE_FULL_PERIOD) -> Optional[pd.Timestamp]:
+    """
+    Return the inclusive training-history floor for an evaluation mode.
+
+    Args:
+        eval_mode: ``full_period`` (no floor) or ``post_crisis`` (2023-01-01).
+
+    Returns:
+        UTC timestamp floor, or None when all available history is used.
+    """
+    mode = (eval_mode or EVAL_MODE_FULL_PERIOD).strip().lower()
+    if mode == EVAL_MODE_POST_CRISIS:
+        return POST_CRISIS_TRAIN_START
+    return None
+
+
+def training_history_mask(
+    index: pd.DatetimeIndex,
+    forecast_start: pd.Timestamp,
+    eval_mode: str = EVAL_MODE_FULL_PERIOD,
+    train_start: Optional[pd.Timestamp] = None,
+) -> pd.Series:
+    """
+    Boolean mask selecting leakage-safe training rows for a walk-forward window.
+
+    Args:
+        index: Feature/target DatetimeIndex.
+        forecast_start: First timestamp of the forecast window (exclusive upper).
+        eval_mode: Dual-strategy mode (``full_period`` / ``post_crisis``).
+        train_start: Optional explicit floor; overrides ``eval_mode`` when set.
+
+    Returns:
+        Boolean Series aligned to ``index``.
+    """
+    idx = pd.DatetimeIndex(index)
+    start = train_start if train_start is not None else resolve_train_start(eval_mode)
+    fs = pd.Timestamp(forecast_start)
+    if fs.tzinfo is None and idx.tz is not None:
+        fs = fs.tz_localize(idx.tz)
+    elif fs.tzinfo is not None and idx.tz is not None:
+        fs = fs.tz_convert(idx.tz)
+    mask = idx < fs
+    if start is not None:
+        ts = pd.Timestamp(start)
+        if ts.tzinfo is None and idx.tz is not None:
+            ts = ts.tz_localize(idx.tz)
+        elif ts.tzinfo is not None and idx.tz is not None:
+            ts = ts.tz_convert(idx.tz)
+        mask = mask & (idx >= ts)
+    return pd.Series(mask, index=idx)
+
 
 def exponential_time_weights(
     index: pd.DatetimeIndex,

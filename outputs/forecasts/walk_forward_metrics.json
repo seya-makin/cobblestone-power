@@ -60,5 +60,36 @@
   "n_hours": 8784,
   "naive_mae": 32.8091,
   "ridge_mae": 37.91,
-  "ridge_skill_vs_naive_pct": -15.5473
+  "ridge_skill_vs_naive_pct": -15.5473,
+  "mae_full_period": 25.373288681666654,
+  "mae_post_crisis": 24.979719037564923,
+  "eval_mode": "full_period",
+  "post_crisis": {
+    "MAE": 24.979719037564923,
+    "RMSE": 44.62910694440307,
+    "directional_accuracy_pct": 84.59699453551912,
+    "negative_price_recall": 0.8730853391684902,
+    "conformal_coverage_90_empirical": 0.9116575591985429,
+    "skill_vs_naive_pct": 23.863463231755222,
+    "n_hours": 8784,
+    "train_start": "2023-01-01",
+    "eval_mode": "post_crisis",
+    "rationale": "2022 Ukraine gas crisis is a structural break \u2014 training from 2023-01-01 removes crisis distribution shift from the 2024 MAE."
+  },
+  "eval_modes": {
+    "full_period": {
+      "train_start": "2022-01-01",
+      "MAE": 25.373288681666654,
+      "directional_accuracy_pct": 82.93488160291439,
+      "negative_price_recall": 0.8774617067833698,
+      "conformal_coverage_90_empirical": 0.902436247723133
+    },
+    "post_crisis": {
+      "train_start": "2023-01-01",
+      "MAE": 24.979719037564923,
+      "directional_accuracy_pct": 84.59699453551912,
+      "negative_price_recall": 0.8730853391684902,
+      "conformal_coverage_90_empirical": 0.9116575591985429
+    }
+  }
 }

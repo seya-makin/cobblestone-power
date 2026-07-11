@@ -33,18 +33,21 @@ def render_metrics_panel(
 
     section_spacer()
     mae = metrics.get("MAE")
+    mae_full = metrics.get("mae_full_period", mae)
+    mae_post = metrics.get("mae_post_crisis")
     cov = metrics.get("conformal_coverage_90_empirical")
     direc = metrics.get("directional_accuracy_pct")
     skill_n = metrics.get("skill_vs_naive_pct")
     neg_recall = metrics.get("negative_price_recall")
+    post = metrics.get("post_crisis") or {}
 
     c1, c2, c3, c4 = st.columns(4)
     with c1:
         st.markdown(
             metric_card_html(
-                "MAE",
-                f"{mae:.2f}" if mae is not None else "—",
-                subtext="EUR/MWh",
+                "MAE (full period)",
+                f"{mae_full:.2f}" if mae_full is not None else "—",
+                subtext="EUR/MWh · train 2022+",
                 value_color="#3b82f6",
                 large=True,
             ),
@@ -53,9 +56,10 @@ def render_metrics_panel(
     with c2:
         st.markdown(
             metric_card_html(
-                "Skill vs Naive",
-                f"{skill_n:+.1f}%" if skill_n is not None else "—",
-                value_color="#10b981",
+                "MAE (post-crisis)",
+                f"{mae_post:.2f}" if mae_post is not None else "—",
+                subtext="EUR/MWh · train 2023+",
+                value_color="#10b981" if mae_post is not None else "#6b7280",
                 large=True,
             ),
             unsafe_allow_html=True,
@@ -81,9 +85,41 @@ def render_metrics_panel(
             unsafe_allow_html=True,
         )
 
+    if mae_post is not None:
+        section_spacer()
+        post_dir = post.get("directional_accuracy_pct")
+        post_neg = post.get("negative_price_recall")
+        post_cov = post.get("conformal_coverage_90_empirical")
+        skill_bit = f" &nbsp;·&nbsp; Skill {skill_n:+.1f}%" if skill_n is not None else ""
+        dir_bit = f" &nbsp;·&nbsp; Dir. {float(post_dir):.1f}%" if post_dir is not None else ""
+        neg_bit = (
+            f" &nbsp;·&nbsp; Neg. recall {100 * float(post_neg):.1f}%"
+            if post_neg is not None
+            else ""
+        )
+        cov_bit = (
+            f" &nbsp;·&nbsp; Cov90 {100 * float(post_cov):.1f}%"
+            if post_cov is not None
+            else ""
+        )
+        st.markdown(
+            '<div class="metric-card">'
+            '<div class="metric-label">Dual-model walk-forward (2024 test)</div>'
+            '<div style="font-size:13px;color:#f9fafb;line-height:1.7;font-weight:300;margin-top:8px;">'
+            "<b>Full period</b> (train 2022+, includes Ukraine crisis): "
+            f"<span style='font-family:JetBrains Mono,monospace;color:#3b82f6;'>"
+            f"{float(mae_full):.2f} EUR/MWh</span>{skill_bit}<br>"
+            "<b>Post-crisis</b> (train 2023-01-01+, crisis excluded): "
+            f"<span style='font-family:JetBrains Mono,monospace;color:#10b981;'>"
+            f"{float(mae_post):.2f} EUR/MWh</span>{dir_bit}{neg_bit}{cov_bit}"
+            "</div></div>",
+            unsafe_allow_html=True,
+        )
+
     section_spacer()
     # Published benchmarks — directly below headline metrics
-    your_mae = f"{mae:.2f}" if mae is not None else "—"
+    your_mae = f"{mae_full:.2f}" if mae_full is not None else "—"
+    your_post = f"{mae_post:.2f}" if mae_post is not None else None
     st.markdown(
         f'<div class="metric-card">'
         f'<div class="metric-label">Published MAE Benchmarks — DE Day-Ahead</div>'
@@ -92,7 +128,8 @@ def render_metrics_panel(
         f"XGBoost (calm market): ~9 EUR/MWh &nbsp;·&nbsp; "
         f"XGBoost (2022-2024 including Ukraine crisis): ~25-30 EUR/MWh<br>"
         f"This system: <b style='color:#3b82f6;font-family:JetBrains Mono,monospace;'>"
-        f"{your_mae} EUR/MWh (2024)</b>"
+        f"{your_mae} EUR/MWh (full period)</b>"
+        f"{(' / <b style=\"color:#10b981;font-family:JetBrains Mono,monospace;\">' + your_post + ' EUR/MWh (post-crisis)</b>') if your_post else ''}"
         f"{' &nbsp;·&nbsp; Neg. price recall: ' + f'{100 * float(neg_recall):.1f}%' if neg_recall is not None else ''}"
         f"</div></div>",
         unsafe_allow_html=True,
@@ -170,8 +207,20 @@ def render_metrics_panel(
         ("Ridge (Marcjasz et al. 2023)", "~12", 12.0),
         ("XGBoost calm market (Marcjasz et al. 2023)", "~9", 9.0),
         ("XGBoost 2022–2024 incl. crisis", "~25–30", 27.5),
-        ("Cobblestone XGBoost + Conformal (2024)", your_mae, float(mae) if mae is not None else 999.0),
+        (
+            "Cobblestone full period (train 2022+)",
+            your_mae,
+            float(mae_full) if mae_full is not None else 999.0,
+        ),
     ]
+    if mae_post is not None:
+        rows.append(
+            (
+                "Cobblestone post-crisis (train 2023+)",
+                f"{float(mae_post):.2f}",
+                float(mae_post),
+            )
+        )
     html_rows = []
     for name, val, _num in rows:
         cls = "win-cell" if "Cobblestone" in name else ""

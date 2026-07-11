@@ -147,7 +147,12 @@ def cmd_features(df: Optional[pd.DataFrame] = None) -> pd.DataFrame:
     return FeatureEngineer().transform(df)
 
 
-def cmd_validate(resume: bool = False, fast: bool = True) -> pd.DataFrame:
+def cmd_validate(
+    resume: bool = False,
+    fast: bool = True,
+    eval_mode: str = "full_period",
+) -> pd.DataFrame:
+    from src.model import EVAL_MODE_POST_CRISIS
     from src.validation import WalkForwardValidator
 
     settings = get_settings()
@@ -159,7 +164,20 @@ def cmd_validate(resume: bool = False, fast: bool = True) -> pd.DataFrame:
         regime = pd.read_parquet(regime_path)["price_regime"]
     else:
         regime = feat["price_regime"] if "price_regime" in feat.columns else None
-    return WalkForwardValidator(fast=fast).run(feat, y, regime, resume=resume, tune=False)
+    validator = WalkForwardValidator(fast=fast)
+    mode = (eval_mode or "full_period").strip().lower()
+    if mode == EVAL_MODE_POST_CRISIS:
+        results, metrics = validator.run_post_crisis(feat, y, regime, resume=resume, merge=True)
+        logger.info(
+            "Post-crisis MAE=%.2f | full-period MAE=%.2f | dir=%.1f%% | neg_recall=%.1f%% | cov90=%.1f%%",
+            metrics.get("mae_post_crisis", float("nan")),
+            metrics.get("mae_full_period", float("nan")),
+            (metrics.get("post_crisis") or {}).get("directional_accuracy_pct", float("nan")),
+            100 * float((metrics.get("post_crisis") or {}).get("negative_price_recall") or 0),
+            100 * float((metrics.get("post_crisis") or {}).get("conformal_coverage_90_empirical") or 0),
+        )
+        return results
+    return validator.run(feat, y, regime, resume=resume, tune=False, eval_mode=mode)
 
 
 def cmd_forecast() -> Dict[str, Any]:
@@ -469,6 +487,12 @@ def main() -> None:
     parser.add_argument("--resume", action="store_true", help="Resume walk-forward from saved windows")
     parser.add_argument("--fast", action="store_true", default=True, help="Faster XGB for demo runs")
     parser.add_argument("--full-xgb", action="store_true", help="Use full 1200-tree XGBoost")
+    parser.add_argument(
+        "--eval-mode",
+        default="full_period",
+        choices=["full_period", "post_crisis"],
+        help="Walk-forward training horizon: full_period (2022+) or post_crisis (2023+)",
+    )
     args = parser.parse_args()
 
     setup_logging()
@@ -491,7 +515,7 @@ def main() -> None:
     elif args.mode == "features":
         cmd_features()
     elif args.mode == "validate":
-        cmd_validate(resume=args.resume, fast=fast)
+        cmd_validate(resume=args.resume, fast=fast, eval_mode=args.eval_mode)
     elif args.mode == "forecast":
         cmd_forecast()
     elif args.mode == "backtest":
