@@ -34,7 +34,7 @@ Response: `[[unix_ms, value], ...]` arrays converted to UTC-indexed hourly Serie
 
 **2024 verified facts:** Mean DA price €78.51/MWh; negative hours 457 (5.2%); Dunkelflaute detected: Nov 2–7 2024 (111 Dunkelflaute hours within 144h window), Dec 12–14 2024 (45 Dunkelflaute hours within 72h window).
 
-Software engineering: REST API (FastAPI, 6 endpoints, Swagger at /docs), Docker deployment, 18 unit tests (pytest, all passing), GitHub Actions CI, full system architecture documented in ARCHITECTURE.md.
+**Software engineering:** REST API (FastAPI, 6 endpoints, Swagger at /docs), Docker deployment, 18 unit tests (pytest, all passing), GitHub Actions CI, full system architecture documented in ARCHITECTURE.md.
 
 ---
 
