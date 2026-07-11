@@ -92,7 +92,7 @@ Simplified 2024 backtest: 326 trades, 82.2% win rate, +10,272 EUR/MW P&L (illust
 
 ## 4. AI-Accelerated Workflow
 
-Three Gemini 2.0 Flash integrations — all programmatic, logged to JSONL, auditable. The full pipeline is also exposed via FastAPI REST API (6 endpoints, Swagger at /docs) and containerised via Docker.
+Three Gemini 2.0 Flash integrations — all programmatic, logged to JSONL, auditable. Also exposed via FastAPI REST API (6 endpoints, Swagger at /docs) and Docker.
 
 Component 1 — LLM Data QA: Gemini receives schema plus 10 sample rows plus statistics and proposes 20 electricity-market-specific validation rules executed programmatically as Python boolean conditions. Component 2 — Market Commentary: 150–180 word Bloomberg-style note generated from 24 pipeline metrics only, with anti-hallucination guard cross-checking every number at ±0.5 tolerance. Component 3 — Ingestion Config: field documentation converted to structured JSON ingestion config, eliminating manual field mapping hardcoding. All prompts, responses, and outputs logged to JSONL under outputs/logs/.
 
