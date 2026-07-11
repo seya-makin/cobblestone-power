@@ -4,7 +4,7 @@
 
 ---
 
-The German DA market in 2024 is defined by two opposing forces: renewable cannibalization driving 457 negative-price hours (5.2% of the year) as solar penetration hit 17% of generation, and Dunkelflaute events in November and December 2024 that drove German power prices to intraday peaks of €820/MWh and €900/MWh, with day-ahead prices reaching €145/MWh and €175/MWh respectively — the highest in 18 years. Any credible fair-value system must model both regimes. This pipeline does.
+This pipeline prototypes a production European power trading stack: SMARD ingestion (no auth), LLM-powered QA, two-stage probabilistic forecasting with conformal uncertainty, curve translation into tradable signals, a REST API, and Docker deployment. The 2024 German DA market is the test case — 457 negative-price hours (5.2%) and Nov/Dec Dunkelflaute intraday peaks of €820/MWh and €900/MWh, the highest in 18 years. This pipeline models both extremes.
 
 ---
 
