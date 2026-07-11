@@ -63,7 +63,7 @@ Response: `[[unix_ms, value], ...]` arrays converted to UTC-indexed hourly Serie
 | 2023 | 52.54 | Transition year |
 | 2024 | **25.37** | Primary benchmark year |
 
-Directional accuracy: **82.9%**. Negative-price recall: **87.7%** of the 457 actual negative-price hours correctly flagged as high-risk — directly relevant to renewable cannibalization trading. Two-stage architecture: binary classifier routes 17.2% of hours to an extreme-event regressor trained with price-proportional sample weights; a dedicated negative-price classifier (scale_pos_weight=18.2, summer recall 91.1%, full-year 88.0%) feeds probability as a feature into the main model.
+Negative-price recall: **87.7%** of 457 actual negative-price hours correctly flagged as high-risk — directly relevant to renewable cannibalization trading. Directional accuracy: **82.9%**. Two-stage architecture: binary classifier routes 17.2% of hours to an extreme-event regressor trained with price-proportional sample weights; a dedicated negative-price classifier (scale_pos_weight=18.2, summer recall 91.1%, full-year 88.0%) feeds probability as a feature into the main model.
 
 **Validation:** 52-window expanding walk-forward; min train 365 days; step 7 days; test full 2024 (8,784 hours); zero shuffling, zero future leakage.
 
@@ -88,7 +88,7 @@ Regime 3 (Dunkelflaute, residual load above 55GW and wind below 5GW): LONG promp
 
 **Invalidation:** wind revision >20%; TTF move >€3/MWh overnight; French nuclear drop >2,000 MW; DA clearing >2σ from forecast; residual load change >15%; unplanned outage >1,000 MW; regime flip pre-delivery; conformal band expands >50% vs 7-day mean.
 
-Simplified 2024 backtest: 326 trades, 82.2% win rate, +10,272 EUR/MW cumulative P&L (illustrative — no transaction costs).
+Simplified 2024 backtest: 326 trades, 82.2% win rate, +10,272 EUR/MW P&L (illustrative — no transaction costs).
 
 ---
 
