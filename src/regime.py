@@ -39,8 +39,10 @@ REGIME_NEG_RENEW_PEN: float = 0.80
 REGIME_LOW_RESIDUAL_MW: float = 30_000.0
 REGIME_HIGH_RESIDUAL_MW: float = 55_000.0
 REGIME_HIGH_WIND_MAX_MW: float = 5_000.0
-DUNKEL_RENEW_RATIO: float = 0.10
-DUNKEL_MIN_HOURS: int = 24
+DUNKEL_RENEW_RATIO: float = 0.20
+DUNKEL_MIN_HOURS: int = 12
+DUNKEL_PRICE_EUR: float = 200.0
+DUNKEL_PRICE_MIN_HOURS: int = 6
 SOLAR_CANNIBAL_SHARE: float = 0.15
 SOLAR_CANNIBAL_MW: float = 20_000.0
 SUMMER_MONTHS: Tuple[int, ...] = (4, 5, 6, 7, 8, 9)
@@ -84,13 +86,17 @@ class RegimeDetector:
 
     def detect_dunkelflaute(self, df: pd.DataFrame) -> pd.DataFrame:
         """
-        Flag prolonged renewable droughts (wind+solar)/load < 10% for ≥24h.
+        Flag Dunkelflaute via renewable drought or extreme price runs.
+
+        Triggers (OR):
+          1) (wind+solar)/load < 20% for ≥12 consecutive hours
+          2) da_price > 200 EUR/MWh for ≥6 consecutive hours
 
         Adds dunkelflaute_day_index (days into event) and dunkelflaute_severity
         (0–3). Verifies detection against Nov 2–7 and Dec 12–14 2024.
 
         Args:
-            df: Panel with da_load, da_wind, da_solar.
+            df: Panel with da_load, da_wind, da_solar (and da_price if available).
 
         Returns:
             Copy with Dunkelflaute columns.
@@ -101,16 +107,22 @@ class RegimeDetector:
         validate_columns(df, ["da_load", "da_wind", "da_solar"], "detect_dunkelflaute")
         out = df.copy()
         ratio = (out["da_wind"] + out["da_solar"]) / out["da_load"].replace(0, np.nan)
-        stress = (ratio < DUNKEL_RENEW_RATIO).fillna(False)
+        renew_stress = (ratio < DUNKEL_RENEW_RATIO).fillna(False)
 
-        # Run-length encoding for consecutive stress hours
-        group_id = (stress != stress.shift(fill_value=False)).cumsum()
-        run_len = stress.groupby(group_id).transform("sum")
-        in_event = stress & (run_len >= DUNKEL_MIN_HOURS)
+        # Run-length encoding for consecutive renewable-stress hours
+        renew_gid = (renew_stress != renew_stress.shift(fill_value=False)).cumsum()
+        renew_run = renew_stress.groupby(renew_gid).transform("sum")
+        renew_event = renew_stress & (renew_run >= DUNKEL_MIN_HOURS)
 
-        # Also include hours in a run that eventually reaches 24h
-        long_runs = run_len >= DUNKEL_MIN_HOURS
-        in_event = stress & long_runs
+        # Alternative: extreme price run (da_price > 200 for ≥6h)
+        price_event = pd.Series(False, index=out.index)
+        if "da_price" in out.columns:
+            price_stress = (out["da_price"] > DUNKEL_PRICE_EUR).fillna(False)
+            price_gid = (price_stress != price_stress.shift(fill_value=False)).cumsum()
+            price_run = price_stress.groupby(price_gid).transform("sum")
+            price_event = price_stress & (price_run >= DUNKEL_PRICE_MIN_HOURS)
+
+        in_event = renew_event | price_event
 
         out["dunkelflaute_active"] = in_event
         # Day index within event
@@ -121,8 +133,10 @@ class RegimeDetector:
 
         severity = np.zeros(len(out), dtype=int)
         severity = np.where(in_event & (ratio < 0.05), 3, severity)
-        severity = np.where(in_event & (ratio >= 0.05) & (ratio < 0.07), 2, severity)
-        severity = np.where(in_event & (ratio >= 0.07) & (ratio < 0.10), 1, severity)
+        severity = np.where(in_event & (ratio >= 0.05) & (ratio < 0.10), 2, severity)
+        severity = np.where(in_event & (ratio >= 0.10) & (ratio < 0.20), 1, severity)
+        # Price-triggered hours with milder renewable drought still get severity ≥1
+        severity = np.where(in_event & (severity == 0), 1, severity)
         out["dunkelflaute_severity"] = severity
 
         self._verify_known_events(out)
@@ -135,9 +149,16 @@ class RegimeDetector:
             if not mask.any():
                 logger.info("Known event %s outside data range — skip verify", label)
                 continue
-            detected = bool(df.loc[mask, "dunkelflaute_active"].any())
+            hours = int(df.loc[mask, "dunkelflaute_active"].sum())
+            detected = hours > 0
             if detected:
-                logger.info("✓ Dunkelflaute detection caught %s", label)
+                logger.info(
+                    "✓ Dunkelflaute detection caught %s — %s hours flagged in %s to %s",
+                    label,
+                    hours,
+                    start.isoformat(),
+                    end.isoformat(),
+                )
             else:
                 logger.warning("✗ Dunkelflaute detection MISSED %s — check thresholds", label)
 
