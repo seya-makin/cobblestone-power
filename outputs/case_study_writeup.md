@@ -53,8 +53,6 @@ Response: `[[unix_ms, value], ...]` arrays converted to UTC-indexed hourly Serie
 | Ridge Regression | 37.91 EUR/MWh | -15.5% |
 | XGBoost + Two-Stage | **25.37 EUR/MWh (RMSE: 40.0)** | **+22.7%** |
 
-*Ridge underperforms naive because L2 penalty shrinks price_lag_168h toward zero — it serves as a linear interpretability benchmark only.*
-
 **MAE by year (walk-forward 2022–2024):**
 
 | Year | MAE | Context |
@@ -94,7 +92,7 @@ Simplified 2024 backtest: 326 trades, 82.2% win rate, +10,272 EUR/MW P&L (illust
 
 ## 4. AI-Accelerated Workflow
 
-Three Gemini 2.0 Flash integrations — all programmatic, logged to JSONL, auditable.
+Three Gemini 2.0 Flash integrations — all programmatic, logged to JSONL, auditable. The full pipeline is also exposed via FastAPI REST API (6 endpoints, Swagger at /docs) and containerised via Docker.
 
 Component 1 — LLM Data QA: Gemini receives schema plus 10 sample rows plus statistics and proposes 20 electricity-market-specific validation rules executed programmatically as Python boolean conditions. Component 2 — Market Commentary: 150–180 word Bloomberg-style note generated from 24 pipeline metrics only, with anti-hallucination guard cross-checking every number at ±0.5 tolerance. Component 3 — Ingestion Config: field documentation converted to structured JSON ingestion config, eliminating manual field mapping hardcoding. All prompts, responses, and outputs logged to JSONL under outputs/logs/.
 
@@ -104,4 +102,4 @@ Component 1 — LLM Data QA: Gemini receives schema plus 10 sample rows plus sta
 | Commentary | Yes — JSONL | Yes — ±0.5 tolerance | Flag + log |
 | Config Gen | Yes — JSONL | N/A | Fallback defaults |
 
-**References:** O'Connor et al. (2025) Energy and AI; Marcjasz et al. (2023) Energy Economics; Weron (2014) IJF; Wood Mackenzie (2025); Timera Energy (2025); FfE (2026).
+**References:** O'Connor et al. (2025); Marcjasz et al. (2023); Weron (2014); Wood Mackenzie (2025); Timera Energy (2025); FfE (2026).
