@@ -1,5 +1,5 @@
 # German Power Fair Value — Day-Ahead Forecasting Pipeline
-**Seya Makin** | seyamakin04@gmail.com | github.com/seya-makin  
+**Seya Makin** | seyamakin04@gmail.com | github.com/seya-makin/cobblestone-power  
 **Market:** DE-LU Day-Ahead | **Submission:** July 2026
 
 ---
