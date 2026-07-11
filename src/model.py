@@ -330,6 +330,8 @@ class XGBoostPointForecaster:
         # early_stopping_rounds is fit kwarg in recent xgboost
         self.early_stopping_rounds = int(base.pop("early_stopping_rounds", 60))
         self.params = base
+        # Point model optimises MAE directly; quantile models keep reg:quantileerror.
+        self.params["objective"] = "reg:absoluteerror"
         self.model: Optional[XGBRegressor] = None
         self.quantile_models: Dict[float, XGBRegressor] = {}
         self.feature_names_: List[str] = []
@@ -1335,9 +1337,10 @@ class TwoStageExtremeForecaster:
         clf_path = self.settings.models_dir / "xgboost_extreme_classifier.json"
         self.classifier.save_model(str(clf_path))
 
-        # —— Stage 2a: normal (all-hours) regressor ——
+        # —— Stage 2a: normal (all-hours) regressor — MAE objective ——
         model_params = {**self.params}
         eval_metric = model_params.pop("eval_metric", ["rmse", "mae"])
+        model_params["objective"] = "reg:absoluteerror"
         self.normal_model = XGBRegressor(**model_params, eval_metric=eval_metric)
         if X_val_aug is not None and y_val is not None:
             vm = y_val.notna()
@@ -1380,6 +1383,8 @@ class TwoStageExtremeForecaster:
                 "n_estimators": min(int(self.params.get("n_estimators", 800)), 800 if not self.fast else 200),
                 "max_depth": min(int(self.params.get("max_depth", 6)) + 1, 8),
                 "learning_rate": min(float(self.params.get("learning_rate", 0.04)), 0.06),
+                # Extreme regressor keeps squared error (point model uses MAE).
+                "objective": "reg:squarederror",
             }
             self.extreme_model = XGBRegressor(**ext_params, eval_metric=["rmse", "mae"])
             self.extreme_model.fit(Xe, ye, sample_weight=sample_w, verbose=False)
