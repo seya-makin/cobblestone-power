@@ -4,7 +4,7 @@
 
 ---
 
-This pipeline implements a production-grade European power trading stack: SMARD ingestion (no auth), LLM-powered QA, two-stage probabilistic forecasting with conformal uncertainty, curve translation into tradable signals, a REST API, and Docker deployment. The 2024 German DA market is the test case — 457 negative-price hours (5.2%) and Nov/Dec Dunkelflaute intraday peaks of €820/MWh and €900/MWh, the highest in 18 years. This pipeline forecasts DA prices across both regimes and translates outputs into tradable signals.
+This pipeline implements a production-grade European power trading stack: SMARD ingestion (no auth), LLM-powered QA, two-stage probabilistic forecasting with conformal uncertainty, curve translation into tradable signals, a REST API, and Docker deployment. The 2024 German DA market is the test case — 457 negative-price hours (5.2%) and Nov/Dec Dunkelflaute power prices reaching €820/MWh and €900/MWh — the highest in 18 years. This pipeline forecasts DA prices across both regimes and translates outputs into tradable signals.
 
 ---
 
@@ -34,7 +34,6 @@ Response: `[[unix_ms, value], ...]` arrays converted to UTC-indexed hourly Serie
 
 **2024 verified facts:** Mean DA price €78.51/MWh; negative hours 457 (5.2%); Dunkelflaute detected: Nov 2–7 2024 (111 Dunkelflaute hours within 144h window), Dec 12–14 2024 (45 Dunkelflaute hours within 72h window).
 
-**Software engineering:** REST API (FastAPI, 6 endpoints, Swagger at /docs), Docker deployment, 18 unit tests (pytest, all passing), GitHub Actions CI, full system architecture documented in ARCHITECTURE.md.
 
 ---
 
