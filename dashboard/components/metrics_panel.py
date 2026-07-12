@@ -120,6 +120,17 @@ def render_metrics_panel(
     # Published benchmarks — directly below headline metrics
     your_mae = f"{mae_full:.2f}" if mae_full is not None else "—"
     your_post = f"{mae_post:.2f}" if mae_post is not None else None
+    post_bit = (
+        f' / <b style="color:#10b981;font-family:JetBrains Mono,monospace;">'
+        f"{your_post} EUR/MWh (post-crisis)</b>"
+        if your_post
+        else ""
+    )
+    neg_bit_pub = (
+        f" &nbsp;·&nbsp; Neg. price recall: {100 * float(neg_recall):.1f}%"
+        if neg_recall is not None
+        else ""
+    )
     st.markdown(
         f'<div class="metric-card">'
         f'<div class="metric-label">Published MAE Benchmarks — DE Day-Ahead</div>'
@@ -129,8 +140,8 @@ def render_metrics_panel(
         f"XGBoost (2022-2024 including Ukraine crisis): ~25-30 EUR/MWh<br>"
         f"This system: <b style='color:#3b82f6;font-family:JetBrains Mono,monospace;'>"
         f"{your_mae} EUR/MWh (full period)</b>"
-        f"{(' / <b style=\"color:#10b981;font-family:JetBrains Mono,monospace;\">' + your_post + ' EUR/MWh (post-crisis)</b>') if your_post else ''}"
-        f"{' &nbsp;·&nbsp; Neg. price recall: ' + f'{100 * float(neg_recall):.1f}%' if neg_recall is not None else ''}"
+        f"{post_bit}"
+        f"{neg_bit_pub}"
         f"</div></div>",
         unsafe_allow_html=True,
     )
