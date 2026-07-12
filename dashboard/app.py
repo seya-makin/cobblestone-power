@@ -8,7 +8,8 @@ Purpose:
 
 from __future__ import annotations
 
-import sys
+import sys, os; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import traceback
 from pathlib import Path
 from typing import Any, Dict, Optional
@@ -17,18 +18,14 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-ROOT = Path(__file__).resolve().parent.parent
-if str(ROOT) not in sys.path:
-    sys.path.insert(0, str(ROOT))
-
 from config.settings import PIPELINE_VERSION, get_settings
-from dashboard.components.backtest_panel import render_backtest_panel
-from dashboard.components.commentary_panel import render_commentary_panel
-from dashboard.components.curve_view import render_curve_view
-from dashboard.components.forecast_chart import render_forecast_chart
-from dashboard.components.metrics_panel import render_metrics_panel
-from dashboard.components.qa_panel import render_qa_panel
-from dashboard.components.regime_panel import render_regime_panel
+from components.backtest_panel import render_backtest_panel
+from components.commentary_panel import render_commentary_panel
+from components.curve_view import render_curve_view
+from components.forecast_chart import render_forecast_chart
+from components.metrics_panel import render_metrics_panel
+from components.qa_panel import render_qa_panel
+from components.regime_panel import render_regime_panel
 from dashboard.utils.dashboard_helpers import (
     load_json_safe,
     load_parquet_safe,
