@@ -9,7 +9,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from dashboard.utils.dashboard_helpers import (
+from utils.dashboard_helpers import (
     metric_card_html,
     render_placeholder,
     safe_plotly,

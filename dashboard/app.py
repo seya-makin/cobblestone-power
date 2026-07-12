@@ -11,12 +11,13 @@ from __future__ import annotations
 import sys
 import os
 
-# Streamlit Cloud runs dashboard/app.py with the script directory on sys.path,
-# which shadows the top-level `dashboard` package. Keep repo root first.
+# Repo root for `config.*`; dashboard dir for `components.*` / `utils.*`
+# (Streamlit Cloud runs this file with the dashboard/ folder as the script dir.)
 _REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-sys.path = [p for p in sys.path if os.path.abspath(p) not in {_REPO_ROOT, _SCRIPT_DIR}]
-sys.path.insert(0, _REPO_ROOT)
+_DASHBOARD_DIR = os.path.dirname(os.path.abspath(__file__))
+for _p in (_REPO_ROOT, _DASHBOARD_DIR):
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
 
 import traceback
 from pathlib import Path
@@ -27,14 +28,14 @@ import plotly.graph_objects as go
 import streamlit as st
 
 from config.settings import PIPELINE_VERSION, get_settings
-from dashboard.components.backtest_panel import render_backtest_panel
-from dashboard.components.commentary_panel import render_commentary_panel
-from dashboard.components.curve_view import render_curve_view
-from dashboard.components.forecast_chart import render_forecast_chart
-from dashboard.components.metrics_panel import render_metrics_panel
-from dashboard.components.qa_panel import render_qa_panel
-from dashboard.components.regime_panel import render_regime_panel
-from dashboard.utils.dashboard_helpers import (
+from components.backtest_panel import render_backtest_panel
+from components.commentary_panel import render_commentary_panel
+from components.curve_view import render_curve_view
+from components.forecast_chart import render_forecast_chart
+from components.metrics_panel import render_metrics_panel
+from components.qa_panel import render_qa_panel
+from components.regime_panel import render_regime_panel
+from utils.dashboard_helpers import (
     load_json_safe,
     load_parquet_safe,
     metric_card_html,

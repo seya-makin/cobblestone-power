@@ -12,7 +12,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 
-from dashboard.utils.dashboard_helpers import (
+from utils.dashboard_helpers import (
     render_placeholder,
     safe_plotly,
     safe_render,

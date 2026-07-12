@@ -9,7 +9,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from dashboard.utils.dashboard_helpers import render_placeholder, safe_plotly, safe_render
+from utils.dashboard_helpers import render_placeholder, safe_plotly, safe_render
 
 REGIME_COLORS = {
     0: "rgba(16,185,129,0.10)",

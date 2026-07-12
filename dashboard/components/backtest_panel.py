@@ -7,7 +7,7 @@ from typing import Any, Dict
 
 import streamlit as st
 
-from dashboard.utils.dashboard_helpers import metric_card_html, render_placeholder, safe_render
+from utils.dashboard_helpers import metric_card_html, render_placeholder, safe_render
 
 DISCLAIMER = (
     "Simplified research backtest. Does not account for bid-ask spreads, market impact, "

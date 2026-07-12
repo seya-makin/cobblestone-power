@@ -8,7 +8,7 @@ from typing import Any, Dict, List
 
 import streamlit as st
 
-from dashboard.utils.dashboard_helpers import render_placeholder, safe_render, tab_section_header
+from utils.dashboard_helpers import render_placeholder, safe_render, tab_section_header
 
 
 def _gemini_is_placeholder() -> bool:

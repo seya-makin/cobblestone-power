@@ -8,7 +8,7 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-from dashboard.utils.dashboard_helpers import (
+from utils.dashboard_helpers import (
     render_placeholder,
     safe_plotly,
     safe_render,
