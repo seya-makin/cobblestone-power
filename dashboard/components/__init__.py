@@ -1,1 +1,1 @@
-# Components package
+# Dashboard components package
