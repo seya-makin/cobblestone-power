@@ -352,14 +352,19 @@ def cmd_submission() -> Path:
         }
     )
 
+    mae = metrics.get("MAE")
+    skill = metrics.get("skill_vs_naive_pct")
+    mae_txt = f"{float(mae):.2f}" if mae is not None else "N/A"
+    skill_txt = f"{float(skill):+.1f}" if skill is not None else "N/A"
+    cov = metrics.get("conformal_coverage_90_empirical", 0)
     header = f"""# Cobblestone Energy Case Study — Out-of-Sample Submission
 # Author: Seya Makin | seyamakin04@gmail.com
 # Market: Germany DE-LU | Zone: 10Y1001A1001A82H
 # Model: XGBoost + Walk-Forward Validation + Conformal Prediction
 # LLM: gemini-2.0-flash (QA rules, market commentary, config generation)
 # Test Period: 2024-01-01 00:00 UTC to 2024-12-31 23:00 UTC
-# MAE: {metrics.get('MAE', 'N/A')} EUR/MWh | Skill vs Naive: +{metrics.get('skill_vs_naive_pct', 'N/A')}%
-# Conformal 90% Coverage: {100 * metrics.get('conformal_coverage_90_empirical', 0):.1f}% (theoretical: 90%)
+# MAE: {mae_txt} EUR/MWh | Skill vs Naive: {skill_txt}%
+# Conformal 90% Coverage: {100 * float(cov or 0):.1f}% (theoretical: 90%)
 # Notable: System detected both Dunkelflaute events (Nov 2-7, Dec 12-14 2024)
 # Generated: {utc_now_iso()}
 """
