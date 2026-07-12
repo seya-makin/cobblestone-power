@@ -10,9 +10,13 @@ from __future__ import annotations
 
 import sys
 import os
-# Ensure repo root is in path for Streamlit Cloud
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+# Streamlit Cloud runs dashboard/app.py with the script directory on sys.path,
+# which shadows the top-level `dashboard` package. Keep repo root first.
+_REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path = [p for p in sys.path if os.path.abspath(p) not in {_REPO_ROOT, _SCRIPT_DIR}]
+sys.path.insert(0, _REPO_ROOT)
 
 import traceback
 from pathlib import Path
